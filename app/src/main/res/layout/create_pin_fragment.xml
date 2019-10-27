@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".modules.login.SignUpReqFragment">
+    tools:context=".modules.login.CreatePinFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -12,30 +12,43 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/enter_details"/>
+            android:text="@string/create_pin_text"
+            android:textSize="18sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mName"
+                android:id="@+id/mPIN"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/enter_name"
-               android:inputType="textPersonName"
+                android:hint="@string/pin"
+                android:inputType="numberPassword"
+                android:maxLength="4"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnReq"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/request">
+            android:layout_gravity="center">
 
-        </androidx.appcompat.widget.AppCompatButton>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirmPin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_pin"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 </layout>
+

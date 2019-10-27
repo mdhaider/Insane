@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".modules.login.SignUpReqFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".modules.login.EnterPinFragment">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/enter_details"/>
+            android:text="@string/enter_4_digit_pin_to_continue"
+            android:textSize="18sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mName"
+                android:id="@+id/mPIN"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/enter_name"
-               android:inputType="textPersonName"
+                android:hint="@string/pin_enter"
+                android:inputType="numberPassword"
+                android:maxLength="4"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnReq"
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/request">
+            android:text="Forgot PIN?"/>
 
-        </androidx.appcompat.widget.AppCompatButton>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </layout>

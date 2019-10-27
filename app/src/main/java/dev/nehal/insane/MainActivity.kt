@@ -3,10 +3,13 @@ package dev.nehal.insane
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import dev.nehal.insane.shared.Const
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,5 +28,11 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val pref= getSharedPreferences(Const.PREF_NAME, Const.PRIVATE_MODE)
+        val editor = pref.edit()
+        editor.putBoolean(Const.IS_LOGGED_IN, true)
+        editor.apply()
+
     }
 }

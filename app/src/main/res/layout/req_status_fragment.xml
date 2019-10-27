@@ -22,14 +22,16 @@
             android:text="Name: " />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/checkStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Check Status"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Status" />
+            android:text="---" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

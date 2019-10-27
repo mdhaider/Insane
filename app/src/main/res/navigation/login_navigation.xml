@@ -19,7 +19,27 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/enterMobileFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_entermobile_create_pin"
+            app:destination="@+id/createPinFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/enterMobileFragment"
+            app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_entermobile_enter_pin"
+            app:destination="@+id/enterPinFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/enterMobileFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -44,5 +64,15 @@
         android:name="dev.nehal.insane.modules.login.ReqStatusFragment"
         android:label="req_status_fragment"
         tools:layout="@layout/req_status_fragment" />
+    <fragment
+        android:id="@+id/createPinFragment"
+        android:name="dev.nehal.insane.modules.login.CreatePinFragment"
+        android:label="CreatePinFragment"
+        tools:layout="@layout/create_pin_fragment"/>
+    <fragment
+        android:id="@+id/enterPinFragment"
+        android:name="dev.nehal.insane.modules.login.EnterPinFragment"
+        android:label="enter_pin_fragment"
+        tools:layout="@layout/enter_pin_fragment" />
 
 </navigation>
