@@ -1,4 +1,4 @@
-package dev.nehal.insane.ui.dashboard
+package dev.nehal.insane.modules.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

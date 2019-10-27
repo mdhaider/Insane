@@ -1,4 +1,4 @@
-package dev.nehal.insane.ui.login
+package dev.nehal.insane.modules.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

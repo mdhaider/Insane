@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".modules.login.EnterMobileFragment">
+    tools:context=".modules.login.SignUpReqFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="16dp">
+        android:layout_margin="16dp"
+        android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mNumber"
+                android:id="@+id/mName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
+                android:hint="@string/enter_name"
                 android:maxLength="10"
-                android:hint="@string/enter_mobile_number" />
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnReq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/request">
+
+        </androidx.appcompat.widget.AppCompatButton>
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 </layout>

@@ -1,4 +1,4 @@
-package dev.nehal.insane.ui.dashboard
+package dev.nehal.insane.modules.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
