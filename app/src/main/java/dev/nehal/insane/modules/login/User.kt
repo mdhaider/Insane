@@ -4,7 +4,7 @@ data class User(var phonNum:String ){
     var userID:String=""
     var mName:String=""
     var isApproved:Boolean=false
-    var isFirstTimeUser=true
+    var timseStamp:Long=0L
     var pin:String=""
 }
 

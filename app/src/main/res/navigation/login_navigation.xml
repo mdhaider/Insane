@@ -40,6 +40,25 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/enterMobileFragment"
             app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_entermobile_req_status"
+            app:destination="@+id/reqStatusFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/enterMobileFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_entermobile_verify_phone"
+            app:destination="@+id/verifyPhoneFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/enterMobileFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -74,5 +93,9 @@
         android:name="dev.nehal.insane.modules.login.EnterPinFragment"
         android:label="enter_pin_fragment"
         tools:layout="@layout/enter_pin_fragment" />
-
+    <fragment
+        android:id="@+id/verifyPhoneFragment"
+        android:name="dev.nehal.insane.modules.login.VerifyPhoneFragment"
+        tools:layout="@layout/verify_phone_fragment"
+        android:label="VerifyPhoneFragment" />
 </navigation>

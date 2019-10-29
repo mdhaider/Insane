@@ -1,18 +1,18 @@
 package dev.nehal.insane.modules.login
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.firestore.FirebaseFirestore
-
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.CreatePinFragmentBinding
+import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.onChange
 
 class CreatePinFragment : Fragment() {
@@ -31,7 +31,7 @@ class CreatePinFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.apply {
-            phNum = getString(SignUpReqFragment.KEY_MOBILE, "")
+            phNum = getString(Const.PHONE_NUM, "")
 
         }
 
@@ -59,17 +59,14 @@ class CreatePinFragment : Fragment() {
               createPIN(it)
           }
       }
-
     }
 
     private fun createPIN(pin:String) {
         db = FirebaseFirestore.getInstance()
 
         try {
-
             val ref = db.collection("users").document(phNum)
-
-            ref.update("pin", pin, "firstTimeUser", false)
+            ref.update("pin", pin)
                 .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
                 .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
         } catch (e: Exception) {

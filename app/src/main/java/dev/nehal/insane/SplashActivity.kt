@@ -3,33 +3,32 @@ package dev.nehal.insane
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import dev.nehal.insane.modules.login.LoginActivity
-import dev.nehal.insane.shared.Const
+import com.google.firebase.auth.FirebaseAuth
+import dev.nehal.insane.modules.MainActivityOld
+import dev.nehal.insane.modules.login.LoginActivityOld
 
 class SplashActivity : AppCompatActivity() {
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (getSharedPreferences(Const.PREF_NAME, Const.PRIVATE_MODE).getBoolean(
-                Const.IS_LOGGED_IN,
-                false
-            )
-        ) {
+        if(auth.currentUser==null){
+
             intent = Intent(
                 this,
-                MainActivity::class.java
+                LoginActivityOld::class.java
             )
             startActivity(intent)
             finish()
+
         } else {
             intent = Intent(
                 this,
-                LoginActivity::class.java
+                MainActivityOld::class.java
             )
             startActivity(intent)
             finish()
         }
-
     }
 }

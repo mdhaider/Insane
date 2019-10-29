@@ -7,4 +7,5 @@ object Const {
     const val PREF_NAME = "insane"
     const val PRIVATE_MODE = 0
     const val IS_LOGGED_IN= "loggedIn"
+    const val PHONE_NUM="number"
 }

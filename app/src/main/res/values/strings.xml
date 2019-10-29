@@ -2,7 +2,10 @@
     <string name="app_name">Insane</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_all">All</string>
+    <string name="title_liked">Liked</string>
+    <string name="title_add">Add</string>
+    <string name="title_other">Other</string>
     <string name="title_notifications">Notifications</string>
     <string name="enter_mobile_number">Enter Mobile Number</string>
     <string name="enter_name">Enter Name</string>
@@ -13,4 +16,7 @@
     <string name="enter_details">Looks like you are first time user, please enter details to continue.</string>
     <string name="pin_enter">Enter 4-digit PIN</string>
     <string name="enter_4_digit_pin_to_continue">Enter 4-digit pin to continue</string>
+    <string name="auto_read">Waiting to read OTP</string>
+    <string name="enter_code">Enter OTP manually</string>
+    <string name="enter_otp">Enter OTP received</string>
 </resources>

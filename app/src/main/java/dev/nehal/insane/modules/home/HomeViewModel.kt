@@ -1,4 +1,4 @@
-package dev.nehal.insane.ui.home
+package dev.nehal.insane.modules.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

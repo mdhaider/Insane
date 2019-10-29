@@ -7,19 +7,33 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="dev.nehal.insane.ui.home.HomeFragment"
+        android:name="dev.nehal.insane.modules.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="dev.nehal.insane.modules.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_liked_post"
+        android:name="dev.nehal.insane.modules.postliked.LikedPostFragment"
+        android:label="@string/title_liked"
+        tools:layout="@layout/liked_post_fragment" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="dev.nehal.insane.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_new_post"
+        android:name="dev.nehal.insane.modules.newpost.NewPostFragment"
+        android:label="@string/title_add"
+        tools:layout="@layout/fragment_new_post" />
+
+    <fragment
+        android:id="@+id/navigation_all_post"
+        android:name="dev.nehal.insane.modules.allpost.AllPostFragment"
+        android:label="@string/title_all"
+        tools:layout="@layout/all_post_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_others"
+        android:name="dev.nehal.insane.modules.other.OtherFragment"
+        android:label="@string/title_other"
+        tools:layout="@layout/fragment_other" />
+
+
 </navigation>
