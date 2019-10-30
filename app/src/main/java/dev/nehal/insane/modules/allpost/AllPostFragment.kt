@@ -1,8 +1,11 @@
 package dev.nehal.insane.modules.allpost
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -12,7 +15,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.AllPostFragmentBinding
@@ -33,6 +35,11 @@ class AllPostFragment : Fragment() {
     }
 
     private lateinit var viewModel: AllPostViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity?.title = "All Posts"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,20 +84,6 @@ class AllPostFragment : Fragment() {
                 adapter!!.notifyDataSetChanged()
                 binding.rvPosts.adapter = adapter
             })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_main, menu)
-
-        return super.onCreateOptionsMenu(menu,inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.signOut) {
-            FirebaseAuth.getInstance().signOut()
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 
      override fun onStart() {

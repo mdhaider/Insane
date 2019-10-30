@@ -2,6 +2,7 @@ package dev.nehal.insane.modules.newpost
 
 import android.app.Activity.RESULT_OK
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -35,6 +36,11 @@ class NewPostFragment : Fragment() {
     private var firebaseStore: FirebaseStorage? = null
     private var storageReference: StorageReference? = null
     private lateinit var progressbar: ProgressDialog
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity?.title = "Create Post"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

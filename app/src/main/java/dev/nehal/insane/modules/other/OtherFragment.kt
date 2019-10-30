@@ -1,5 +1,6 @@
 package dev.nehal.insane.modules.other
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,10 @@ class OtherFragment : Fragment() {
 
     private lateinit var otherViewModel: OtherViewModel
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity?.title = "Other"
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

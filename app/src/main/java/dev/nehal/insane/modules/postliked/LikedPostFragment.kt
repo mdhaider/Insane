@@ -1,12 +1,12 @@
 package dev.nehal.insane.modules.postliked
 
-import androidx.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import dev.nehal.insane.R
 
 class LikedPostFragment : Fragment() {
@@ -16,6 +16,12 @@ class LikedPostFragment : Fragment() {
     }
 
     private lateinit var viewModel: LikedPostViewModel
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity?.title = "Favorite Posts"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
