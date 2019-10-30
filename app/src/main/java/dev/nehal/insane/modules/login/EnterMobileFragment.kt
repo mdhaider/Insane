@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.EnterMobileFragmentBinding
+import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.hideKeyboard
 import dev.nehal.insane.shared.onChange
@@ -62,8 +63,10 @@ class EnterMobileFragment : Fragment() {
 
         dbRef.get()
             .addOnSuccessListener { document ->
+                AppPreferences.userid=binding.mNumber.text.toString()
 
                 binding.mNumber.text = null
+
 
                 if (document.data != null) {
                     Log.d(ReqStatusFragment.TAG, "DocumentSnapshot data: ${document.data}")

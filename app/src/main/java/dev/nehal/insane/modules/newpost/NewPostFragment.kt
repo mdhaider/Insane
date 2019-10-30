@@ -22,6 +22,8 @@ import com.nguyenhoanglam.imagepicker.model.Image
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.FragmentNewPostBinding
+import dev.nehal.insane.shared.AppPreferences
+import dev.nehal.insane.shared.hideKeyboard
 import java.io.File
 
 
@@ -72,7 +74,13 @@ class NewPostFragment : Fragment() {
             .setAlwaysShowDoneButton(true)      //  Set always show done button in multiple mode
             .setRequestCode(100)                //  Set request code, default Config.RC_PICK_IMAGES
             .setKeepScreenOn(true)              //  Keep screen on when selecting images
-            .start()                          //  Start ImagePicker
+            .start() //  Start ImagePicker
+
+        binding.uploadImg.setOnClickListener {
+            hideKeyboard()
+            val capt = binding.caption.text.toString()
+            uploadFile(capt)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -81,22 +89,20 @@ class NewPostFragment : Fragment() {
             list = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES)
             Log.d("TAG", list.toString())
 
-            Glide.with(this).load(list[0].path).into(binding.rv)
+            Glide.with(this).load(list[0].path).into(binding.selImg)
             Log.d("path", list[0].path.toString())
+            binding.rootView.visibility = View.VISIBLE
 
             // uploadImage()
 
             filePath = Uri.fromFile(File(list[0].path))
-           uploadFile()
-
-         //   uploadImage()
 
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
 
-    private fun uploadFile() {
+    private fun uploadFile(capt: String) {
 
         progressbar = ProgressDialog(activity).apply {
             setTitle("Uploading Picture....")
@@ -116,9 +122,9 @@ class NewPostFragment : Fragment() {
             }.addOnSuccessListener {
 
 
-                riversRef.downloadUrl.addOnSuccessListener {uri->
-                    Log.d("TAG", "onSuccess: uri= "+ uri)
-                    addUploadRecordToDb(uri.toString())
+                riversRef.downloadUrl.addOnSuccessListener { uri ->
+                    Log.d("TAG", "onSuccess: uri= " + uri)
+                    addUploadRecordToDb(uri.toString(), capt)
                 }
                 progressbar.dismiss()
             }.addOnProgressListener { taskSnapshot ->
@@ -131,22 +137,25 @@ class NewPostFragment : Fragment() {
         }
     }
 
-    private fun addUploadRecordToDb(uri: String){
+    private fun addUploadRecordToDb(uri: String, capt: String) {
         val db = FirebaseFirestore.getInstance()
 
-        val data = HashMap<String, Any>()
-        data["imageUrl"] = uri
+        val userId = AppPreferences.userid
+        Log.d("phonum", userId!!)
+        val timeStamp= System.currentTimeMillis()
+        val post = Post(userId, uri, capt,timeStamp)
 
-        db.collection("posts")
-            .add(data)
+        db.collection("posts").add(post)
             .addOnSuccessListener { documentReference ->
-                Toast.makeText(activity, "Saved to DB", Toast.LENGTH_LONG).show()
+                binding.rootView.visibility = View.GONE
+                binding.success.visibility = View.VISIBLE
 
             }
             .addOnFailureListener { e ->
                 Toast.makeText(activity, "Error saving to DB", Toast.LENGTH_LONG).show()
 
             }
-
     }
+
+
 }

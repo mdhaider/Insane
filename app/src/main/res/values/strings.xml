@@ -19,4 +19,7 @@
     <string name="auto_read">Waiting to read OTP</string>
     <string name="enter_code">Enter OTP manually</string>
     <string name="enter_otp">Enter OTP received</string>
+    <string name="upload">Upload</string>
+    <string name="write_caption">Write Caption</string>
+    <string name="upload_successful">Upload Successful</string>
 </resources>
