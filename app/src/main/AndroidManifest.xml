@@ -5,7 +5,7 @@
     tools:ignore="GoogleAppIndexingWarning">
 
     <application
-        android:name=".InsaneApp"
+        android:name=".shared.InsaneApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,13 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity"
+        <activity android:name=".shared.SplashActivity"
             android:theme="@style/SplashTheme"/>
-        <activity android:name=".modules.login.LoginActivityOld" />
+        <activity android:name=".modules.MainActivityOld" />
         <activity
             android:name=".modules.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".modules.MainActivityOld">
+        <activity android:name=".modules.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

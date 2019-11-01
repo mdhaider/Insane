@@ -1,7 +1,6 @@
-package dev.nehal.insane
+package dev.nehal.insane.shared
 
 import android.app.Application
-import dev.nehal.insane.shared.AppPreferences
 
 class InsaneApp:Application() {
     override fun onCreate() {

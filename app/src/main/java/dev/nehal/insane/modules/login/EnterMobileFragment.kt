@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
-import dev.nehal.insane.R
 import dev.nehal.insane.databinding.EnterMobileFragmentBinding
 import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
@@ -34,7 +33,12 @@ class EnterMobileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.enter_mobile_fragment, container, false)
+            DataBindingUtil.inflate(
+                inflater,
+                dev.nehal.insane.R.layout.enter_mobile_fragment,
+                container,
+                false
+            )
         return binding.root
     }
 
@@ -59,11 +63,11 @@ class EnterMobileFragment : Fragment() {
         phNumb = phNum
         hideKeyboard()
 
-        val dbRef = db.collection("users").document(phNumb)
+        val dbRef = db.collection("signup").document(phNumb)
 
         dbRef.get()
             .addOnSuccessListener { document ->
-                AppPreferences.userid=binding.mNumber.text.toString()
+                AppPreferences.userid = binding.mNumber.text.toString()
 
                 binding.mNumber.text = null
 
@@ -87,45 +91,45 @@ class EnterMobileFragment : Fragment() {
             }
     }
 
-private fun goToEnterPin() {
-    val bundle = Bundle().apply {
-        putString(Const.PHONE_NUM, phNumb)
+    private fun goToEnterPin() {
+        val bundle = Bundle().apply {
+            putString(Const.PHONE_NUM, phNumb)
 
+        }
+
+        findNavController().navigate(dev.nehal.insane.R.id.action_entermobile_enter_pin, bundle)
     }
 
-    findNavController().navigate(R.id.action_entermobile_enter_pin, bundle)
-}
+    private fun goToCreatePin() {
+        val bundle = Bundle().apply {
+            putString(Const.PHONE_NUM, phNumb)
+        }
 
-private fun goToCreatePin() {
-    val bundle = Bundle().apply {
-        putString(Const.PHONE_NUM, phNumb)
+        findNavController().navigate(dev.nehal.insane.R.id.action_entermobile_create_pin, bundle)
     }
 
-    findNavController().navigate(R.id.action_entermobile_create_pin, bundle)
-}
 
+    private fun goToSignUp() {
+        val bundle = Bundle().apply {
+            putString(Const.PHONE_NUM, phNumb)
+        }
 
-private fun goToSignUp() {
-    val bundle = Bundle().apply {
-        putString(Const.PHONE_NUM, phNumb)
+        findNavController().navigate(dev.nehal.insane.R.id.action_entermobile_signupreq, bundle)
     }
 
-    findNavController().navigate(R.id.action_entermobile_signupreq, bundle)
-}
+    private fun goToReqStatus() {
+        val bundle = Bundle().apply {
+            putString(Const.PHONE_NUM, phNumb)
+        }
 
-private fun goToReqStatus() {
-    val bundle = Bundle().apply {
-        putString(Const.PHONE_NUM, phNumb)
+        findNavController().navigate(dev.nehal.insane.R.id.action_entermobile_req_status, bundle)
     }
 
-    findNavController().navigate(R.id.action_entermobile_req_status, bundle)
-}
+    private fun goToVerifyPhone() {
+        val bundle = Bundle().apply {
+            putString(Const.PHONE_NUM, phNumb)
+        }
 
-private fun goToVerifyPhone() {
-    val bundle = Bundle().apply {
-        putString(Const.PHONE_NUM, phNumb)
+        findNavController().navigate(dev.nehal.insane.R.id.action_entermobile_verify_phone, bundle)
     }
-
-    findNavController().navigate(R.id.action_entermobile_verify_phone, bundle)
-}
 }

@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.modules.login.EnterMobileFragment
-import dev.nehal.insane.modules.login.LoginActivityOld
+import dev.nehal.insane.modules.login.LoginActivity
 import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
 import kotlinx.android.synthetic.main.activity_main_old.*
@@ -103,7 +103,7 @@ class MainActivityOld : AppCompatActivity() {
 
     private fun showLoginActivity() {
         startActivity(
-            Intent(this, LoginActivityOld::class.java)
+            Intent(this, LoginActivity::class.java)
         )
         finish()
     }

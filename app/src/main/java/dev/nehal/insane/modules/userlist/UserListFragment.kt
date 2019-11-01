@@ -120,13 +120,14 @@ class UserListFragment : Fragment() {
 
                 if(AppPreferences.isAdmin){
                     holder.llAdmin.visibility=View.VISIBLE
-                    if(user.isApproved){
-                        holder.tvStatus.text=getString(R.string.deactivate)
-                        isActive=false
-                    } else{
-                        holder.tvStatus.text=getString(R.string.activate)
-                        isActive=true
-                    }
+                }
+
+                if(user.isApproved){
+                    holder.tvStatus.text=getString(R.string.deactivate)
+                    isActive=false
+                } else{
+                    holder.tvStatus.text=getString(R.string.activate)
+                    isActive=true
                 }
 
                 holder.tvStatus.setOnClickListener{
@@ -186,6 +187,8 @@ class UserListFragment : Fragment() {
             Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
         }
     }
+
+
 
 }
 

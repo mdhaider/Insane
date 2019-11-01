@@ -66,13 +66,8 @@ class SignUpReqFragment : Fragment() {
             user.userID=id
             user.timseStamp=System.currentTimeMillis()
 
-            db.collection("users").document(phNum).set(user).addOnSuccessListener { documentReference ->
+            db.collection("signup").document(phNum).set(user).addOnSuccessListener { documentReference ->
                 Log.d("TAG", "DocumentSnapshot added with ID: $documentReference")
-                Toast.makeText(
-                    activity,
-                    "Successfully uploaded to the database :$documentReference)",
-                    Toast.LENGTH_LONG
-                ).show()
                 goToNext()
             }.addOnFailureListener { e ->
                 Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()

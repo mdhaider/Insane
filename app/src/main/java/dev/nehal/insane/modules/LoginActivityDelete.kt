@@ -18,10 +18,10 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import dev.nehal.insane.R
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login_delete.*
 import java.util.concurrent.TimeUnit
 
-class LoginActivity : AppCompatActivity() , View.OnClickListener {
+class LoginActivityDelete : AppCompatActivity() , View.OnClickListener {
 
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private var phoneNumber: String? = null
@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() , View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_login_delete)
         if(savedInstanceState==null) {
             initView()
             startVerfiy()
@@ -278,7 +278,7 @@ class LoginActivity : AppCompatActivity() , View.OnClickListener {
         }
     }
     private fun showLoginActivity() {
-        startActivity( Intent(this, LoginActivity::class.java)
+        startActivity( Intent(this, LoginActivityDelete::class.java)
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
     }
     private fun showHomeActivity() {

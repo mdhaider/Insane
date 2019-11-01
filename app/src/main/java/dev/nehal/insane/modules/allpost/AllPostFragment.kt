@@ -137,9 +137,10 @@ class AllPostFragment : Fragment() {
                     .apply(RequestOptions.circleCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imgProf)
 
-                holder.imgFav.setOnClickListener { unfav(note.id!!) }
+                holder.imgFav.setOnClickListener {
 
-                //  holder.delete.setOnClickListener { deleteNote(note.id!!) }
+                    setLike(note.id!!,note.caption, note.imageUri, note.timestamp, note.user )
+                }
             }
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllPostViewHolder {
@@ -166,27 +167,39 @@ class AllPostFragment : Fragment() {
         return date
     }
 
-    private fun setFavorite(postId: String) {
+    private fun setLike(postId: String, capt:String?, uri:String?, time:Long?, suer:String?
+    ) {
         val items = mutableMapOf<String, Any>()
         items["likes"] = true
         items["timestamp"] = System.currentTimeMillis()
-
-        firestoreDB!!.collection("posts").
-            document(postId).collection("users").document(AppPreferences.userid!!).set(items).addOnSuccessListener {
-            Log.d("AllPost", "successfully added to fav")
+        firestoreDB!!.collection("likes").document(postId).collection("users")
+            .document(AppPreferences.userid!!).set(items).addOnSuccessListener {
+            Log.d("likes", "successfully added to fav")
+                setFavorite(postId)
         }.addOnFailureListener {
-            Log.d("AllPost", "add to fav failed")
+            Log.d("likes", "add to fav failed")
         }
+
     }
 
-    private fun unfav(postId: String){
+    private fun setFavorite(postId: String){
+        val items = mutableMapOf<String, Any>()
+        items["postId"] = postId
+        items["timestamp"] = System.currentTimeMillis()
 
-        firestoreDB!!.collection("favorites").
-            document(postId).collection("users").document(AppPreferences.userid!!).delete().addOnSuccessListener {
-            Log.d("AllPost", "successfully added to fav")
-        }.addOnFailureListener {
-            Log.d("AllPost", "add to fav failed")
-        }
+        firestoreDB!!.collection("favorites").document(AppPreferences.userid!!).collection("posts").document(postId).set(items).addOnSuccessListener {
+                Log.d("fav", "successfully added to fav")
+            }.addOnFailureListener {
+                Log.d("fav", "add to fav failed")
+            }
+    }
 
+    private fun unfav(postId: String) {
+        firestoreDB!!.collection("favorites").document(postId).collection("users")
+            .document(AppPreferences.userid!!).delete().addOnSuccessListener {
+                Log.d("AllPost", "successfully added to fav")
+            }.addOnFailureListener {
+                Log.d("AllPost", "add to fav failed")
+            }
+    }
 }
-    }

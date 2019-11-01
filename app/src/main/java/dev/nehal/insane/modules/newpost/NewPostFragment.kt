@@ -30,7 +30,6 @@ import java.io.File
 
 
 class NewPostFragment : Fragment() {
-
     private lateinit var newPostViewModel: NewPostViewModel
     private lateinit var binding: FragmentNewPostBinding
     private var filePath: Uri? = null
