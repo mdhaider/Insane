@@ -1,5 +1,6 @@
 package dev.nehal.insane.modules.home
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -25,6 +26,10 @@ class HomeFragment : Fragment() {
     private val PICK_IMAGE_REQUEST = 100
     private var filePath: Uri? = null
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity?.title = "Insane"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -22,4 +22,7 @@
     <string name="upload">Upload</string>
     <string name="write_caption">Write Caption</string>
     <string name="upload_successful">Upload Successful</string>
+    <string name="joined_on">Joined On:</string>
+    <string name="deactivate">Deactivate</string>
+    <string name="activate">Activate</string>
 </resources>

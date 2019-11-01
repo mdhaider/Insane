@@ -11,11 +11,16 @@ class AllPostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var post: TextView
     var user: TextView
     var time: TextView
+    var imgProf:ImageView
+    var imgFav:ImageView
  
     init {
         user=view.findViewById(R.id.tvUser)
         img = view.findViewById(R.id.imgPost)
         post = view.findViewById(R.id.tvPost)
         time = view.findViewById(R.id.tvTime)
+        imgProf=view.findViewById(R.id.imgProf)
+        imgFav=view.findViewById(R.id.imgFav)
+
     }
 }

@@ -60,6 +60,7 @@ class SignUpReqFragment : Fragment() {
             val user = User(phNum)
             user.mName = name
             user.pin=""
+            user.isAdmin=false
             user.isApproved=false
             val id:String="${name[0]}"+"-"+phNum.subSequence(0,5)
             user.userID=id

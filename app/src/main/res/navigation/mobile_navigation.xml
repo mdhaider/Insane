@@ -30,10 +30,24 @@
         tools:layout="@layout/all_post_fragment" />
 
     <fragment
-        android:id="@+id/navigation_others"
+        android:id="@+id/navigation_otherss"
         android:name="dev.nehal.insane.modules.other.OtherFragment"
         android:label="@string/title_other"
-        tools:layout="@layout/fragment_other" />
+        tools:layout="@layout/fragment_other">
 
+        <action
+            android:id="@+id/action_other_user"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/navigation_others"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment android:id="@+id/navigation_others"
+    android:name="dev.nehal.insane.modules.userlist.UserListFragment"
+    android:label="user_list_fragment"
+    tools:layout="@layout/user_list_fragment" />
 
 </navigation>

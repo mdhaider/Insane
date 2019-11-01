@@ -13,18 +13,26 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.AllPostFragmentBinding
 import dev.nehal.insane.modules.newpost.Post
+import dev.nehal.insane.shared.AppPreferences
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class AllPostFragment : Fragment() {
     private val TAG = "MainActivity"
-
     private var adapter: FirestoreRecyclerAdapter<Post, AllPostViewHolder>? = null
-    private lateinit var binding:AllPostFragmentBinding
+    private lateinit var binding: AllPostFragmentBinding
     private var firestoreListener: ListenerRegistration? = null
     private var notesList = mutableListOf<Post>()
     private var firestoreDB: FirebaseFirestore? = null
@@ -45,7 +53,7 @@ class AllPostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=DataBindingUtil.inflate(inflater, R.layout.all_post_fragment,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.all_post_fragment, container, false)
         return binding.root
     }
 
@@ -63,36 +71,38 @@ class AllPostFragment : Fragment() {
         val mLayoutManager = LinearLayoutManager(activity)
         binding.rvPosts.layoutManager = mLayoutManager
         binding.rvPosts.itemAnimator = DefaultItemAnimator()
+        binding.rvPosts.setHasFixedSize(true)
 
         loadNotesList()
 
-        firestoreListener = firestoreDB!!.collection("posts").orderBy("timestamp",Query.Direction.DESCENDING)
-            .addSnapshotListener(EventListener { documentSnapshots, e ->
-                if (e != null) {
-                    Log.e(TAG, "Listen failed!", e)
-                    return@EventListener
-                }
+        firestoreListener =
+            firestoreDB!!.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener(EventListener { documentSnapshots, e ->
+                    if (e != null) {
+                        Log.e(TAG, "Listen failed!", e)
+                        return@EventListener
+                    }
 
-                notesList = mutableListOf()
+                    notesList = mutableListOf()
 
-                for (doc in documentSnapshots!!) {
-                    val note = doc.toObject(Post::class.java)
-                   // note.user = doc.i
-                    notesList.add(note)
-                }
+                    for (doc in documentSnapshots!!) {
+                        val note = doc.toObject(Post::class.java)
+                        // note.user = doc.i
+                        notesList.add(note)
+                    }
 
-                adapter!!.notifyDataSetChanged()
-                binding.rvPosts.adapter = adapter
-            })
+                    adapter!!.notifyDataSetChanged()
+                    binding.rvPosts.adapter = adapter
+                })
     }
 
-     override fun onStart() {
+    override fun onStart() {
         super.onStart()
 
         adapter!!.startListening()
     }
 
-     override fun onStop() {
+    override fun onStop() {
         super.onStop()
 
         adapter!!.stopListening()
@@ -106,7 +116,8 @@ class AllPostFragment : Fragment() {
 
     private fun loadNotesList() {
 
-        val query = firestoreDB!!.collection("posts").orderBy("timestamp",Query.Direction.DESCENDING)
+        val query =
+            firestoreDB!!.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
 
         val response = FirestoreRecyclerOptions.Builder<Post>()
             .setQuery(query, Post::class.java)
@@ -116,15 +127,19 @@ class AllPostFragment : Fragment() {
             override fun onBindViewHolder(holder: AllPostViewHolder, position: Int, model: Post) {
                 val note = notesList[position]
 
+                holder.img.layout(0, 0, 0, 0)
                 holder.user.text = note.user
-                holder.time.text = note.timestamp.toString()
-                holder.post.text=note.caption
-                Glide.with(activity!!).load(note.imageUri).
-                    diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.img)
+                holder.time.text = getTimeStamp(note.timestamp!!)
+                holder.post.text = note.caption
+                Glide.with(activity!!).load(note.imageUri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.img)
+                Glide.with(activity!!).load(note.imageUri)
+                    .apply(RequestOptions.circleCropTransform())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imgProf)
 
-              //  holder.edit.setOnClickListener { updateNote(note) }
+                holder.imgFav.setOnClickListener { unfav(note.id!!) }
 
-              //  holder.delete.setOnClickListener { deleteNote(note.id!!) }
+                //  holder.delete.setOnClickListener { deleteNote(note.id!!) }
             }
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllPostViewHolder {
@@ -135,7 +150,7 @@ class AllPostFragment : Fragment() {
             }
 
             override fun onError(e: FirebaseFirestoreException) {
-                Log.e("error", e!!.message)
+                Log.e("error", e.message)
             }
         }
 
@@ -143,4 +158,35 @@ class AllPostFragment : Fragment() {
         binding.rvPosts.adapter = adapter
     }
 
+    fun getTimeStamp(timeinMillies: Long): String? {
+        var date: String? = null
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        date = formatter.format(Date(timeinMillies))
+        println("Today is " + date!!)
+        return date
+    }
+
+    private fun setFavorite(postId: String) {
+        val items = mutableMapOf<String, Any>()
+        items["likes"] = true
+        items["timestamp"] = System.currentTimeMillis()
+
+        firestoreDB!!.collection("posts").
+            document(postId).collection("users").document(AppPreferences.userid!!).set(items).addOnSuccessListener {
+            Log.d("AllPost", "successfully added to fav")
+        }.addOnFailureListener {
+            Log.d("AllPost", "add to fav failed")
+        }
+    }
+
+    private fun unfav(postId: String){
+
+        firestoreDB!!.collection("favorites").
+            document(postId).collection("users").document(AppPreferences.userid!!).delete().addOnSuccessListener {
+            Log.d("AllPost", "successfully added to fav")
+        }.addOnFailureListener {
+            Log.d("AllPost", "add to fav failed")
+        }
+
 }
+    }

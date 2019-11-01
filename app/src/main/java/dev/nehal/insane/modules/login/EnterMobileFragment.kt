@@ -67,7 +67,6 @@ class EnterMobileFragment : Fragment() {
 
                 binding.mNumber.text = null
 
-
                 if (document.data != null) {
                     Log.d(ReqStatusFragment.TAG, "DocumentSnapshot data: ${document.data}")
                     if (document.getBoolean("approved")!!) {

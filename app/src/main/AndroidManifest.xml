@@ -13,13 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modules.MainActivityOld" />
+        <activity android:name=".SplashActivity"
+            android:theme="@style/SplashTheme"/>
         <activity android:name=".modules.login.LoginActivityOld" />
         <activity
             android:name=".modules.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
+        <activity android:name=".modules.MainActivityOld">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

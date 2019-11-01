@@ -23,6 +23,7 @@ import com.nguyenhoanglam.imagepicker.model.Image
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.FragmentNewPostBinding
+import dev.nehal.insane.modules.login.CreatePinFragment
 import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.hideKeyboard
 import java.io.File
@@ -36,6 +37,9 @@ class NewPostFragment : Fragment() {
     private var firebaseStore: FirebaseStorage? = null
     private var storageReference: StorageReference? = null
     private lateinit var progressbar: ProgressDialog
+    private lateinit var postId: String
+    private lateinit var db: FirebaseFirestore
+    private lateinit var userId: String
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -144,23 +148,46 @@ class NewPostFragment : Fragment() {
     }
 
     private fun addUploadRecordToDb(uri: String, capt: String) {
-        val db = FirebaseFirestore.getInstance()
-
-        val userId = AppPreferences.userid
+        db = FirebaseFirestore.getInstance()
+        postId = ""
+        userId = AppPreferences.userid!!
         Log.d("phonum", userId!!)
-        val timeStamp= System.currentTimeMillis()
-        val post = Post(userId, uri, capt,timeStamp)
+        val timeStamp = System.currentTimeMillis()
+        val post = Post(postId, userId, uri, capt, timeStamp)
 
         db.collection("posts").add(post)
             .addOnSuccessListener { documentReference ->
                 binding.rootView.visibility = View.GONE
                 binding.success.visibility = View.VISIBLE
+                updateDbWithId(documentReference.id)
 
             }
             .addOnFailureListener { e ->
                 Toast.makeText(activity, "Error saving to DB", Toast.LENGTH_LONG).show()
 
             }
+    }
+
+    private fun updateDbWithId(id: String) {
+        try {
+            val ref = db.collection("posts").document(id)
+            ref.update("id", id)
+                .addOnSuccessListener {
+                    Log.d(
+                        CreatePinFragment.TAG,
+                        "DocumentSnapshot successfully updated!"
+                    )
+                }
+                .addOnFailureListener { e ->
+                    Log.w(
+                        CreatePinFragment.TAG,
+                        "Error updating document",
+                        e
+                    )
+                }
+        } catch (e: Exception) {
+            Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
+        }
     }
 
 
