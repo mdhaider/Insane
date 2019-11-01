@@ -12,6 +12,7 @@ object AppPreferences {
     // list of app specific preferences
     private val USER_ID = Pair("user_id", "")
     private val IS_ADMIN=Pair("is_admin",false)
+    private val IS_WAITING=Pair("is_waiting", false)
 
 
     fun init(context: Context) {
@@ -44,5 +45,14 @@ object AppPreferences {
         // custom setter to save a preference back to preferences file
         set(value) = preferences.edit {
             it.putBoolean(IS_ADMIN.first, value)
+        }
+
+    var isWaitingForApproval: Boolean
+        // custom getter to get a preference of a desired type, with a predefined default value
+        get() = preferences.getBoolean(IS_WAITING.first, IS_WAITING.second)
+
+        // custom setter to save a preference back to preferences file
+        set(value) = preferences.edit {
+            it.putBoolean(IS_WAITING.first, value)
         }
 }

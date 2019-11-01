@@ -1,10 +1,13 @@
 package dev.nehal.insane.modules.login
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.google.firebase.auth.FirebaseAuth
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.ActivityLoginBinding
+import dev.nehal.insane.modules.MainActivityOld
 
 class LoginActivity : AppCompatActivity() {
 
@@ -13,5 +16,17 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(FirebaseAuth.getInstance().currentUser !=null){
+            intent = Intent(
+                this,
+                MainActivityOld::class.java
+            )
+            startActivity(intent)
+            finish()
+        }
     }
 }
