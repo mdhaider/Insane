@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("dev.nehal.insane", appContext.packageName)
+        assertEquals("dev.nehal.logo_title", appContext.packageName)
     }
 }

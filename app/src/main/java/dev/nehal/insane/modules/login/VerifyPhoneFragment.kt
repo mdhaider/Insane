@@ -15,10 +15,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import dev.nehal.insane.modules.MainActivityOld
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.VerifyPhoneFragmentBinding
+import dev.nehal.insane.modules.MainActivity
 import dev.nehal.insane.shared.Const
+import dev.nehal.insane.shared.onChange
 import java.util.concurrent.TimeUnit
 
 class VerifyPhoneFragment : Fragment() {
@@ -27,6 +28,7 @@ class VerifyPhoneFragment : Fragment() {
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private var mVerificationId: String? = null
     private var mResendToken: PhoneAuthProvider.ForceResendingToken? = null
+    private lateinit var smsOTP: String
 
     companion object {
         const val TAG = "VerifyPhoneFragment"
@@ -37,7 +39,7 @@ class VerifyPhoneFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.apply {
-            phNum = "+91"+getString(Const.PHONE_NUM, "")
+            phNum = "+91" + getString(Const.PHONE_NUM, "")
 
         }
     }
@@ -64,6 +66,14 @@ class VerifyPhoneFragment : Fragment() {
             binding.mOTP.visibility = View.VISIBLE
         }
 
+        binding.mOTP.onChange {
+            if (it.length == 6) {
+
+                val credential = PhoneAuthProvider.getCredential(mVerificationId!!, it)
+                signInWithPhoneAuthCredential(credential)
+            }
+        }
+
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onCodeAutoRetrievalTimeOut(verificationId: String) {
@@ -75,6 +85,8 @@ class VerifyPhoneFragment : Fragment() {
                 Log.e("onVerificationCompleted", "onVerificationCompleted:$credential")
                 val smsMessageSent: String = credential.smsCode.toString()
                 Log.e("the message is ----- ", smsMessageSent)
+                smsOTP = smsMessageSent
+
                 binding.mOTP.setText(smsMessageSent)
                 signInWithPhoneAuthCredential(credential)
             }
@@ -96,7 +108,7 @@ class VerifyPhoneFragment : Fragment() {
                 }
 
                 // Show a message and update the UI
-                Log.d(TAG,"Your Phone Number might be wrong or connection error.Retry again!")
+                Log.d(TAG, "Your Phone Number might be wrong or connection error.Retry again!")
 
             }
 
@@ -141,14 +153,14 @@ class VerifyPhoneFragment : Fragment() {
                         showHomeActivity()
                     } else {
 
-                       Log.d(TAG,"Your Phone Number Verification is failed.Retry again!")
+                        Log.d(TAG, "Your Phone Number Verification is failed.Retry again!")
                     }
                 }
         }
     }
 
     private fun showHomeActivity() {
-        val intent = Intent(activity, MainActivityOld::class.java)
+        val intent = Intent(activity, MainActivity::class.java)
         startActivity(intent)
         activity!!.finish()
 

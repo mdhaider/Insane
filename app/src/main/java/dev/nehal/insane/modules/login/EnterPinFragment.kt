@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.firestore.FirebaseFirestore
-import dev.nehal.insane.modules.MainActivityOld
+import dev.nehal.insane.modules.MainActivity
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.EnterPinFragmentBinding
 import dev.nehal.insane.shared.Const
@@ -77,7 +77,7 @@ class EnterPinFragment : Fragment() {
                         editor.apply()
 
                         activity?.let {
-                            val intent = Intent(it, MainActivityOld::class.java)
+                            val intent = Intent(it, MainActivity::class.java)
                             it.startActivity(intent)
                             it.finish()
                         }

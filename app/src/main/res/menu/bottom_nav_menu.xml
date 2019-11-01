@@ -8,22 +8,22 @@
 
     <item
         android:id="@+id/navigation_liked_post"
-        android:icon="@drawable/ic_likes_active"
-        android:title="@string/title_liked"/>
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="@string/search"/>
 
     <item
         android:id="@+id/navigation_new_post"
-        android:icon="@drawable/ic_add_circle_black_24dp"
-        android:title="@string/title_add"/>
+        android:icon="@drawable/ic_add_a_photo_black_24dp"
+        android:title="@string/gallery"/>
 
     <item
         android:id="@+id/navigation_all_post"
-        android:icon="@drawable/ic_all_inclusive_black_24dp"
-        android:title="@string/title_all"/>
+        android:icon="@drawable/ic_favorite_black_24dp"
+        android:title="@string/favorite"/>
 
     <item
         android:id="@+id/navigation_others"
-        android:icon="@drawable/ic_more"
-        android:title="@string/title_other"/>
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="@string/account"/>
 
 </menu>

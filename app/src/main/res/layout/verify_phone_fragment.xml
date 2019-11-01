@@ -8,6 +8,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_margin="16dp"
+        android:gravity="center"
         tools:context=".modules.login.VerifyPhoneFragment">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -38,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:maxLength="4"
+                android:maxLength="6"
                 android:inputType="number"
                 android:visibility="gone"
                 android:hint="@string/enter_otp" />

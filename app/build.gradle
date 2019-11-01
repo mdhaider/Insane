@@ -61,4 +61,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.firebaseui:firebase-ui-firestore:6.0.2'
 
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    //트위터 라이브러리
+    implementation 'com.twitter.sdk.android:twitter:3.1.1'
+    //푸시 알람 라이브러리
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+    //Okhttp 라이브러리
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    //Gson 라이브러리
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+
+
 }

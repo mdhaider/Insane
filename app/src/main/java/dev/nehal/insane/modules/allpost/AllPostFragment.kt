@@ -30,7 +30,7 @@ import java.util.*
 
 
 class AllPostFragment : Fragment() {
-    private val TAG = "MainActivity"
+    private val TAG = "MainActivityDelete"
     private var adapter: FirestoreRecyclerAdapter<Post, AllPostViewHolder>? = null
     private lateinit var binding: AllPostFragmentBinding
     private var firestoreListener: ListenerRegistration? = null

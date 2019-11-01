@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.ActivityLoginBinding
-import dev.nehal.insane.modules.MainActivityOld
+import dev.nehal.insane.modules.MainActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
         if(FirebaseAuth.getInstance().currentUser !=null){
             intent = Intent(
                 this,
-                MainActivityOld::class.java
+                MainActivity::class.java
             )
             startActivity(intent)
             finish()

@@ -282,7 +282,7 @@ class LoginActivityDelete : AppCompatActivity() , View.OnClickListener {
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
     }
     private fun showHomeActivity() {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, MainActivityDelete::class.java)
         startActivity(intent)
         finish()
 
