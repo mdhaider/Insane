@@ -67,6 +67,8 @@ class PeopleFragment : Fragment() {
 
             Glide.with(activity!!)
                 .load(userList[position].imageuri)
+                .error(R.drawable.ic_account)
+                .placeholder(R.drawable.ic_account)
                 .apply(RequestOptions().circleCrop())
                 .into(profileImage)
         }

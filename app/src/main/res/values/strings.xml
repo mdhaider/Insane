@@ -53,6 +53,7 @@
     <string name="following">Following</string>
     <string name="follower">Followers</string>
     <string name="follow">follow</string>
+    <string name="follow_bold">FOLLOW</string>
     <string name="follow_cancel">Unfollow</string>
     <string name="profile">Profile</string>
     <string name="count_0">0</string>
