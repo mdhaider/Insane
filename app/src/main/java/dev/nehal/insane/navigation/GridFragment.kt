@@ -13,10 +13,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import dev.nehal.insane.R
 import dev.nehal.insane.model.ContentDTO
 import kotlinx.android.synthetic.main.fragment_grid.view.*
-import java.util.*
+
 
 class GridFragment : Fragment() {
 
@@ -43,15 +44,18 @@ class GridFragment : Fragment() {
     inner class GridFragmentRecyclerViewAdatper : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         var contentDTOs: ArrayList<ContentDTO>
+       var contentUID: ArrayList<String>
 
         init {
             contentDTOs = ArrayList()
+            contentUID= ArrayList()
             imagesSnapshot = FirebaseFirestore
-                    .getInstance().collection("images").orderBy("timestamp")?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    .getInstance().collection("images").orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                         contentDTOs.clear()
                         if (querySnapshot == null) return@addSnapshotListener
                         for (snapshot in querySnapshot!!.documents) {
                             contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                            contentUID.add(snapshot.id)
                         }
                         notifyDataSetChanged()
                     }
@@ -78,12 +82,12 @@ class GridFragment : Fragment() {
                     .into(imageView)
 
             imageView.setOnClickListener {
-                val fragment = UserFragment()
+                val fragment = SingleDetailFragment()
                 val bundle = Bundle()
 
-                bundle.putString("destinationUid", contentDTOs[position].uid)
-                bundle.putString("userId", contentDTOs[position].userId)
-                bundle.putString("userName", contentDTOs[position].userName)
+                val obj = contentDTOs[position]
+                bundle.putSerializable("CONTENT_DTO", obj)
+                bundle.putString("CONTENT_UID",contentUID[position])
 
                 fragment.arguments = bundle
                 activity!!.supportFragmentManager.beginTransaction()

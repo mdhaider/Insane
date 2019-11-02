@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
+import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.VerifyPhoneFragmentBinding
 import dev.nehal.insane.modules.MainActivity
@@ -27,7 +28,7 @@ class VerifyPhoneFragment : Fragment() {
     private var mVerificationId: String? = null
     private var mResendToken: PhoneAuthProvider.ForceResendingToken? = null
     private lateinit var smsOTP: String
-    private lateinit var mName:String
+    private lateinit var mName: String
 
     companion object {
         const val TAG = "VerifyPhoneFragment"
@@ -39,7 +40,7 @@ class VerifyPhoneFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.apply {
             phNum = "+91" + getString(Const.PHONE_NUM, "")
-            mName=getString(Const.USER_NAME, "")
+            mName = getString(Const.USER_NAME, "")
 
         }
     }
@@ -166,8 +167,8 @@ class VerifyPhoneFragment : Fragment() {
 
     }
 
-    private fun updateProf(){
-        val userName= AppPreferences.userName
+    private fun updateProf() {
+        val userName = AppPreferences.userName
         val user = FirebaseAuth.getInstance().currentUser
 
         val profileUpdates = UserProfileChangeRequest.Builder()
@@ -178,8 +179,26 @@ class VerifyPhoneFragment : Fragment() {
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("SignUpFragment", "User profile updated.")
+                    updateUsers(user.uid)
                     showHomeActivity()
                 }
             }
+    }
+
+    private fun updateUsers(uid: String) {
+        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+        try {
+            val user = User(phNum)
+            user.UID = uid
+
+            db.collection("signup").document(phNum).set(user)
+                .addOnSuccessListener { documentReference ->
+                    Log.d("TAG", "DocumentSnapshot added with UID: $documentReference")
+                }.addOnFailureListener { e ->
+                Log.d(TAG, "UID failed")
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "UID failed")
+        }
     }
 }

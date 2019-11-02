@@ -20,6 +20,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dev.nehal.insane.R
 import dev.nehal.insane.modules.login.EnterMobileFragment
+import dev.nehal.insane.modules.login.VerifyPhoneFragment
 import dev.nehal.insane.navigation.*
 import dev.nehal.insane.shared.AppPreferences
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         // Bottom Navigation View
         bottom_navigation.setOnNavigationItemSelectedListener(this)
-        bottom_navigation.selectedItemId = dev.nehal.insane.R.id.action_home
+        bottom_navigation.selectedItemId = R.id.action_home
 
         // 앨범 접근 권한 요청
         ActivityCompat.requestPermissions(
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         setToolbarDefault()
         when (item.itemId) {
-            dev.nehal.insane.R.id.action_home -> {
+            R.id.action_home -> {
 
                 val detailViewFragment = DetailViewFragment()
                 supportFragmentManager.beginTransaction()
@@ -99,11 +100,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 return true
             }
             R.id.action_favorite_alarm -> {
-                val alarmFragment = AlarmFragment()
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.main_content, alarmFragment)
-                    .commit()
+                startActivity(Intent(this, TabActivity::class.java))
                 return true
             }
             R.id.action_account -> {
@@ -149,11 +146,27 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                             map["image"] = url
                             FirebaseFirestore.getInstance().collection("profileImages")
                                 .document(uid).set(map)
+                            setProfileImage(url)
                         }
                 }
         }
 
     }
+
+    private fun setProfileImage(url:String){
+            val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+            try {
+
+                db.collection("signup").document(FirebaseAuth.getInstance().currentUser!!.phoneNumber!!.takeLast(10)).update("imageuri",url)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d("TAG", "DocumentSnapshot added with UID: $documentReference")
+                    }.addOnFailureListener { e ->
+                        Log.d(VerifyPhoneFragment.TAG, "UID failed")
+                    }
+            } catch (e: Exception) {
+                Log.d(VerifyPhoneFragment.TAG, "UID failed")
+            }
+        }
 
     private fun getProfileDetails() {
 
@@ -183,6 +196,14 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             val uid = user.uid
 
             Log.d("details", name+uid)
+        }
+    }
+
+    override fun onBackPressed() {
+        val fragment =
+            this.supportFragmentManager.findFragmentById(R.id.main_content)
+        (fragment as? IOnBackPressed)?.onBackPressed()?.not()?.let {
+            super.onBackPressed()
         }
     }
 }

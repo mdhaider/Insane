@@ -63,7 +63,7 @@ class SignUpReqFragment : Fragment() {
             user.pin=""
             user.isAdmin=false
             user.isApproved=true
-            val id:String="${name[0]}"+"-"+phNum.subSequence(0,5)
+            val id:String="${name[0]}"+phNum.subSequence(0,5)
             user.userID=id
             user.timseStamp=System.currentTimeMillis()
 

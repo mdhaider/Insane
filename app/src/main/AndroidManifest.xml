@@ -42,6 +42,7 @@
         </activity>
 
         <activity android:name="dev.nehal.insane.navigation.CommentActivity"/>
+        <activity android:name=".navigation.TabActivity"/>
 
         <!--안드로이드 8.0이상 푸시 처리 추가 코드-->
         <meta-data

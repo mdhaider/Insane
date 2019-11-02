@@ -193,7 +193,6 @@ class UserFragment : Fragment() {
 
     fun requestFollow() {
 
-
         var tsDocFollowing = firestore!!.collection("users").document(currentUserUid!!)
         firestore?.runTransaction { transaction ->
 

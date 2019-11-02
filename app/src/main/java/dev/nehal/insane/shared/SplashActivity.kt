@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import dev.nehal.insane.R
 import dev.nehal.insane.modules.MainActivity
 import dev.nehal.insane.modules.login.LoginActivity
 
@@ -12,8 +13,9 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
 
-        if(auth.currentUser==null){
+        if (auth.currentUser == null) {
 
             intent = Intent(
                 this,
@@ -31,4 +33,5 @@ class SplashActivity : AppCompatActivity() {
             finish()
         }
     }
+
 }
