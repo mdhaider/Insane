@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -37,7 +38,11 @@ class DetailViewFragment : Fragment() {
     var okHttpClient: OkHttpClient? = null
     var fcmPush: FcmPush? = null
     var mainView: View? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         user = FirebaseAuth.getInstance().currentUser
         firestore = FirebaseFirestore.getInstance()
@@ -78,33 +83,35 @@ class DetailViewFragment : Fragment() {
                 if (task.isSuccessful) {
                     var userDTO = task.result!!.toObject(FollowDTO::class.java)
                     if (userDTO?.followings != null) {
-                        getCotents(userDTO?.followings)
+                        getCotents(userDTO?.followings, uid)
                     }
                 }
             }
         }
 
-        fun getCotents(followers: MutableMap<String, Boolean>?) {
-            imagesSnapshot = firestore?.collection("images")?.orderBy("timestamp")?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                contentDTOs.clear()
-                contentUidList.clear()
-                if (querySnapshot == null) return@addSnapshotListener
-                for (snapshot in querySnapshot!!.documents) {
-                    var item = snapshot.toObject(ContentDTO::class.java)!!
-                    println(item.uid)
-                    if (followers?.keys?.contains(item.uid)!!) {
-                        contentDTOs.add(item)
-                        contentUidList.add(snapshot.id)
+        fun getCotents(followers: MutableMap<String, Boolean>?, uid:String) {
+            imagesSnapshot = firestore?.collection("images")?.orderBy("timestamp")
+                ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    contentDTOs.clear()
+                    contentUidList.clear()
+                    if (querySnapshot == null) return@addSnapshotListener
+                    for (snapshot in querySnapshot.documents) {
+                        var item = snapshot.toObject(ContentDTO::class.java)!!
+                        println(item.uid)
+                        if (followers?.keys?.contains(item.uid)!! || (uid==item.uid)) {
+                            contentDTOs.add(item)
+                            contentUidList.add(snapshot.id)
+                        }
                     }
+                    notifyDataSetChanged()
                 }
-                notifyDataSetChanged()
-            }
 
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_detail, parent, false)
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_detail, parent, false)
             return CustomViewHolder(view)
 
         }
@@ -115,16 +122,19 @@ class DetailViewFragment : Fragment() {
 
             // Profile Image 가져오기
             firestore?.collection("profileImages")?.document(contentDTOs[position].uid!!)
-                    ?.get()?.addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
+                ?.get()?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
 
-                            val url = task.result!!["image"]
-                            Glide.with(holder.itemView.context)
-                                    .load(url)
-                                    .apply(RequestOptions().circleCrop()).into(viewHolder.detailviewitem_profile_image)
+                        val url = task.result!!["image"]
+                        Glide.with(holder.itemView.context)
+                            .load(url)
+                            .error(R.drawable.ic_account)
+                            .placeholder(R.drawable.ic_account)
+                            .apply(RequestOptions().circleCrop())
+                            .into(viewHolder.detailviewitem_profile_image)
 
-                        }
                     }
+                }
 
             //UserFragment로 이동
             viewHolder.detailviewitem_profile_image.setOnClickListener {
@@ -134,20 +144,22 @@ class DetailViewFragment : Fragment() {
 
                 bundle.putString("destinationUid", contentDTOs[position].uid)
                 bundle.putString("userId", contentDTOs[position].userId)
+                bundle.putString("userName", contentDTOs[position].userName)
 
                 fragment.arguments = bundle
                 activity!!.supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_content, fragment)
-                        .commit()
+                    .replace(R.id.main_content, fragment)
+                    .commit()
             }
 
             // 유저 아이디
-            viewHolder.detailviewitem_profile_textview.text = contentDTOs[position].userId
+            viewHolder.detailviewitem_profile_textview.text = contentDTOs[position].userName
 
             // 가운데 이미지
             Glide.with(holder.itemView.context)
-                    .load(contentDTOs[position].imageUrl)
-                    .into(viewHolder.detailviewitem_imageview_content)
+                .load(contentDTOs[position].imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .into(viewHolder.detailviewitem_imageview_content)
 
             // 설명 텍스트
             viewHolder.detailviewitem_explain_textview.text = contentDTOs[position].explain
@@ -156,15 +168,15 @@ class DetailViewFragment : Fragment() {
 
             //좋아요 버튼 설정
             if (contentDTOs[position].favorites.containsKey(FirebaseAuth.getInstance().currentUser!!.uid)) {
-
-                viewHolder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite)
+                viewHolder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_black_24dp)
 
             } else {
 
-                viewHolder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_border)
+                viewHolder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_border_black_24dp)
             }
             //Like counter settings
-            viewHolder.detailviewitem_favoritecounter_textview.text = "good " + contentDTOs[position].favoriteCount + "dog"
+            viewHolder.detailviewitem_favoritecounter_textview.text =
+                contentDTOs[position].favoriteCount.toString()+" "+"Likes"
 
             viewHolder.detailviewitem_comment_imageview.setOnClickListener {
                 val intent = Intent(activity, CommentActivity::class.java)
@@ -182,11 +194,12 @@ class DetailViewFragment : Fragment() {
             alarmDTO.userId = user?.phoneNumber
             alarmDTO.uid = user?.uid
             alarmDTO.kind = 0
+            alarmDTO.username = user?.displayName
             alarmDTO.timestamp = System.currentTimeMillis()
 
             FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
-            var message = user?.phoneNumber + getString(R.string.alarm_favorite)
-            fcmPush?.sendMessage(destinationUid, "This is a notification message.", message)
+            var message = user?.displayName+" "+ getString(R.string.alarm_favorite)
+            fcmPush?.sendMessage(destinationUid, "You have received a message", message)
         }
 
         override fun getItemCount(): Int {

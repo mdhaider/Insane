@@ -54,6 +54,7 @@
 
     <!-- Account -->
     <string name="post">post</string>
+    <string name="add_a_comment">Add a comment</string>
     <string name="following">Following</string>
     <string name="follower">Followers</string>
     <string name="follow">follow</string>
@@ -62,10 +63,10 @@
     <string name="count_0">0</string>
 
     <!-- Alarm -->
-    <string name="alarm_favorite"> Liked this</string>
+    <string name="alarm_favorite">Liked your post</string>
     <string name="alarm_who">By &#160;</string>
-    <string name="alarm_comment">&#160; I left a message.</string>
-    <string name="alarm_follow"> Has started following your account.</string>
+    <string name="alarm_comment">Commented:</string>
+    <string name="alarm_follow">Started following you</string>
 
     <!-- Comment -->
     <string name="send">Send</string>

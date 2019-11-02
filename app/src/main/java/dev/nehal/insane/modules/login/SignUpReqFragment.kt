@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.SignUpReqFragmentBinding
+import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
 
 class SignUpReqFragment : Fragment() {
@@ -61,14 +62,14 @@ class SignUpReqFragment : Fragment() {
             user.mName = name
             user.pin=""
             user.isAdmin=false
-            user.isApproved=false
+            user.isApproved=true
             val id:String="${name[0]}"+"-"+phNum.subSequence(0,5)
             user.userID=id
             user.timseStamp=System.currentTimeMillis()
 
             db.collection("signup").document(phNum).set(user).addOnSuccessListener { documentReference ->
                 Log.d("TAG", "DocumentSnapshot added with ID: $documentReference")
-                goToNext()
+               goToVerifyPhone()
             }.addOnFailureListener { e ->
                 Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
             }
@@ -84,6 +85,21 @@ class SignUpReqFragment : Fragment() {
         }
 
         findNavController().navigate(R.id.action_signupreq_reqstatus, bundle)
+    }
+
+
+    private fun goToVerifyPhone() {
+        val bundle = Bundle().apply {
+            putString(Const.PHONE_NUM, phNum)
+            putString(Const.USER_NAME, binding.mName.text.toString())
+            saveUserName()
+        }
+
+        findNavController().navigate(R.id.action_reqstatus_verifyphone, bundle)
+    }
+
+    private fun saveUserName(){
+       AppPreferences.userName=binding.mName.text.toString()
 
     }
 }

@@ -77,17 +77,17 @@ class AlarmFragment : Fragment() {
 
             when (alarmDTOList[position].kind) {
                 0 -> {
-                    val str_0 = alarmDTOList[position].userId + getString(R.string.alarm_favorite)
+                    val str_0 = alarmDTOList[position].username +" "+getString(R.string.alarm_favorite)
                     commentTextView.text = str_0
                 }
 
                 1 -> {
-                    val str_1 = alarmDTOList[position].userId + getString(R.string.alarm_who) + alarmDTOList[position].message + getString(R.string.alarm_comment)
+                    val str_1 = alarmDTOList[position].username+" "+ getString(R.string.alarm_comment)+" "+alarmDTOList[position].message
                     commentTextView.text = str_1
                 }
 
                 2 -> {
-                    val str_2 = alarmDTOList[position].userId + getString(R.string.alarm_follow)
+                    val str_2 = alarmDTOList[position].username +" "+getString(R.string.alarm_follow)
                     commentTextView.text = str_2
                 }
             }

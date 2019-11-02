@@ -8,4 +8,5 @@ object Const {
     const val PRIVATE_MODE = 0
     const val IS_LOGGED_IN= "loggedIn"
     const val PHONE_NUM="number"
+    const val USER_NAME="user_name"
 }

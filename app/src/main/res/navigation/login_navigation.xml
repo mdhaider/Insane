@@ -77,6 +77,17 @@
             app:popUpTo="@id/enterMobileFragment"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/action_reqstatus_verifyphone"
+            app:destination="@+id/verifyPhoneFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/enterMobileFragment"
+            app:popUpToInclusive="true" />
+
+
     </fragment>
     <fragment
         android:id="@+id/reqStatusFragment"
@@ -85,7 +96,7 @@
         tools:layout="@layout/req_status_fragment" >
 
         <action
-            android:id="@+id/action_reqstatus_verifyphone"
+            android:id="@+id/action_reqstatus_verifyphone1"
             app:destination="@+id/verifyPhoneFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"

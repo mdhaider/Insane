@@ -42,15 +42,16 @@ class CommentActivity : AppCompatActivity() {
 
             comment.userId = FirebaseAuth.getInstance().currentUser!!.phoneNumber
             comment.comment = comment_edit_message.text.toString()
+            comment.username = FirebaseAuth.getInstance().currentUser!!.displayName
             comment.uid = FirebaseAuth.getInstance().currentUser!!.uid
             comment.timestamp = System.currentTimeMillis()
 
             FirebaseFirestore.getInstance()
-                    .collection("images")
-                    .document(contentUid!!)
-                    .collection("comments")
-                    .document()
-                    .set(comment)
+                .collection("images")
+                .document(contentUid!!)
+                .collection("comments")
+                .document()
+                .set(comment)
 
             commentAlarm(destinationUid!!, comment_edit_message.text.toString())
             comment_edit_message.setText("")
@@ -63,7 +64,6 @@ class CommentActivity : AppCompatActivity() {
     }
 
 
-
     override fun onStop() {
         super.onStop()
         commentSnapshot?.remove()
@@ -71,10 +71,10 @@ class CommentActivity : AppCompatActivity() {
 
 
     fun commentAlarm(destinationUid: String, message: String) {
-
         val alarmDTO = AlarmDTO()
         alarmDTO.destinationUid = destinationUid
         alarmDTO.userId = user?.phoneNumber
+        alarmDTO.username=user?.displayName
         alarmDTO.uid = user?.uid
         alarmDTO.kind = 1
         alarmDTO.message = message
@@ -82,7 +82,8 @@ class CommentActivity : AppCompatActivity() {
 
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
-        var message = user?.phoneNumber + getString(R.string.alarm_who) + message + getString(R.string.alarm_comment)
+        var message =
+            user?.displayName + getString(R.string.alarm_comment)+" "+message
         fcmPush?.sendMessage(destinationUid, "This is a notification message.", message)
     }
 
@@ -93,25 +94,25 @@ class CommentActivity : AppCompatActivity() {
         init {
             comments = ArrayList()
             commentSnapshot = FirebaseFirestore
-                    .getInstance()
-                    .collection("images")
-                    .document(contentUid!!)
-                    .collection("comments")
-                    .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                        comments.clear()
-                        if (querySnapshot == null) return@addSnapshotListener
-                        for (snapshot in querySnapshot?.documents!!) {
-                            comments.add(snapshot.toObject(ContentDTO.Comment::class.java)!!)
-                        }
-                        notifyDataSetChanged()
-
+                .getInstance()
+                .collection("images")
+                .document(contentUid!!)
+                .collection("comments")
+                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    comments.clear()
+                    if (querySnapshot == null) return@addSnapshotListener
+                    for (snapshot in querySnapshot?.documents!!) {
+                        comments.add(snapshot.toObject(ContentDTO.Comment::class.java)!!)
                     }
+                    notifyDataSetChanged()
+
+                }
 
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_comment, parent, false)
+                .inflate(R.layout.item_comment, parent, false)
             return CustomViewHolder(view)
         }
 
@@ -121,19 +122,22 @@ class CommentActivity : AppCompatActivity() {
 
             // Profile Image
             FirebaseFirestore.getInstance()
-                    .collection("profileImages")
-                    .document(comments[position].uid!!)
-                    .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
-                        if (documentSnapshot?.data != null) {
+                .collection("profileImages")
+                .document(comments[position].uid!!)
+                .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                    if (documentSnapshot?.data != null) {
 
-                            val url = documentSnapshot?.data!!["image"]
-                            Glide.with(holder.itemView.context)
-                                    .load(url)
-                                    .apply(RequestOptions().circleCrop()).into(view.commentviewitem_imageview_profile)
-                        }
+                        val url = documentSnapshot?.data!!["image"]
+                        Glide.with(holder.itemView.context)
+                            .load(url)
+                            .error(R.drawable.ic_account)
+                            .placeholder(R.drawable.ic_account)
+                            .apply(RequestOptions().circleCrop())
+                            .into(view.commentviewitem_imageview_profile)
                     }
+                }
 
-            view.commentviewitem_textview_profile.text = comments[position].userId
+            view.commentviewitem_textview_profile.text = comments[position].username+""
             view.commentviewitem_textview_comment.text = comments[position].comment
         }
 

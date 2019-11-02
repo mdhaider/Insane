@@ -83,6 +83,7 @@ class GridFragment : Fragment() {
 
                 bundle.putString("destinationUid", contentDTOs[position].uid)
                 bundle.putString("userId", contentDTOs[position].userId)
+                bundle.putString("userName", contentDTOs[position].userName)
 
                 fragment.arguments = bundle
                 activity!!.supportFragmentManager.beginTransaction()

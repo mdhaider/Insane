@@ -13,7 +13,7 @@ object AppPreferences {
     private val USER_ID = Pair("user_id", "")
     private val IS_ADMIN=Pair("is_admin",false)
     private val IS_WAITING=Pair("is_waiting", false)
-
+    private val NAME_USER=Pair("name", "")
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -54,5 +54,14 @@ object AppPreferences {
         // custom setter to save a preference back to preferences file
         set(value) = preferences.edit {
             it.putBoolean(IS_WAITING.first, value)
+        }
+
+    var userName: String?
+        // custom getter to get a preference of a desired type, with a predefined default value
+        get() = preferences.getString(NAME_USER.first, NAME_USER.second)
+
+        // custom setter to save a preference back to preferences file
+        set(value) = preferences.edit {
+            it.putString(NAME_USER.first, value)
         }
 }

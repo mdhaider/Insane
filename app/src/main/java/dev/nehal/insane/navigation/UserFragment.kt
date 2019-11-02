@@ -86,7 +86,7 @@ class UserFragment : Fragment() {
                 mainActivity.toolbar_btn_back.visibility = View.VISIBLE
                 mainActivity.toolbar_username.visibility = View.VISIBLE
 
-                mainActivity.toolbar_username.text = arguments!!.getString("userId")
+                mainActivity.toolbar_username.text = arguments!!.getString("userName")
 
                 mainActivity.toolbar_btn_back.setOnClickListener { mainActivity.bottom_navigation.selectedItemId = R.id.action_home }
 
@@ -242,12 +242,13 @@ class UserFragment : Fragment() {
         alarmDTO.destinationUid = destinationUid
         alarmDTO.userId = auth?.currentUser!!.phoneNumber
         alarmDTO.uid = auth?.currentUser!!.uid
+        alarmDTO.username = auth?.currentUser!!.displayName
         alarmDTO.kind = 2
         alarmDTO.timestamp = System.currentTimeMillis()
 
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
-        var message = auth?.currentUser!!.phoneNumber + getString(R.string.alarm_follow)
-        fcmPush?.sendMessage(destinationUid, "알림 메세지 입니다.", message)
+        var message = auth?.currentUser!!.displayName+" "+ getString(R.string.alarm_follow)
+        fcmPush?.sendMessage(destinationUid, "You have received a message", message)
     }
 
 

@@ -11,13 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.*
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.VerifyPhoneFragmentBinding
 import dev.nehal.insane.modules.MainActivity
+import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.onChange
 import java.util.concurrent.TimeUnit
@@ -29,6 +27,7 @@ class VerifyPhoneFragment : Fragment() {
     private var mVerificationId: String? = null
     private var mResendToken: PhoneAuthProvider.ForceResendingToken? = null
     private lateinit var smsOTP: String
+    private lateinit var mName:String
 
     companion object {
         const val TAG = "VerifyPhoneFragment"
@@ -40,6 +39,7 @@ class VerifyPhoneFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.apply {
             phNum = "+91" + getString(Const.PHONE_NUM, "")
+            mName=getString(Const.USER_NAME, "")
 
         }
     }
@@ -150,7 +150,7 @@ class VerifyPhoneFragment : Fragment() {
                     if (task.isSuccessful) {
                         val user = task.result?.user
                         Log.e("Sign in with phone auth", "Success ${user.toString()}")
-                        showHomeActivity()
+                        updateProf()
                     } else {
 
                         Log.d(TAG, "Your Phone Number Verification is failed.Retry again!")
@@ -164,5 +164,22 @@ class VerifyPhoneFragment : Fragment() {
         startActivity(intent)
         activity!!.finish()
 
+    }
+
+    private fun updateProf(){
+        val userName= AppPreferences.userName
+        val user = FirebaseAuth.getInstance().currentUser
+
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(userName)
+            .build()
+
+        user?.updateProfile(profileUpdates)
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("SignUpFragment", "User profile updated.")
+                    showHomeActivity()
+                }
+            }
     }
 }
