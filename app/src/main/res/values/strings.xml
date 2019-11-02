@@ -8,7 +8,7 @@
     <string name="title_other">Other</string>
     <string name="title_notifications">Notifications</string>
     <string name="enter_mobile_number">Enter 10-digit mobile number</string>
-    <string name="enter_name">Name</string>
+    <string name="enter_name">Enter your name</string>
     <string name="request">Continue</string>
     <string name="create_pin_text">Looks Like you are new user, please enter 4-digit PIN</string>
     <string name="pin">Create PIN</string>
