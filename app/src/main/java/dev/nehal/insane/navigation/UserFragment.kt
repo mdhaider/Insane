@@ -54,7 +54,11 @@ class UserFragment : Fragment() {
     var recyclerListenerRegistration: ListenerRegistration? = null
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         fragmentView = inflater.inflate(R.layout.fragment_user, container, false)
 
@@ -88,7 +92,9 @@ class UserFragment : Fragment() {
 
                 mainActivity.toolbar_username.text = arguments!!.getString("userName")
 
-                mainActivity.toolbar_btn_back.setOnClickListener { mainActivity.bottom_navigation.selectedItemId = R.id.action_home }
+                mainActivity.toolbar_btn_back.setOnClickListener {
+                    mainActivity.bottom_navigation.selectedItemId = R.id.action_home
+                }
 
                 fragmentView?.account_btn_follow_signout?.setOnClickListener {
                     requestFollow()
@@ -100,7 +106,11 @@ class UserFragment : Fragment() {
 
         // Profile Image Click Listener
         fragmentView?.account_iv_profile?.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    activity!!,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
 
                 //앨범 오픈
                 var photoPickerIntent = Intent(Intent.ACTION_PICK)
@@ -123,50 +133,60 @@ class UserFragment : Fragment() {
 
     fun getProfileImage() {
         imageprofileListenerRegistration = firestore?.collection("profileImages")?.document(uid!!)
-                ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
-                    if (documentSnapshot?.data != null) {
-                        val url = documentSnapshot?.data!!["image"]
-                        Glide.with(activity!!)
-                                .load(url)
-                                .apply(RequestOptions().circleCrop()).into(fragmentView!!.account_iv_profile)
-                    }
+                if (documentSnapshot?.data != null) {
+                    val url = documentSnapshot?.data!!["image"]
+                    Glide.with(activity!!)
+                        .load(url)
+                        .error(R.drawable.ic_account)
+                        .placeholder(R.drawable.ic_account)
+                        .apply(RequestOptions().circleCrop())
+                        .into(fragmentView!!.account_iv_profile)
                 }
+            }
 
     }
 
 
     fun getFollowing() {
-        followingListenerRegistration = firestore?.collection("users")?.document(uid!!)?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
-            val followDTO = documentSnapshot?.toObject(FollowDTO::class.java)
-            if (followDTO == null) return@addSnapshotListener
-            fragmentView!!.account_tv_following_count.text = followDTO?.followingCount.toString()
-        }
+        followingListenerRegistration = firestore?.collection("users")?.document(uid!!)
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                val followDTO = documentSnapshot?.toObject(FollowDTO::class.java)
+                if (followDTO == null) return@addSnapshotListener
+                fragmentView!!.account_tv_following_count.text =
+                    followDTO?.followingCount.toString()
+            }
     }
 
 
     fun getFollower() {
 
-        followListenerRegistration = firestore?.collection("users")?.document(uid!!)?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
-            val followDTO = documentSnapshot?.toObject(FollowDTO::class.java)
-            if (followDTO == null) return@addSnapshotListener
-            fragmentView?.account_tv_follower_count?.text = followDTO?.followerCount.toString()
-            if (followDTO?.followers?.containsKey(currentUserUid)!!) {
+        followListenerRegistration = firestore?.collection("users")?.document(uid!!)
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                val followDTO = documentSnapshot?.toObject(FollowDTO::class.java)
+                if (followDTO == null) return@addSnapshotListener
+                fragmentView?.account_tv_follower_count?.text = followDTO?.followerCount.toString()
+                if (followDTO?.followers?.containsKey(currentUserUid)!!) {
 
-                fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_cancel)
-                fragmentView?.account_btn_follow_signout
+                    fragmentView?.account_btn_follow_signout?.text =
+                        getString(R.string.follow_cancel)
+                    fragmentView?.account_btn_follow_signout
                         ?.background
-                        ?.setColorFilter(ContextCompat.getColor(activity!!, R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
-            } else {
+                        ?.setColorFilter(
+                            ContextCompat.getColor(activity!!, R.color.colorLightGray),
+                            PorterDuff.Mode.MULTIPLY
+                        )
+                } else {
 
-                if (uid != currentUserUid) {
+                    if (uid != currentUserUid) {
 
-                    fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
-                    fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
+                        fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
+                        fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
+                    }
                 }
-            }
 
-        }
+            }
 
     }
 
@@ -247,7 +267,7 @@ class UserFragment : Fragment() {
         alarmDTO.timestamp = System.currentTimeMillis()
 
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
-        var message = auth?.currentUser!!.displayName+" "+ getString(R.string.alarm_follow)
+        var message = auth?.currentUser!!.displayName + " " + getString(R.string.alarm_follow)
         fcmPush?.sendMessage(destinationUid, "You have received a message", message)
     }
 
@@ -261,17 +281,18 @@ class UserFragment : Fragment() {
             contentDTOs = ArrayList()
 
             // 나의 사진만 찾기
-            recyclerListenerRegistration = firestore?.collection("images")?.whereEqualTo("uid", uid)?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                contentDTOs.clear()
-                if (querySnapshot == null) return@addSnapshotListener
-                for (snapshot in querySnapshot?.documents!!) {
-                    contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+            recyclerListenerRegistration = firestore?.collection("images")?.whereEqualTo("uid", uid)
+                ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    contentDTOs.clear()
+                    if (querySnapshot == null) return@addSnapshotListener
+                    for (snapshot in querySnapshot?.documents!!) {
+                        contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                    }
+
+                    account_tv_post_count.text = contentDTOs.size.toString()
+                    notifyDataSetChanged()
+
                 }
-
-                account_tv_post_count.text = contentDTOs.size.toString()
-                notifyDataSetChanged()
-
-            }
 
         }
 
@@ -288,9 +309,9 @@ class UserFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             var imageview = (holder as CustomViewHolder).imageView
             Glide.with(holder.itemView.context)
-                    .load(contentDTOs[position].imageUrl)
-                    .apply(RequestOptions().centerCrop())
-                    .into(imageview)
+                .load(contentDTOs[position].imageUrl)
+                .apply(RequestOptions().centerCrop())
+                .into(imageview)
         }
 
         override fun getItemCount(): Int {

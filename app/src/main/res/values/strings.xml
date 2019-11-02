@@ -26,11 +26,6 @@
     <string name="deactivate">Deactivate</string>
     <string name="activate">Activate</string>
 
-    <string name="facebook_app_id">873009302900995</string>
-    <string name="fb_login_protocol_scheme">fb873009302900995</string>
-    <string name="com.twitter.sdk.android.CONSUMER_KEY">0lY6xdMc8l3Bgkdep8DvfPxe4</string>
-    <string name="com.twitter.sdk.android.CONSUMER_SECRET">2Uov8wp8sQWccy1oRRes7Q3VgWfsTE1tokYHblse9TTaF0BW1b</string>
-
     <!-- Sign In -->
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -67,6 +62,11 @@
     <string name="alarm_who">By &#160;</string>
     <string name="alarm_comment">Commented:</string>
     <string name="alarm_follow">Started following you</string>
+
+    <string name="action_camera">Camera</string>
+    <string name="action_gallery">Gallery</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_print">Print</string>
 
     <!-- Comment -->
     <string name="send">Send</string>
