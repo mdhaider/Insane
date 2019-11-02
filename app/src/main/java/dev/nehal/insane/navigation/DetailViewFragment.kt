@@ -158,7 +158,7 @@ class DetailViewFragment : Fragment() {
             // 가운데 이미지
             Glide.with(holder.itemView.context)
                 .load(contentDTOs[position].imageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(viewHolder.detailviewitem_imageview_content)
 
             // 설명 텍스트

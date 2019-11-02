@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -22,8 +23,12 @@ import kotlinx.android.synthetic.main.fragment_grid.view.*
 class GridFragment : Fragment() {
 
     var mainView: View? = null
-    var imagesSnapshot  : ListenerRegistration? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    var imagesSnapshot: ListenerRegistration? = null
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         mainView = inflater.inflate(R.layout.fragment_grid, container, false)
 
         return mainView
@@ -44,21 +49,22 @@ class GridFragment : Fragment() {
     inner class GridFragmentRecyclerViewAdatper : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         var contentDTOs: ArrayList<ContentDTO>
-       var contentUID: ArrayList<String>
+        var contentUID: ArrayList<String>
 
         init {
             contentDTOs = ArrayList()
-            contentUID= ArrayList()
+            contentUID = ArrayList()
             imagesSnapshot = FirebaseFirestore
-                    .getInstance().collection("images").orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                        contentDTOs.clear()
-                        if (querySnapshot == null) return@addSnapshotListener
-                        for (snapshot in querySnapshot!!.documents) {
-                            contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
-                            contentUID.add(snapshot.id)
-                        }
-                        notifyDataSetChanged()
+                .getInstance().collection("images").orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    contentDTOs.clear()
+                    if (querySnapshot == null) return@addSnapshotListener
+                    for (snapshot in querySnapshot!!.documents) {
+                        contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                        contentUID.add(snapshot.id)
                     }
+                    notifyDataSetChanged()
+                }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -77,9 +83,10 @@ class GridFragment : Fragment() {
             var imageView = (holder as CustomViewHolder).imageView
 
             Glide.with(holder.itemView.context)
-                    .load(contentDTOs[position].imageUrl)
-                    .apply(RequestOptions().centerCrop())
-                    .into(imageView)
+                .load(contentDTOs[position].imageUrl)
+                .apply(RequestOptions().centerCrop())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView)
 
             imageView.setOnClickListener {
                 val fragment = SingleDetailFragment()
@@ -87,12 +94,12 @@ class GridFragment : Fragment() {
 
                 val obj = contentDTOs[position]
                 bundle.putSerializable("CONTENT_DTO", obj)
-                bundle.putString("CONTENT_UID",contentUID[position])
+                bundle.putString("CONTENT_UID", contentUID[position])
 
                 fragment.arguments = bundle
                 activity!!.supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_content, fragment)
-                        .commit()
+                    .replace(R.id.main_content, fragment)
+                    .commit()
             }
         }
 
