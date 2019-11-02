@@ -73,7 +73,7 @@
 
     <!-- Add Photo -->
     <string name="upload_image">Post a picture</string>
-    <string name="hint_image_content">Contents</string>
+    <string name="hint_image_content">Caption</string>
     <string name="upload_success">Upload successful</string>
     <string name="upload_fail">Upload failed</string>
 

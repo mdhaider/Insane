@@ -9,82 +9,58 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.nguyenhoanglam.imagepicker.model.Config
+import com.nguyenhoanglam.imagepicker.model.Image
+import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import dev.nehal.insane.model.ContentDTO
+import dev.nehal.insane.shared.hideKeyboard
 import kotlinx.android.synthetic.main.activity_add_photo.*
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AddPhotoActivity : AppCompatActivity(), ActionBottomDialogFragment.ItemClickListener {
-
-    val PICK_IMAGE_FROM_ALBUM = 0
-
+class AddPhotoActivity : AppCompatActivity() {
     var photoUri: Uri? = null
-
     var storage: FirebaseStorage? = null
     var firestore: FirebaseFirestore? = null
     private var auth: FirebaseAuth? = null
-    private lateinit var fileUri: Uri
-    private lateinit var photoPickerIntent: Intent
+    private var filePath: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(dev.nehal.insane.R.layout.activity_add_photo)
-
         onSharedIntent()
 
-
-        // Firebase storage
         storage = FirebaseStorage.getInstance()
-        // Firebase Database
         firestore = FirebaseFirestore.getInstance()
-        // Firebase Auth
         auth = FirebaseAuth.getInstance()
 
-
-        addphoto_image.setOnClickListener {
-            /* val photoPickerIntent = Intent(Intent.ACTION_PICK)
-             photoPickerIntent.type = "image/*"
-             startActivityForResult(photoPickerIntent, PICK_IMAGE_FROM_ALBUM)*/
-
-
-             */
-
-            showBottomSheet(addphoto_image)
-        }
-
         addphoto_btn_upload.setOnClickListener {
+            hideKeyboard()
             contentUpload()
         }
 
     }
 
-    fun showBottomSheet(view: View) {
-        val addPhotoBottomDialogFragment = ActionBottomDialogFragment.newInstance()
-        addPhotoBottomDialogFragment.show(
-            supportFragmentManager,
-            ActionBottomDialogFragment.TAG
-        )
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Config.RC_PICK_IMAGES && resultCode == Activity.RESULT_OK && data != null) {
+            var list: ArrayList<Image> = ArrayList<Image>()
+            list = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES)
+            Log.d("TAG", list.toString())
 
-        if (requestCode == PICK_IMAGE_FROM_ALBUM) {
-            //이미지 선택시
-            if (resultCode == Activity.RESULT_OK) {
-                //이미지뷰에 이미지 세팅
-                println(data?.data)
-                photoUri = data?.data
-                addphoto_image.setImageURI(data?.data)
-            } else {
-                finish()
-            }
+            Glide.with(this).load(list[0].path).into(addphoto_image)
+            Log.d("path", list[0].path.toString())
+            rootView.visibility = View.VISIBLE
+
+            photoUri = Uri.fromFile(File(list[0].path))
 
         }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     fun contentUpload() {
@@ -170,15 +146,34 @@ class AddPhotoActivity : AppCompatActivity(), ActionBottomDialogFragment.ItemCli
                 }
             }
 
-        } else if (receivedAction == Intent.ACTION_MAIN) {
-            val photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.type = "image/*"
-            startActivityForResult(photoPickerIntent, PICK_IMAGE_FROM_ALBUM)
+        } else  {
+           startImagePicker()
         }
 
     }
 
-    override fun onItemClick(item: String) {
-        Log.d("item", item)
+    private fun startImagePicker() {
+        ImagePicker.with(this)                         //  Initialize ImagePicker with activity or fragment context
+            .setToolbarColor("#212121")         //  Toolbar color
+            .setStatusBarColor("#000000")       //  StatusBar color (works with SDK >= 21  )
+            .setToolbarTextColor("#FFFFFF")     //  Toolbar text color (Title and Done button)
+            .setToolbarIconColor("#FFFFFF")     //  Toolbar icon color (Back and Camera button)
+            .setProgressBarColor("#4CAF50")     //  ProgressBar color
+            .setBackgroundColor("#212121")      //  Background color
+            .setCameraOnly(false)               //  Camera mode
+            .setMultipleMode(false)              //  Select multiple images or single image
+            .setFolderMode(true)                //  Folder mode
+            //  If the picker should include Videos or only Image Assets
+            .setShowCamera(true)                //  Show camera button
+            .setFolderTitle("Albums")           //  Folder title (works with FolderMode = true)
+            .setImageTitle("Galleries")         //  Image title (works with FolderMode = false)
+            .setDoneTitle("Done")               //  Done button title
+            .setLimitMessage("You have reached selection limit")    // Selection limit message
+            .setMaxSize(1)
+            .setSavePath("ImagePicker")         //  Image capture folder name
+            .setAlwaysShowDoneButton(true)      //  Set always show done button in multiple mode
+            .setRequestCode(100)                //  Set request code, default Config.RC_PICK_IMAGES
+            .setKeepScreenOn(true)              //  Keep screen on when selecting images
+            .start()
     }
 }
