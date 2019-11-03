@@ -131,11 +131,11 @@ class AllPostFragment : Fragment() {
                 holder.user.text = note.user
                 holder.time.text = getTimeStamp(note.timestamp!!)
                 holder.post.text = note.caption
-                Glide.with(activity!!).load(note.imageUri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                Glide.with(activity!!).load(note.imageUri).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .into(holder.img)
                 Glide.with(activity!!).load(note.imageUri)
                     .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imgProf)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(holder.imgProf)
 
                 holder.imgFav.setOnClickListener {
 

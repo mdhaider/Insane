@@ -188,10 +188,10 @@ class VerifyPhoneFragment : Fragment() {
     private fun updateUsers(uid: String) {
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
         try {
-            val user = User(phNum)
+            val user = User(phNum.takeLast(10))
             user.UID = uid
 
-            db.collection("signup").document(phNum).set(user)
+            db.collection("signup").document(phNum).update("uid", uid)
                 .addOnSuccessListener { documentReference ->
                     Log.d("TAG", "DocumentSnapshot added with UID: $documentReference")
                 }.addOnFailureListener { e ->

@@ -79,7 +79,7 @@ class SingleDetailFragment : Fragment() {
         // 가운데 이미지
         Glide.with(detailviewitem_imageview_content.context)
             .load(item.imageUrl)
-            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()
             .into(detailviewitem_imageview_content)
 
         detailviewitem_explain_textview.text = item.explain
@@ -97,7 +97,7 @@ class SingleDetailFragment : Fragment() {
 
         detailviewitem_comment_imageview.setOnClickListener {
             val intent = Intent(activity, CommentActivity::class.java)
-            intent.putExtra("contentUid",contentUid )
+            intent.putExtra("contentUid", contentUid)
             intent.putExtra("destinationUid", item.uid)
             startActivity(intent)
         }
@@ -146,4 +146,4 @@ class SingleDetailFragment : Fragment() {
         }
     }
 
-    }
+}

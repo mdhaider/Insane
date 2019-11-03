@@ -19,18 +19,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".shared.SplashActivity"
-            android:theme="@style/SplashTheme"/>
+        <activity
+            android:name=".shared.SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".modules.MainActivity" />
 
         <activity
             android:name=".modules.MainActivityDelete"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".modules.login.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <activity android:name="dev.nehal.insane.navigation.AddPhotoActivity">
@@ -41,8 +44,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="dev.nehal.insane.navigation.CommentActivity"/>
-        <activity android:name=".navigation.TabActivity"/>
+        <activity android:name="dev.nehal.insane.navigation.CommentActivity" />
+        <activity android:name=".navigation.TabActivity" />
 
         <!--안드로이드 8.0이상 푸시 처리 추가 코드-->
         <meta-data

@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import dev.nehal.insane.R
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
@@ -97,7 +98,7 @@ class CommentActivity : AppCompatActivity() {
                 .getInstance()
                 .collection("images")
                 .document(contentUid!!)
-                .collection("comments")
+                .collection("comments").orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                     comments.clear()
                     if (querySnapshot == null) return@addSnapshotListener

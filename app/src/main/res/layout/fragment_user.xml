@@ -19,7 +19,7 @@
             android:layout_width="70dp"
             android:layout_height="700dp"
             android:contentDescription="@string/profile"
-            tools:src="@drawable/ic_account"
+            android:src="@drawable/ic_account"
             android:layout_alignParentLeft="true" />
         <Button
             android:id="@+id/account_btn_follow_signout"

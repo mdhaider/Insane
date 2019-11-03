@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
+        android:padding="8dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -19,25 +20,26 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="35dp"
-            android:layout_margin="7.5dp"
             android:src="@drawable/ic_account" />
 
         <TextView
             android:id="@+id/user_textview_profile"
             android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="4"
             android:layout_height="wrap_content"
             android:layout_margin="7.5dp"
             android:textStyle="bold"
-            tools:text="유저 아이디" />
+           android:textAllCaps="true"
+            tools:text="Nehal" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/user_textview_flllow"
             android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="4"
             android:textColor="@color/colorAccent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:visibility="gone"
             android:text="@string/follow_bold"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

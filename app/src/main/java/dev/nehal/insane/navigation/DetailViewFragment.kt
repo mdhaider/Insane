@@ -20,7 +20,6 @@ import com.google.firebase.firestore.Query
 import dev.nehal.insane.R
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
-import dev.nehal.insane.model.FollowDTO
 import dev.nehal.insane.modules.MainActivity
 import dev.nehal.insane.util.FcmPush
 import kotlinx.android.synthetic.main.activity_main.*
@@ -79,32 +78,25 @@ class DetailViewFragment : Fragment() {
             contentDTOs = ArrayList()
             contentUidList = ArrayList()
             var uid = FirebaseAuth.getInstance().currentUser?.uid
-            firestore?.collection("users")?.document(uid!!)?.get()?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    var userDTO = task.result!!.toObject(FollowDTO::class.java)
-                    if (userDTO?.followings != null) {
-                        getCotents(userDTO?.followings, uid)
-                    }
-                }
-            }
+            getCotents()
         }
 
-        fun getCotents(followers: MutableMap<String, Boolean>?, uid:String) {
-            imagesSnapshot = firestore?.collection("images")?.orderBy("timestamp", Query.Direction.DESCENDING)
-                ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                    contentDTOs.clear()
-                    contentUidList.clear()
-                    if (querySnapshot == null) return@addSnapshotListener
-                    for (snapshot in querySnapshot.documents) {
-                        var item = snapshot.toObject(ContentDTO::class.java)!!
-                        println(item.uid)
-                        if (followers?.keys?.contains(item.uid)!! || (uid==item.uid)) {
+        fun getCotents() {
+            imagesSnapshot =
+                firestore?.collection("images")?.orderBy("timestamp", Query.Direction.DESCENDING)
+                    ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                        contentDTOs.clear()
+                        contentUidList.clear()
+                        if (querySnapshot == null) return@addSnapshotListener
+                        for (snapshot in querySnapshot.documents) {
+                            var item = snapshot.toObject(ContentDTO::class.java)!!
+                            println(item.uid)
                             contentDTOs.add(item)
                             contentUidList.add(snapshot.id)
+
                         }
+                        notifyDataSetChanged()
                     }
-                    notifyDataSetChanged()
-                }
 
         }
 
@@ -158,7 +150,7 @@ class DetailViewFragment : Fragment() {
             // 가운데 이미지
             Glide.with(holder.itemView.context)
                 .load(contentDTOs[position].imageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).fitCenter()
                 .into(viewHolder.detailviewitem_imageview_content)
 
             // 설명 텍스트
@@ -176,7 +168,7 @@ class DetailViewFragment : Fragment() {
             }
             //Like counter settings
             viewHolder.detailviewitem_favoritecounter_textview.text =
-                contentDTOs[position].favoriteCount.toString()+" "+"Likes"
+                contentDTOs[position].favoriteCount.toString() + " " + "Likes"
 
             viewHolder.detailviewitem_comment_imageview.setOnClickListener {
                 val intent = Intent(activity, CommentActivity::class.java)
@@ -198,7 +190,7 @@ class DetailViewFragment : Fragment() {
             alarmDTO.timestamp = System.currentTimeMillis()
 
             FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
-            var message = user?.displayName+" "+ getString(R.string.alarm_favorite)
+            var message = user?.displayName + " " + getString(R.string.alarm_favorite)
             fcmPush?.sendMessage(destinationUid, "You have received a message", message)
         }
 

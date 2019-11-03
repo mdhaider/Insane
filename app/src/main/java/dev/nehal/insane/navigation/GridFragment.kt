@@ -85,7 +85,7 @@ class GridFragment : Fragment() {
             Glide.with(holder.itemView.context)
                 .load(contentDTOs[position].imageUrl)
                 .apply(RequestOptions().centerCrop())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(imageView)
 
             imageView.setOnClickListener {
@@ -98,8 +98,8 @@ class GridFragment : Fragment() {
 
                 fragment.arguments = bundle
                 activity!!.supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_content, fragment)
-                    .commit()
+                    .replace(R.id.main_content, fragment).commitAllowingStateLoss()
+
             }
         }
 

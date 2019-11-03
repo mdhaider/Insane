@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
@@ -28,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     val PICK_PROFILE_FROM_ALBUM = 10
+    val APP_UPDATE_REQ = 101
     private lateinit var phone: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +52,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         //푸시토큰 서버 등록
         registerPushToken()
         getUserDetails()
+        checkUpdate()
     }
 
     fun registerPushToken() {
@@ -79,7 +84,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 val gridFragment = GridFragment()
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.main_content, gridFragment)
+                    .replace(R.id.main_content, gridFragment).addToBackStack("back")
                     .commit()
                 return true
             }
@@ -109,7 +114,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 val bundle = Bundle()
                 bundle.putString("destinationUid", uid)
                 userFragment.arguments = bundle
-                supportFragmentManager.beginTransaction()
+                supportFragmentManager.beginTransaction().addToBackStack("use")
                     .replace(R.id.main_content, userFragment)
                     .commit()
                 return true
@@ -149,24 +154,32 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                             setProfileImage(url)
                         }
                 }
+        } else if (requestCode == APP_UPDATE_REQ) {
+            if (resultCode != RESULT_OK) {
+                Log.d("TAG", "Update flow failed! Result code: $resultCode")
+                // If the update is cancelled or fails,
+                // you can request to start the update again.
+            }
         }
 
     }
 
-    private fun setProfileImage(url:String){
-            val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-            try {
+    private fun setProfileImage(url: String) {
+        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+        try {
 
-                db.collection("signup").document(FirebaseAuth.getInstance().currentUser!!.phoneNumber!!.takeLast(10)).update("imageuri",url)
-                    .addOnSuccessListener { documentReference ->
-                        Log.d("TAG", "DocumentSnapshot added with UID: $documentReference")
-                    }.addOnFailureListener { e ->
-                        Log.d(VerifyPhoneFragment.TAG, "UID failed")
-                    }
-            } catch (e: Exception) {
-                Log.d(VerifyPhoneFragment.TAG, "UID failed")
-            }
+            db.collection("signup")
+                .document(FirebaseAuth.getInstance().currentUser!!.phoneNumber!!.takeLast(10))
+                .update("imageuri", url)
+                .addOnSuccessListener { documentReference ->
+                    Log.d("TAG", "DocumentSnapshot added with UID: $documentReference")
+                }.addOnFailureListener { e ->
+                    Log.d(VerifyPhoneFragment.TAG, "UID failed")
+                }
+        } catch (e: Exception) {
+            Log.d(VerifyPhoneFragment.TAG, "UID failed")
         }
+    }
 
     private fun getProfileDetails() {
 
@@ -195,15 +208,40 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             val name = user.displayName
             val uid = user.uid
 
-            Log.d("details", name+uid)
+            Log.d("details", name + uid)
         }
     }
 
     override fun onBackPressed() {
-        val fragment =
-            this.supportFragmentManager.findFragmentById(R.id.main_content)
-        (fragment as? IOnBackPressed)?.onBackPressed()?.not()?.let {
-            super.onBackPressed()
+
+        super.onBackPressed()
+
+    }
+
+    private fun checkUpdate() {
+        // Creates instance of the manager.
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+
+// Returns an intent object that you use to check for an update.
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+// Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                // For a flexible update, use AppUpdateType.FLEXIBLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.startUpdateFlowForResult(
+                    // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                    appUpdateInfo,
+                    // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                    AppUpdateType.IMMEDIATE,
+                    // The current activity making the update request.
+                    this,
+                    // Include a request code to later monitor this update request.
+                    APP_UPDATE_REQ
+                )
+            }
         }
     }
 }
