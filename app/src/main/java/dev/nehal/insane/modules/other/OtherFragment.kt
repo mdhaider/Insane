@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import dev.nehal.insane.R
 
 class OtherFragment : Fragment() {
@@ -45,6 +44,6 @@ class OtherFragment : Fragment() {
     }
 
     private fun goToUserList() {
-        findNavController().navigate(R.id.action_other_user, null)
+
     }
 }

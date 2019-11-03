@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="grey_100">#F5F5F5</color>
     <color name="grey_300">#E0E0E0</color>
     <color name="grey_500">#9E9E9E</color>
     <color name="colorPrimary">#00BCD4</color>
@@ -8,23 +7,11 @@
     <color name="colorAccent">#EB467F</color>
     <color name="colorTextPrimary">@android:color/primary_text_light</color>
     <color name="colorTextSecondary">@android:color/tertiary_text_light</color>
-    <color name="colorToolbarReveal">#2E7D32</color>
-    <color name="colorTransparent">#00000000</color>
-    <color name="colorWindowBackground">#E2E2E2</color>
-    <color name="whiteish">#FAFAFA</color>
     <color name="white">#FFF</color>
-    <color name="black">#000</color>
-    <color name="grey">#BBB</color>
-    <color name="blue">#3897F0</color>
-    <color name="red">#D9555A</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorDivision">#e0e0e0</color>
     <color name="colorNavIcon">#1d1d1d</color>
 
-    <color name="colorGoogleSignIn">#d34836</color>
-    <color name="colorGoogleSignInPressed">#b02513</color>
-    <color name="colorEmailSignIn">#009688</color>
-    <color name="colorEmailSignInPressed">#004D40</color>
     <color name="colorLightGray">#f1f1f1</color>
 
 </resources>
