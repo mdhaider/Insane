@@ -71,13 +71,13 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation"
         android:layout_below="@id/toolbar_division" />
-    <!-- 중앙 화면과 Bottom Navigation View 나누는 선-->
+
     <LinearLayout
         android:id="@+id/nav_division"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@id/bottom_navigation"
-        android:background="@color/colorDivision"
+        android:background="@color/grey_300"
         android:orientation="horizontal" />
 
     <!-- Bottom Navigation View -->

@@ -13,6 +13,17 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+            got()
+
+
+    }
+
+    private fun got() {
+
+
+        // name.fadeIn()
+
         if (auth.currentUser == null) {
 
             intent = Intent(
@@ -31,5 +42,4 @@ class SplashActivity : AppCompatActivity() {
             finish()
         }
     }
-
 }

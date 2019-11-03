@@ -21,13 +21,14 @@
             android:layout_alignParentTop="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:contentInsetStart="0dp"
+            android:background="@color/colorPrimaryDark"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabBackground="@color/colorPrimary"
+            app:tabBackground="@color/colorPrimaryDark"
             app:tabGravity="fill"
             app:tabMode="fixed"
             app:tabTextColor="@android:color/white" />

@@ -11,8 +11,8 @@ android {
         applicationId "dev.nehal.insane"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 6
-        versionName "1.6"
+        versionCode 8
+        versionName "1.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -57,22 +57,14 @@ dependencies {
     implementation 'com.github.nguyenhoanglam:ImagePicker:1.3.3'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
-    // firebase auth
     implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.firebaseui:firebase-ui-firestore:6.0.2'
-
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
-
-    //푸시 알람 라이브러리
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    //Okhttp 라이브러리
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    //Gson 라이브러리
     implementation 'com.google.code.gson:gson:2.8.5'
-
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.github.harunkor:AndroidGifViewPlayerKotlin:1.0.0'
     implementation 'com.google.android.play:core:1.6.4'
-
 
 }
