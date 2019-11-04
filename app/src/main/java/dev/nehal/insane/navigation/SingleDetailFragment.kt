@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.single_detail_fragment.*
 import okhttp3.OkHttpClient
 
 
-class SingleDetailFragment : Fragment() {
+class SingleDetailFragment : DialogFragment() {
     var firestore: FirebaseFirestore? = null
     var imagesSnapshot: ListenerRegistration? = null
     var okHttpClient: OkHttpClient? = null
@@ -29,6 +29,12 @@ class SingleDetailFragment : Fragment() {
     var user: FirebaseUser? = null
     private lateinit var newContentDTO: ContentDTO
     private var contentUid: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL,
+            android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

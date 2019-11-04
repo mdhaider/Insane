@@ -89,17 +89,16 @@ class GridFragment : Fragment() {
                 .into(imageView)
 
             imageView.setOnClickListener {
-                val fragment = SingleDetailFragment()
+                val dialogFragment = SingleDetailFragment() //here MyDialog is my custom dialog
+                val fragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
                 val bundle = Bundle()
 
                 val obj = contentDTOs[position]
                 bundle.putSerializable("CONTENT_DTO", obj)
                 bundle.putString("CONTENT_UID", contentUID[position])
 
-                fragment.arguments = bundle
-                activity!!.supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_content, fragment).commitAllowingStateLoss()
-
+                dialogFragment.arguments = bundle
+                dialogFragment.show(fragmentTransaction, "dialog")
             }
         }
 
