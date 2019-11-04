@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import dev.nehal.insane.modules.MainActivity
 import dev.nehal.insane.modules.login.LoginActivity
+import dev.nehal.insane.navigation.HomeTabActivity
 
 class SplashActivity : AppCompatActivity() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -36,7 +36,7 @@ class SplashActivity : AppCompatActivity() {
         } else {
             intent = Intent(
                 this,
-                MainActivity::class.java
+                HomeTabActivity::class.java
             )
             startActivity(intent)
             finish()

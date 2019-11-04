@@ -23,6 +23,7 @@
 
     <!-- Bottom Navigation View -->
     <string name="home">home</string>
+    <string name="people">People</string>
     <string name="search">Search</string>
     <string name="gallery">Gallery</string>
     <string name="favorite">Favorite</string>
@@ -53,11 +54,14 @@
     <string name="hint_image_content">Caption</string>
     <string name="upload_success">Upload successful</string>
     <string name="upload_fail">Upload failed</string>
+    <string name="guest_count">%1$s Guests</string>
+    <string name="sort">Sort</string>
 
     <!-- Toolbar -->
 
     <!-- etc -->
     <item name="visible" type="id" />
     <item name="masked" type="id" />
+
 
 </resources>

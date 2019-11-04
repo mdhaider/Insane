@@ -26,7 +26,6 @@ import dev.nehal.insane.model.FollowDTO
 import dev.nehal.insane.modules.MainActivity
 import dev.nehal.insane.modules.login.LoginActivity
 import dev.nehal.insane.util.FcmPush
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
 import java.util.*
@@ -86,15 +85,6 @@ class UserFragment : Fragment() {
                 fragmentView!!.account_btn_follow_signout.text = getString(R.string.follow)
                 //view.account_btn_follow_signout.setOnClickListener{ requestFollow() }
                 var mainActivity = (activity as MainActivity)
-                mainActivity.toolbar_title_image.visibility = View.GONE
-                mainActivity.toolbar_btn_back.visibility = View.VISIBLE
-                mainActivity.toolbar_username.visibility = View.VISIBLE
-
-                mainActivity.toolbar_username.text = arguments!!.getString("userName")
-
-                mainActivity.toolbar_btn_back.setOnClickListener {
-                    mainActivity.bottom_navigation.selectedItemId = R.id.action_home
-                }
 
                 fragmentView?.account_btn_follow_signout?.setOnClickListener {
                     requestFollow()

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -37,11 +36,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        progress_bar.visibility = View.VISIBLE
+        val id=intent.getIntExtra("id",1)
 
         // Bottom Navigation View
         bottom_navigation.setOnNavigationItemSelectedListener(this)
-        bottom_navigation.selectedItemId = R.id.action_home
+
 
         // 앨범 접근 권한 요청
         ActivityCompat.requestPermissions(
@@ -49,7 +48,14 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
             1
         )
-        //푸시토큰 서버 등록
+
+        when(id){
+            1 ->  bottom_navigation.selectedItemId=R.id.action_search
+            2 ->  bottom_navigation.selectedItemId=R.id.action_add_photo
+            3 ->  bottom_navigation.selectedItemId=R.id.action_favorite_alarm
+            4 ->  bottom_navigation.selectedItemId=R.id.action_account
+        }
+
         registerPushToken()
         getUserDetails()
         checkUpdate()
@@ -63,28 +69,19 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         FirebaseFirestore.getInstance().collection("pushtokens").document(uid!!).set(map)
     }
 
-    fun setToolbarDefault() {
-        toolbar_title_image.visibility = View.VISIBLE
-        toolbar_btn_back.visibility = View.GONE
-        toolbar_username.visibility = View.GONE
-    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        setToolbarDefault()
         when (item.itemId) {
             R.id.action_home -> {
-
-                val detailViewFragment = DetailViewFragment()
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_content, detailViewFragment)
-                    .commit()
+                startActivity(Intent(this, HomeTabActivity::class.java))
+                finish()
                 return true
             }
             R.id.action_search -> {
-                val gridFragment = GridFragment()
+                val peopleFragment = PeopleFragment()
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.main_content, gridFragment).addToBackStack("back")
+                    .replace(R.id.main_content, peopleFragment)
                     .commit()
                 return true
             }
@@ -114,7 +111,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 val bundle = Bundle()
                 bundle.putString("destinationUid", uid)
                 userFragment.arguments = bundle
-                supportFragmentManager.beginTransaction().addToBackStack("use")
+                supportFragmentManager.beginTransaction()
                     .replace(R.id.main_content, userFragment)
                     .commit()
                 return true

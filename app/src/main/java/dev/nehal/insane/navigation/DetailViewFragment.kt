@@ -20,9 +20,7 @@ import com.google.firebase.firestore.Query
 import dev.nehal.insane.R
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
-import dev.nehal.insane.modules.MainActivity
 import dev.nehal.insane.util.FcmPush
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.view.*
 import okhttp3.OkHttpClient
@@ -59,8 +57,7 @@ class DetailViewFragment : Fragment() {
         super.onResume()
         mainView?.detailviewfragment_recyclerview?.layoutManager = LinearLayoutManager(activity)
         mainView?.detailviewfragment_recyclerview?.adapter = DetailRecyclerViewAdapter()
-        var mainActivity = activity as MainActivity
-        mainActivity.progress_bar.visibility = View.INVISIBLE
+        var mainActivity = activity as HomeTabActivity
 
     }
 
