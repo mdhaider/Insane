@@ -33,7 +33,7 @@ class SingleDetailFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL,
-            android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
+            android.R.style.Theme_Material_Light_NoActionBar_Fullscreen)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,7 +88,7 @@ class SingleDetailFragment : DialogFragment() {
             .diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()
             .into(detailviewitem_imageview_content)
 
-        detailviewitem_explain_textview.text = item.explain
+        //detailviewitem_explain_textview.text = item.explain
         // 좋아요 이벤트
         detailviewitem_favorite_imageview.setOnClickListener { favoriteEvent(contentUid.toString()) }
 

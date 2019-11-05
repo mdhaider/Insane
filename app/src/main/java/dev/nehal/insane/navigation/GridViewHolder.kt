@@ -20,7 +20,7 @@ class GridViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mItemImage = itemView.findViewById(R.id.itemImage)
     }
 
-    fun bind(contentDTO: ContentDTO) {
+    fun bind(contentDTO: ContentDTO, itemClickListener:(Int)->Unit) {
 
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16))
@@ -28,7 +28,11 @@ class GridViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         Glide.with(mItemImage!!.context)
             .load(contentDTO.imageUrl)
             .apply(requestOptions)
-            .placeholder(R.drawable.ic_account)
+            .error(R.drawable.ic_broken_image_black_24dp)
+            .placeholder(R.drawable.ic_broken_image_black_24dp)
             .into(mItemImage!!)
+
+        itemView.setOnClickListener { itemClickListener(adapterPosition) }
+
     }
 }

@@ -39,7 +39,12 @@ class GridFragment : Fragment() {
         conDTOList = ArrayList()
         contentUIDList = ArrayList()
 
-        adapter = GridAdapter(conDTOList)
+        val itemOnClick: (Int) -> Unit = { position ->
+            goToDetail(position)
+        }
+
+
+        adapter = GridAdapter(conDTOList, itemClickListener = itemOnClick)
         binding.rvGrid.adapter = adapter
         binding.rvGrid.layoutManager = GridLayoutManager(activity, 3)
 
@@ -63,5 +68,18 @@ class GridFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         imagesSnapshot.remove()
+    }
+
+    private fun goToDetail(position: Int) {
+        val dialogFragment = SingleDetailFragment() //here MyDialog is my custom dialog
+        val fragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
+        val bundle = Bundle()
+
+        val obj = conDTOList[position]
+        bundle.putSerializable("CONTENT_DTO", obj)
+        bundle.putString("CONTENT_UID", contentUIDList[position])
+
+        dialogFragment.arguments = bundle
+        dialogFragment.show(fragmentTransaction, "dialog")
     }
 }

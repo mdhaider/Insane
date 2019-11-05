@@ -1,85 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:paddingBottom="8dp"
-            android:orientation="vertical">
-            <!-- Title Layout -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/topView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/detailviewitem_profile_image"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_margin="7.5dp"
-                    tools:src="@drawable/ic_account" />
+        <ImageView
+            android:id="@+id/detailviewitem_profile_image"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="7.5dp"
+            tools:src="@drawable/ic_account" />
 
-                <TextView
-                    android:id="@+id/detailviewitem_profile_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="User Name" />
-            </LinearLayout>
-            <!-- Content ImageView -->
-            <ImageView
-                android:id="@+id/detailviewitem_imageview_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_search" />
+        <TextView
+            android:id="@+id/detailviewitem_profile_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="User Name" />
+    </LinearLayout>
+    <!-- Content ImageView -->
+    <ImageView
+        android:id="@+id/detailviewitem_imageview_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomView"
+        android:layout_below="@+id/topView"
 
-            <!-- favorite & comment -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_search" />
 
-                <ImageView
-                    android:id="@+id/detailviewitem_favorite_imageview"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+    <!-- favorite & comment -->
+    <LinearLayout
+        android:id="@+id/bottomView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/detailviewitem_favoritecounter_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    tools:text="좋아요 0개" />
+        <ImageView
+            android:id="@+id/detailviewitem_favorite_imageview"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
-                <ImageView
-                    android:id="@+id/detailviewitem_comment_imageview"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_chat_black" />
-            </LinearLayout>
+        <TextView
+            android:id="@+id/detailviewitem_favoritecounter_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            tools:text="좋아요 0개" />
 
-            <TextView
-                android:id="@+id/detailviewitem_explain_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="16dp"
-                tools:text="사진 내용" />
+        <ImageView
+            android:id="@+id/detailviewitem_comment_imageview"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_chat_black" />
+    </LinearLayout>
 
-        </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>
