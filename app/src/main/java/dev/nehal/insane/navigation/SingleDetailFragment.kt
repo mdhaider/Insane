@@ -136,15 +136,11 @@ class SingleDetailFragment : DialogFragment() {
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! - 1
                 contentDTO?.favorites.remove(uid)
                 detailviewitem_favorite_imageview.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_border_black_24dp)
-                detailviewitem_favoritecounter_textview.text =
-                    contentDTO?.favoriteCount.toString() + " " + "Likes"
             } else {
                 // Star the post and add self to stars
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
                 contentDTO?.favorites[uid] = true
                 favoriteAlarm(newContentDTO.uid!!)
-                detailviewitem_favoritecounter_textview.text =
-                    (contentDTO?.favoriteCount).toString() + " " + "Likes"
                 detailviewitem_favorite_imageview.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_black_24dp)
 
             }
