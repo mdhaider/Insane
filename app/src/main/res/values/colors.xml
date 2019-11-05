@@ -12,5 +12,7 @@
     <color name="colorDivision">#e0e0e0</color>
     <color name="colorNavIcon">#1d1d1d</color>
     <color name="colorLightGray">#f1f1f1</color>
+    <color name="common_gray2">#ffdadada</color>
+    <color name="common_primary">#fff76c6f</color>
 
 </resources>

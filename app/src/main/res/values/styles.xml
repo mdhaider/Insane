@@ -12,8 +12,7 @@
         <item name="android:textColorPrimary">@color/colorTextPrimary</item>
         <item name="android:textColorSecondary">@color/colorTextSecondary</item>
         <item name="android:textColorTertiary">@color/colorTextPrimary</item>
-        <item name="android:statusBarColor"
-            tools:ignore="NewApi">@color/colorTextPrimary</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/colorTextPrimary</item>
     </style>
 
     <style name="ButtonStyle" parent="Widget.AppCompat.Button.Colored">
@@ -27,5 +26,14 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">@dimen/normal_padding</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

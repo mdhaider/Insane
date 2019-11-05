@@ -56,12 +56,20 @@
     <string name="upload_fail">Upload failed</string>
     <string name="guest_count">%1$s Guests</string>
     <string name="sort">Sort</string>
+    <string name="guest">Guest</string>
 
     <!-- Toolbar -->
 
     <!-- etc -->
     <item name="visible" type="id" />
     <item name="masked" type="id" />
+    <string name="title_activity_main1">MainActivity1</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_tab1">TabActivity1</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 
 
 </resources>
