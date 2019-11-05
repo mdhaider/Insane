@@ -1,4 +1,4 @@
-package dev.nehal.insane.newd.main.ui.dashboard
+package dev.nehal.insane.newd.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import dev.nehal.insane.R
 import dev.nehal.insane.navigation.AlarmFragment
 import dev.nehal.insane.navigation.DetailViewFragment
 import dev.nehal.insane.navigation.GridFragment
-import dev.nehal.insane.newd.main.ui.dashboard.ui.main.SectionsPagerAdapter
+import dev.nehal.insane.newd.main.SectionsPagerAdapter
 
 class TabActivity1 : Fragment() {
 
@@ -31,7 +31,8 @@ class TabActivity1 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = SectionsPagerAdapter(activity!!, childFragmentManager)
+        val adapter =
+            SectionsPagerAdapter(activity!!, childFragmentManager)
         adapter.addFragment(GridFragment(), "All")
         adapter.addFragment(DetailViewFragment(), "List")
         adapter.addFragment(AlarmFragment(), "Noti")

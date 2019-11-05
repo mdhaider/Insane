@@ -1,4 +1,4 @@
-package dev.nehal.insane.newd.main.ui.dashboard.ui
+package dev.nehal.insane.newd.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

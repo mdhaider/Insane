@@ -1,4 +1,4 @@
-package dev.nehal.insane.newd.main.ui.notifications
+package dev.nehal.insane.newd.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

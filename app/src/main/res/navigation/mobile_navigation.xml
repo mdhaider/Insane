@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="dev.nehal.insane.newd.main.ui.dashboard.TabActivity1"
+        android:name="dev.nehal.insane.newd.main.TabActivity1"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="dev.nehal.insane.newd.main.ui.notifications.NotificationsFragment"
+        android:name="dev.nehal.insane.newd.main.NotificationsFragment"
         android:label=""
         tools:layout="@layout/fragment_notifications" />
 </navigation>

@@ -17,11 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".newd.main.ui.dashboard.TabActivity1"
+            android:name=".newd.main.TabActivity1"
             android:label="@string/title_activity_tab1"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".newd.main.ui.dashboard.ui.MainActivity1"
+            android:name=".newd.main.MainActivity1"
             android:label="@string/title_activity_main1" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
