@@ -18,7 +18,7 @@ class HomeTabActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
         val adapter = HomeViewPagerAdapter(supportFragmentManager)
 
         adapter.addFragment(GridFragment(), "All")
-        adapter.addFragment(DetailViewFragment(), "List")
+        adapter.addFragment(DetailFragment(), "List")
         adapter.addFragment(AlarmFragment(), "Noti")
 
         viewPager.adapter = adapter

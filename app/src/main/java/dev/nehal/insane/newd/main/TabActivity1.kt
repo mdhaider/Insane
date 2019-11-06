@@ -9,9 +9,8 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import dev.nehal.insane.R
 import dev.nehal.insane.navigation.AlarmFragment
-import dev.nehal.insane.navigation.DetailViewFragment
+import dev.nehal.insane.navigation.DetailFragment
 import dev.nehal.insane.navigation.GridFragment
-import dev.nehal.insane.newd.main.SectionsPagerAdapter
 
 class TabActivity1 : Fragment() {
 
@@ -34,7 +33,7 @@ class TabActivity1 : Fragment() {
         val adapter =
             SectionsPagerAdapter(activity!!, childFragmentManager)
         adapter.addFragment(GridFragment(), "All")
-        adapter.addFragment(DetailViewFragment(), "List")
+        adapter.addFragment(DetailFragment(), "List")
         adapter.addFragment(AlarmFragment(), "Noti")
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
