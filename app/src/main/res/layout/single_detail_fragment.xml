@@ -47,11 +47,12 @@
                     tools:text="User Name" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAgo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="sans-serif-light"
-                    android:text="A day ago"
+                    tools:text="A day ago"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -70,9 +71,8 @@
             android:id="@+id/imgPost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/bottomView"
+            android:layout_above="@+id/rlCaption"
             android:layout_below="@+id/topView"
-
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/default_header" />
@@ -81,17 +81,21 @@
 
 
         <RelativeLayout
+            android:id="@+id/rlCaption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:layout_above="@+id/view2">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="8dp"
-                android:fontFamily="sans-serif-condensed-light"
-                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="12sp"
                 tools:text="hello" />
 
             <LinearLayout
@@ -101,9 +105,11 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLikes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
+                    android:textSize="12sp"
                     tools:text="1 like" />
 
                 <View
@@ -112,6 +118,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:visibility="gone"
                     android:background="@color/black" />
 
                 <androidx.appcompat.widget.AppCompatTextView

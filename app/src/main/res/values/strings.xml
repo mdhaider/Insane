@@ -55,6 +55,7 @@
     <string name="upload_success">Upload successful</string>
     <string name="upload_fail">Upload failed</string>
     <string name="guest_count">%1$s Guests</string>
+    <string name="likes_count">%1$s Likes</string>
     <string name="sort">Sort</string>
     <string name="guest">Guest</string>
 

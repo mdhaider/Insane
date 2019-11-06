@@ -1,10 +1,17 @@
 package dev.nehal.insane.navigation
 
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Intent
+import android.content.Intent.EXTRA_STREAM
+import android.content.pm.PackageManager
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
@@ -13,10 +20,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import dev.nehal.insane.R
 import dev.nehal.insane.databinding.SingleDetailFragmentBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
+import dev.nehal.insane.shared.TimeAgo
 import dev.nehal.insane.util.FcmPush
 import okhttp3.OkHttpClient
 
@@ -49,7 +56,12 @@ class SingleDetailFragment : DialogFragment() {
         contentUid = bundle.getString("CONTENT_UID")
 
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.single_detail_fragment, container, false)
+            DataBindingUtil.inflate(
+                inflater,
+                dev.nehal.insane.R.layout.single_detail_fragment,
+                container,
+                false
+            )
 
         return binding.root
     }
@@ -82,11 +94,11 @@ class SingleDetailFragment : DialogFragment() {
 
 
         if (item.favorites.containsKey(FirebaseAuth.getInstance().currentUser!!.uid)) {
-            binding.imgfav.setImageResource(R.drawable.ic_favorite_black_24dp)
+            binding.imgfav.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_black_24dp)
 
         } else {
 
-            binding.imgfav.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+            binding.imgfav.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_border_black_24dp)
         }
 
         binding.imgComment.setOnClickListener {
@@ -94,6 +106,38 @@ class SingleDetailFragment : DialogFragment() {
             intent.putExtra("contentUid", contentUid)
             intent.putExtra("destinationUid", item.uid)
             startActivity(intent)
+        }
+
+        binding.tvAgo.text = TimeAgo.getTimeAgo(item.timestamp!!)
+
+        binding.tvCaption.text = item.explain
+
+        binding.tvLikes.text =
+            getString(dev.nehal.insane.R.string.likes_count, item.favoriteCount.toString())
+
+        binding.share.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(
+                    activity!!, WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+
+                val bm = (binding.imgPost.drawable as BitmapDrawable).bitmap
+                val intent = Intent(Intent.ACTION_SEND)
+                //   intent.putExtra(Intent.EXTRA_TEXT, "YOUR TEXT")
+                val path =
+                    MediaStore.Images.Media.insertImage(activity!!.contentResolver, bm, "", null)
+                val screenshotUri = Uri.parse(path)
+
+                intent.putExtra(EXTRA_STREAM, screenshotUri)
+                intent.type = "image/*"
+                startActivity(Intent.createChooser(intent, "Share image via..."))
+            } else {
+                ActivityCompat.requestPermissions(
+                    activity!!,
+                    arrayOf(WRITE_EXTERNAL_STORAGE),
+                    1
+                )
+            }
         }
     }
 
@@ -105,8 +149,8 @@ class SingleDetailFragment : DialogFragment() {
                     val url = task.result!!["image"]
                     Glide.with(binding.imgProf.context)
                         .load(url)
-                        .error(R.drawable.ic_account)
-                        .placeholder(R.drawable.ic_account)
+                        .error(dev.nehal.insane.R.drawable.ic_account)
+                        .placeholder(dev.nehal.insane.R.drawable.ic_account)
                         .apply(RequestOptions().circleCrop())
                         .into(binding.imgProf)
                 }
@@ -138,13 +182,13 @@ class SingleDetailFragment : DialogFragment() {
             if (contentDTO!!.favorites.containsKey(uid)) {
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! - 1
                 contentDTO?.favorites.remove(uid)
-                binding.imgfav.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+                binding.imgfav.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_border_black_24dp)
             } else {
                 // Star the post and add self to stars
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
                 contentDTO?.favorites[uid] = true
                 favoriteAlarm(newContentDTO.uid!!)
-                binding.imgfav.setImageResource(R.drawable.ic_favorite_black_24dp)
+                binding.imgfav.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_black_24dp)
 
             }
             transaction.set(tsDoc, contentDTO)
