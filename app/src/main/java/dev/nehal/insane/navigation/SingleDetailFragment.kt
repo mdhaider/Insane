@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -12,96 +13,83 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
+import dev.nehal.insane.R
+import dev.nehal.insane.databinding.SingleDetailFragmentBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
 import dev.nehal.insane.util.FcmPush
-import kotlinx.android.synthetic.main.single_detail_fragment.*
 import okhttp3.OkHttpClient
 
 
 class SingleDetailFragment : DialogFragment() {
     var firestore: FirebaseFirestore? = null
-    var imagesSnapshot: ListenerRegistration? = null
     var okHttpClient: OkHttpClient? = null
     var fcmPush: FcmPush? = null
-    var mainView: View? = null
+    private lateinit var binding: SingleDetailFragmentBinding
     var user: FirebaseUser? = null
     private lateinit var newContentDTO: ContentDTO
     private var contentUid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL,
-            android.R.style.Theme_Material_Light_NoActionBar_Fullscreen)
+        setStyle(
+            STYLE_NORMAL,
+            android.R.style.Theme_Material_Light_NoActionBar_Fullscreen
+        )
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        user = FirebaseAuth.getInstance().currentUser
-        firestore = FirebaseFirestore.getInstance()
-        okHttpClient = OkHttpClient()
-        fcmPush = FcmPush()
-
         val bundle = arguments
         newContentDTO = bundle!!.getSerializable("CONTENT_DTO") as ContentDTO
         contentUid = bundle.getString("CONTENT_UID")
 
-        //Linking Recycler View to Adapter
-        mainView =
-            inflater.inflate(dev.nehal.insane.R.layout.single_detail_fragment, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.single_detail_fragment, container, false)
 
-        return mainView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        user = FirebaseAuth.getInstance().currentUser
+        firestore = FirebaseFirestore.getInstance()
+        okHttpClient = OkHttpClient()
+        fcmPush = FcmPush()
+
         setValue(newContentDTO)
+        setProfileImage(newContentDTO)
     }
 
-    fun setValue(item: ContentDTO) {
 
-        firestore?.collection("profileImages")?.document(item.uid!!)
-            ?.get()?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
+    private fun setValue(item: ContentDTO) {
 
-                    val url = task.result!!["image"]
-                    Glide.with(detailviewitem_profile_image.context)
-                        .load(url)
-                        .error(dev.nehal.insane.R.drawable.ic_account)
-                        .placeholder(dev.nehal.insane.R.drawable.ic_account)
-                        .apply(RequestOptions().circleCrop())
-                        .into(detailviewitem_profile_image)
+        binding.tvProfName.text = item.userName
 
-                }
-            }
-
-        detailviewitem_profile_textview.text = item.userName
-
-        // 가운데 이미지
-        Glide.with(detailviewitem_imageview_content.context)
+        Glide.with(binding.imgPost.context)
             .load(item.imageUrl)
             .diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()
-            .into(detailviewitem_imageview_content)
+            .into(binding.imgPost)
 
-        //detailviewitem_explain_textview.text = item.explain
-        // 좋아요 이벤트
-        detailviewitem_favorite_imageview.setOnClickListener { favoriteEvent(contentUid.toString()) }
+        binding.imgfav.setOnClickListener { favoriteEvent(contentUid.toString()) }
 
-        //좋아요 버튼 설정
+        binding.crossImg.setOnClickListener { dismiss() }
+
+
         if (item.favorites.containsKey(FirebaseAuth.getInstance().currentUser!!.uid)) {
-            detailviewitem_favorite_imageview.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_black_24dp)
+            binding.imgfav.setImageResource(R.drawable.ic_favorite_black_24dp)
 
         } else {
 
-            detailviewitem_favorite_imageview.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_border_black_24dp)
+            binding.imgfav.setImageResource(R.drawable.ic_favorite_border_black_24dp)
         }
 
-        detailviewitem_comment_imageview.setOnClickListener {
+        binding.imgComment.setOnClickListener {
             val intent = Intent(activity, CommentActivity::class.java)
             intent.putExtra("contentUid", contentUid)
             intent.putExtra("destinationUid", item.uid)
@@ -109,7 +97,23 @@ class SingleDetailFragment : DialogFragment() {
         }
     }
 
-    fun favoriteAlarm(destinationUid: String) {
+    private fun setProfileImage(item: ContentDTO) {
+        firestore?.collection("profileImages")?.document(item.uid!!)
+            ?.get()?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+
+                    val url = task.result!!["image"]
+                    Glide.with(binding.imgProf.context)
+                        .load(url)
+                        .error(R.drawable.ic_account)
+                        .placeholder(R.drawable.ic_account)
+                        .apply(RequestOptions().circleCrop())
+                        .into(binding.imgProf)
+                }
+            }
+    }
+
+    private fun favoriteAlarm(destinationUid: String) {
         val alarmDTO = AlarmDTO()
         alarmDTO.destinationUid = destinationUid
         alarmDTO.userId = user!!.phoneNumber
@@ -119,33 +123,31 @@ class SingleDetailFragment : DialogFragment() {
         alarmDTO.timestamp = System.currentTimeMillis()
 
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
-        var message = user?.displayName + " " + getString(dev.nehal.insane.R.string.alarm_favorite)
+        val message = user?.displayName + " " + getString(dev.nehal.insane.R.string.alarm_favorite)
         fcmPush?.sendMessage(destinationUid, "You have received a message", message)
     }
 
 
     private fun favoriteEvent(contenUid: String) {
-        var tsDoc = firestore!!.collection("images")?.document(contenUid)
+        val tsDoc = firestore!!.collection("images")?.document(contenUid)
         firestore?.runTransaction { transaction ->
 
             val uid = FirebaseAuth.getInstance().currentUser!!.uid
             val contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
 
             if (contentDTO!!.favorites.containsKey(uid)) {
-                // Unstar the post and remove self from stars
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! - 1
                 contentDTO?.favorites.remove(uid)
-                detailviewitem_favorite_imageview.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_border_black_24dp)
+                binding.imgfav.setImageResource(R.drawable.ic_favorite_border_black_24dp)
             } else {
                 // Star the post and add self to stars
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
                 contentDTO?.favorites[uid] = true
                 favoriteAlarm(newContentDTO.uid!!)
-                detailviewitem_favorite_imageview.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_black_24dp)
+                binding.imgfav.setImageResource(R.drawable.ic_favorite_black_24dp)
 
             }
             transaction.set(tsDoc, contentDTO)
         }
     }
-
 }

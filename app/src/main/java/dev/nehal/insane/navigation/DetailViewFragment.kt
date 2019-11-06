@@ -121,13 +121,13 @@ class DetailViewFragment : Fragment() {
                             .error(R.drawable.ic_account)
                             .placeholder(R.drawable.ic_account)
                             .apply(RequestOptions().circleCrop())
-                            .into(viewHolder.detailviewitem_profile_image)
+                            .into(viewHolder.detailviewitem_comment_imageview)
 
                     }
                 }
 
             //UserFragment로 이동
-            viewHolder.detailviewitem_profile_image.setOnClickListener {
+            viewHolder.detailviewitem_comment_imageview.setOnClickListener {
 
                 val fragment = UserFragment()
                 val bundle = Bundle()
@@ -143,7 +143,7 @@ class DetailViewFragment : Fragment() {
             }
 
             // 유저 아이디
-            viewHolder.detailviewitem_profile_textview.text = contentDTOs[position].userName
+            viewHolder.tvProfName.text = contentDTOs[position].userName
 
             // 가운데 이미지
             Glide.with(holder.itemView.context)
@@ -154,21 +154,21 @@ class DetailViewFragment : Fragment() {
             // 설명 텍스트
             viewHolder.detailviewitem_explain_textview.text = contentDTOs[position].explain
             // 좋아요 이벤트
-            viewHolder.detailviewitem_favorite_imageview.setOnClickListener { favoriteEvent(position) }
+            viewHolder.favImg.setOnClickListener { favoriteEvent(position) }
 
             //좋아요 버튼 설정
             if (contentDTOs[position].favorites.containsKey(FirebaseAuth.getInstance().currentUser!!.uid)) {
-                viewHolder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_black_24dp)
+                viewHolder.favImg.setImageResource(R.drawable.ic_favorite_black_24dp)
 
             } else {
 
-                viewHolder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+                viewHolder.favImg.setImageResource(R.drawable.ic_favorite_border_black_24dp)
             }
             //Like counter settings
             viewHolder.detailviewitem_favoritecounter_textview.text =
                 contentDTOs[position].favoriteCount.toString() + " " + "Likes"
 
-            viewHolder.detailviewitem_comment_imageview.setOnClickListener {
+            viewHolder.imgComment.setOnClickListener {
                 val intent = Intent(activity, CommentActivity::class.java)
                 intent.putExtra("contentUid", contentUidList[position])
                 intent.putExtra("destinationUid", contentDTOs[position].uid)
