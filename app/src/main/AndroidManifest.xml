@@ -57,6 +57,8 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
+        <service android:name="com.downloadservice.filedownloadservice.service.DownloadService"/>
+
     </application>
 
 </manifest>

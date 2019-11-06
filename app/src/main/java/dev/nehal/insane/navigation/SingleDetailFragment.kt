@@ -1,31 +1,29 @@
 package dev.nehal.insane.navigation
 
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Intent
-import android.content.Intent.EXTRA_STREAM
-import android.content.pm.PackageManager
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.downloadservice.filedownloadservice.manager.FileDownloadManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.databinding.SingleDetailFragmentBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
+import dev.nehal.insane.shared.ShareImage
 import dev.nehal.insane.shared.TimeAgo
 import dev.nehal.insane.util.FcmPush
 import okhttp3.OkHttpClient
+import java.io.File
 
 
 class SingleDetailFragment : DialogFragment() {
@@ -36,6 +34,7 @@ class SingleDetailFragment : DialogFragment() {
     var user: FirebaseUser? = null
     private lateinit var newContentDTO: ContentDTO
     private var contentUid: String? = null
+    private  val requestCode = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,29 +115,30 @@ class SingleDetailFragment : DialogFragment() {
             getString(dev.nehal.insane.R.string.likes_count, item.favoriteCount.toString())
 
         binding.share.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    activity!!, WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-
-                val bm = (binding.imgPost.drawable as BitmapDrawable).bitmap
-                val intent = Intent(Intent.ACTION_SEND)
-                //   intent.putExtra(Intent.EXTRA_TEXT, "YOUR TEXT")
-                val path =
-                    MediaStore.Images.Media.insertImage(activity!!.contentResolver, bm, "", null)
-                val screenshotUri = Uri.parse(path)
-
-                intent.putExtra(EXTRA_STREAM, screenshotUri)
-                intent.type = "image/*"
-                startActivity(Intent.createChooser(intent, "Share image via..."))
-            } else {
-                ActivityCompat.requestPermissions(
-                    activity!!,
-                    arrayOf(WRITE_EXTERNAL_STORAGE),
-                    1
-                )
-            }
+            ShareImage.shareImageWith(activity!!, binding.imgPost.drawable)
         }
+
+        binding.downalod.setOnClickListener {
+           downloadImage(item.imageUrl!!, item.userName!!,item.timestamp.toString())
+
+        }
+    }
+
+    private fun downloadImage(url:String, username_: String, time: String){
+        val folder = File(Environment.getExternalStorageDirectory().toString() + "/" + "Insane")
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+        val fileName = "$username_$time.jpg"
+
+        Toast.makeText(activity!!,"Download started, Check Downloads under Home page", Toast.LENGTH_LONG).show()
+
+        FileDownloadManager.initDownload(
+            activity!!,
+            url,
+            folder.absolutePath,
+            fileName
+        )
     }
 
     private fun setProfileImage(item: ContentDTO) {
@@ -194,4 +194,5 @@ class SingleDetailFragment : DialogFragment() {
             transaction.set(tsDoc, contentDTO)
         }
     }
+
 }
