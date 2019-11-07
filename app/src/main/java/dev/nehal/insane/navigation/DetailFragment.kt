@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import dev.nehal.insane.R
 import dev.nehal.insane.databinding.FragmentDetailBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
+import dev.nehal.insane.navigation.DetailAdapter.ItemClickListener
 import dev.nehal.insane.util.FcmPush
 import okhttp3.OkHttpClient
 import java.util.*
@@ -55,13 +57,21 @@ class DetailFragment : Fragment() {
         okHttpClient = OkHttpClient()
         fcmPush = FcmPush()
 
-        val itemOnClick: (Int) -> Unit = { position ->
-            // goToDetail(position)
+        val itemOnClick= object : ItemClickListener {
+            override fun doSomething() {
+                Toast.makeText(activity!!, "hi", Toast.LENGTH_LONG).show()
+            }
+
+            override fun sayHi() {
+                Toast.makeText(activity!!, "saying hi", Toast.LENGTH_LONG).show()            }
+
         }
+
         url = ""
         contentDTO = ArrayList()
         contentUidList = ArrayList()
-        adapter = DetailAdapter(contentDTO, itemClickListener = itemOnClick)
+        binding.rvDet.setHasFixedSize(true)
+        adapter = DetailAdapter(contentDTO, listener= itemOnClick)
         binding.rvDet.adapter = adapter
         binding.rvDet.layoutManager = LinearLayoutManager(activity)
 

@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.nehal.insane.model.ContentDTO
 
 
-class DetailAdapter(private val list: ArrayList<ContentDTO>, private val itemClickListener: (Int) -> Unit)
-    : RecyclerView.Adapter<DetailViewHolder>() {
+class DetailAdapter(
+    private val list: ArrayList<ContentDTO>,
+    private val listener: ItemClickListener
+) : RecyclerView.Adapter<DetailViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
@@ -17,8 +19,14 @@ class DetailAdapter(private val list: ArrayList<ContentDTO>, private val itemCli
 
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
         val contentDTO: ContentDTO = list[position]
-        holder.bind(contentDTO,itemClickListener)
+        holder.bind(contentDTO, listener)
     }
+
     override fun getItemCount(): Int = list.size
+
+    interface ItemClickListener {
+        fun doSomething()
+        fun sayHi()
+    }
 
 }
