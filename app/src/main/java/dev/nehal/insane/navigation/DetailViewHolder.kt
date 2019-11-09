@@ -39,7 +39,7 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mCommentCount = itemView.findViewById(R.id.tvDetComments)
     }
 
-    fun bind(contentDTO: ContentDTO, listener: DetailAdapter.ItemClickListener) {
+    fun bind(contentUid:String,contentDTO: ContentDTO, listener: DetailAdapter.ItemClickListener) {
 
         FirebaseFirestore.getInstance().collection("profileImages").document(contentDTO.uid!!)
             .get().addOnCompleteListener { task ->
@@ -75,7 +75,7 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mMore?.setOnClickListener {  listener.getMore()}
         mPostImage?.setOnClickListener { listener.goToDetailPost() }
         mFavImage?.setOnClickListener {  listener.setfav()}
-        mComImage?.setOnClickListener { listener.goToComment() }
+        mComImage?.setOnClickListener { listener.goToComment(contentUid,contentDTO.uid!!) }
         mLikeCount?.setOnClickListener {  listener.goToLikes()}
         mCommentCount?.setOnClickListener { listener.goToComments() }
 

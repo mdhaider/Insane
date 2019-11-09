@@ -8,6 +8,7 @@ import dev.nehal.insane.model.ContentDTO
 
 class DetailAdapter(
     private val list: ArrayList<ContentDTO>,
+    private val contentUidList: ArrayList<String>,
     private val listener: ItemClickListener
 ) : RecyclerView.Adapter<DetailViewHolder>() {
 
@@ -19,7 +20,8 @@ class DetailAdapter(
 
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
         val contentDTO: ContentDTO = list[position]
-        holder.bind(contentDTO, listener)
+        val contentUid: String = contentUidList[position]
+        holder.bind(contentUid,contentDTO, listener)
     }
 
     override fun getItemCount(): Int = list.size
@@ -29,7 +31,7 @@ class DetailAdapter(
         fun getMore()
         fun goToDetailPost()
         fun setfav()
-        fun goToComment()
+        fun goToComment(contentUid: String, userUid: String)
         fun goToLikes()
         fun goToComments()
     }

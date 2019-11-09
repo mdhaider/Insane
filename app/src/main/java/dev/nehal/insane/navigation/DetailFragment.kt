@@ -1,6 +1,7 @@
 package dev.nehal.insane.navigation
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -84,9 +85,11 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun goToComment() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+            override fun goToComment(contentUid: String, userUid: String) {
+                val intent = Intent(activity, CommentActivity::class.java)
+                intent.putExtra("contentUid", contentUid)
+                intent.putExtra("destinationUid", userUid)
+                startActivity(intent)            }
 
             override fun goToLikes() {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -102,7 +105,7 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
         contentDTO = ArrayList()
         contentUidList = ArrayList()
         binding.rvDet.setHasFixedSize(true)
-        adapter = DetailAdapter(contentDTO, listener = itemOnClick)
+        adapter = DetailAdapter(contentDTO,contentUidList, listener = itemOnClick)
         binding.rvDet.adapter = adapter
         binding.rvDet.layoutManager = LinearLayoutManager(activity)
 
@@ -159,7 +162,7 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
                 // Star the post and add self to stars
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
                 contentDTO?.favorites[uid] = true
-               // favoriteAlarm(contentDTO[position].uid!!)
+                // favoriteAlarm(contentDTO[position].uid!!)
             }
             transaction.set(tsDoc, contentDTO)
         }
