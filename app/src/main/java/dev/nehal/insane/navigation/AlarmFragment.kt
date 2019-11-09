@@ -60,8 +60,8 @@ class AlarmFragment : Fragment() {
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-            val profileImage = holder.itemView.commentviewitem_imageview_profile
-            val commentTextView = holder.itemView.commentviewitem_textview_profile
+            val profileImage = holder.itemView.imgProf
+            val commentTextView = holder.itemView.tvProfName
 
             FirebaseFirestore.getInstance().collection("profileImages")
                     .document(alarmDTOList[position].uid!!).get().addOnCompleteListener {

@@ -17,13 +17,13 @@ import com.google.firebase.firestore.Query
 import dev.nehal.insane.R
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
+import dev.nehal.insane.shared.TimeAgo
 import dev.nehal.insane.util.FcmPush
 import kotlinx.android.synthetic.main.activity_comment.*
 import kotlinx.android.synthetic.main.item_comment.view.*
 import java.util.*
 
 class CommentActivity : AppCompatActivity() {
-
     var contentUid: String? = null
     var user: FirebaseUser? = null
     var destinationUid: String? = null
@@ -59,8 +59,8 @@ class CommentActivity : AppCompatActivity() {
 
         }
 
-        comment_recyclerview.adapter = CommentRecyclerViewAdapter()
-        comment_recyclerview.layoutManager = LinearLayoutManager(this)
+        rvComment.adapter = CommentRecyclerViewAdapter()
+        rvComment.layoutManager = LinearLayoutManager(this)
 
     }
 
@@ -134,12 +134,13 @@ class CommentActivity : AppCompatActivity() {
                             .error(R.drawable.ic_account)
                             .placeholder(R.drawable.ic_account)
                             .apply(RequestOptions().circleCrop())
-                            .into(view.commentviewitem_imageview_profile)
+                            .into(view.imgProf)
                     }
                 }
 
-            view.commentviewitem_textview_profile.text = comments[position].username+""
-            view.commentviewitem_textview_comment.text = comments[position].comment
+            view.tvProfName.text = comments[position].username+""
+            view.tvComment.text = comments[position].comment
+            view.tvAgo.text = TimeAgo.getTimeAgo(comments[position].timestamp!!)
         }
 
         override fun getItemCount(): Int {
