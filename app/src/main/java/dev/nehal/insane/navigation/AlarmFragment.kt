@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
 import dev.nehal.insane.R
 import dev.nehal.insane.model.AlarmDTO
 import kotlinx.android.synthetic.main.fragment_alarm.view.*
@@ -20,8 +19,6 @@ import java.util.*
 
 
 class AlarmFragment : Fragment() {
-
-    var alarmSnapshot: ListenerRegistration? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_alarm, container, false)

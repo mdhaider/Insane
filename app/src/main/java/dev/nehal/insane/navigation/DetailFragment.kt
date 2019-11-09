@@ -3,6 +3,7 @@ package dev.nehal.insane.navigation
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,7 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
     var okHttpClient: OkHttpClient? = null
     var fcmPush: FcmPush? = null
     private lateinit var adapter: DetailAdapter
+    private lateinit var uidSet: MutableSet<String>
     private lateinit var contentDTO: ArrayList<ContentDTO>
     private lateinit var contentUidList: ArrayList<String>
     private lateinit var binding: FragmentDetailBinding
@@ -89,14 +91,26 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
                 val intent = Intent(activity, CommentActivity::class.java)
                 intent.putExtra("contentUid", contentUid)
                 intent.putExtra("destinationUid", userUid)
-                startActivity(intent)            }
-
-            override fun goToLikes() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                startActivity(intent)
             }
 
-            override fun goToComments() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun goToLikes(uidList: List<String>) {
+
+               val arr: Array<String> =uidList.toTypedArray()
+
+                val intent = Intent(activity, LikesActivity::class.java)
+
+                val b = Bundle()
+                b.putStringArray("uidlist", arr)
+                intent.putExtras(b)
+                startActivity(intent)
+            }
+
+            override fun goToComments(contentUid: String, userUid: String) {
+                val intent = Intent(activity, CommentActivity::class.java)
+                intent.putExtra("contentUid", contentUid)
+                intent.putExtra("destinationUid", userUid)
+                startActivity(intent)
             }
 
         }
@@ -104,8 +118,9 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
         url = ""
         contentDTO = ArrayList()
         contentUidList = ArrayList()
+        uidSet = mutableSetOf()
         binding.rvDet.setHasFixedSize(true)
-        adapter = DetailAdapter(contentDTO,contentUidList, listener = itemOnClick)
+        adapter = DetailAdapter(contentDTO, contentUidList, uidSet, listener = itemOnClick)
         binding.rvDet.adapter = adapter
         binding.rvDet.layoutManager = LinearLayoutManager(activity)
 
@@ -122,7 +137,8 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
                     if (querySnapshot == null) return@addSnapshotListener
                     for (snapshot in querySnapshot.documents) {
                         var item = snapshot.toObject(ContentDTO::class.java)!!
-                        println(item.uid)
+                        Log.d("fdt", item.favorites.keys.toString())
+                        uidSet.addAll(item.favorites.keys)
                         contentDTO.add(item)
                         contentUidList.add(snapshot.id)
 
@@ -167,6 +183,5 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
             transaction.set(tsDoc, contentDTO)
         }
     }
-
 
 }

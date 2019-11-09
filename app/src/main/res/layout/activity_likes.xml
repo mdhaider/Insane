@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -22,13 +21,13 @@
                 app:srcCompat="@drawable/ic_keyboard_arrow_left_black_24dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvCommCount"
+                android:id="@+id/tvLikeCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:textSize="20sp"
-                tools:text="1 Comments" />
+                tools:text="1 Likes" />
 
         </RelativeLayout>
 
@@ -39,53 +38,13 @@
             android:layout_below="@+id/topView"
             android:background="@color/grey_300" />
 
-
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvComment"
+            android:id="@+id/rvLikes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/view"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="30dp" />
-
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_above="@+id/bottomView"
-            android:background="@color/grey_300" />
-
-        <LinearLayout
-            android:id="@+id/bottomView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/etPost"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="3"
-                android:background="@null"
-                android:hint="@string/add_a_comment" />
-
-            <Button
-                android:id="@+id/postComment"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_background"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/comment"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
 
     </RelativeLayout>
 </layout>

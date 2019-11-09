@@ -1,5 +1,6 @@
 package dev.nehal.insane.navigation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -39,7 +40,11 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mCommentCount = itemView.findViewById(R.id.tvDetComments)
     }
 
-    fun bind(contentUid:String,contentDTO: ContentDTO, listener: DetailAdapter.ItemClickListener) {
+    fun bind(
+        contentUid: String,
+        contentDTO: ContentDTO,
+        listener: DetailAdapter.ItemClickListener
+    ) {
 
         FirebaseFirestore.getInstance().collection("profileImages").document(contentDTO.uid!!)
             .get().addOnCompleteListener { task ->
@@ -55,11 +60,25 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
                 }
             }
 
+        FirebaseFirestore.getInstance()
+            .collection("images").document(contentUid).collection("comments").get()
+            .addOnSuccessListener { result ->
+
+                Log.d("rtg", result.size().toString())
+                mCommentCount?.text =
+                    itemView.context.getString(R.string.comments_count, result.size().toString())
+
+            }
+            .addOnFailureListener { exception ->
+                Log.d("DetailFrag", "Error getting documents: ", exception)
+
+            }
+
+
         mProfName?.text = contentDTO.userName
 
-        mLikeCount?.text = itemView.context.getString(R.string.likes_count, contentDTO.favoriteCount.toString())
-
-        mCommentCount?.text = itemView.context.getString(R.string.likes_count, contentDTO.favoriteCount.toString())
+        mLikeCount?.text =
+            itemView.context.getString(R.string.likes_count, contentDTO.favoriteCount.toString())
 
         mAgo?.text = TimeAgo.getTimeAgo(contentDTO.timestamp!!)
 
@@ -72,12 +91,12 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             .into(mPostImage!!)
 
         mProfImage?.setOnClickListener { listener.goToprofile() }
-        mMore?.setOnClickListener {  listener.getMore()}
+        mMore?.setOnClickListener { listener.getMore() }
         mPostImage?.setOnClickListener { listener.goToDetailPost() }
-        mFavImage?.setOnClickListener {  listener.setfav()}
-        mComImage?.setOnClickListener { listener.goToComment(contentUid,contentDTO.uid!!) }
-        mLikeCount?.setOnClickListener {  listener.goToLikes()}
-        mCommentCount?.setOnClickListener { listener.goToComments() }
+        mFavImage?.setOnClickListener { listener.setfav() }
+        mComImage?.setOnClickListener { listener.goToComment(contentUid, contentDTO.uid!!) }
+        mLikeCount?.setOnClickListener { listener.goToLikes(contentDTO.favorites.keys.toList()) }
+        mCommentCount?.setOnClickListener { listener.goToComments(contentUid, contentDTO.uid!!) }
 
 
     }

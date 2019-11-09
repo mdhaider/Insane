@@ -1,67 +1,74 @@
 package dev.nehal.insane.navigation
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import dev.nehal.insane.R
+import dev.nehal.insane.databinding.ActivityCommentBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
-import dev.nehal.insane.shared.TimeAgo
 import dev.nehal.insane.util.FcmPush
-import kotlinx.android.synthetic.main.activity_comment.*
-import kotlinx.android.synthetic.main.item_comment.view.*
-import java.util.*
+
 
 class CommentActivity : AppCompatActivity() {
     var contentUid: String? = null
     var user: FirebaseUser? = null
     var destinationUid: String? = null
     var fcmPush: FcmPush? = null
+    private lateinit var commentsList: ArrayList<ContentDTO.Comment>
     var commentSnapshot: ListenerRegistration? = null
+    private lateinit var adapter:CommentsAdapter
+    private lateinit var binding: ActivityCommentBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_comment)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_comment)
 
         user = FirebaseAuth.getInstance().currentUser
         destinationUid = intent.getStringExtra("destinationUid")
         contentUid = intent.getStringExtra("contentUid")
         fcmPush = FcmPush()
 
-        comment_btn_send.setOnClickListener {
-            val comment = ContentDTO.Comment()
-
-            comment.userId = FirebaseAuth.getInstance().currentUser!!.phoneNumber
-            comment.comment = comment_edit_message.text.toString()
-            comment.username = FirebaseAuth.getInstance().currentUser!!.displayName
-            comment.uid = FirebaseAuth.getInstance().currentUser!!.uid
-            comment.timestamp = System.currentTimeMillis()
-
-            FirebaseFirestore.getInstance()
-                .collection("images")
-                .document(contentUid!!)
-                .collection("comments")
-                .document()
-                .set(comment)
-
-            commentAlarm(destinationUid!!, comment_edit_message.text.toString())
-            comment_edit_message.setText("")
-
+        binding.postComment.setOnClickListener {
+            sendComments()
         }
 
-        rvComment.adapter = CommentRecyclerViewAdapter()
-        rvComment.layoutManager = LinearLayoutManager(this)
+        binding.imgBack.setOnClickListener{
+            finish()
+        }
 
+        commentsList = ArrayList()
+        binding.rvComment.setHasFixedSize(true)
+        adapter= CommentsAdapter(commentsList)
+        binding.rvComment.adapter = adapter
+        binding.rvComment.layoutManager = LinearLayoutManager(this)
+
+        getComments()
+
+    }
+
+    private fun sendComments() {
+        val comment = ContentDTO.Comment()
+        comment.userId = FirebaseAuth.getInstance().currentUser!!.phoneNumber
+        comment.comment = binding.etPost.text.toString()
+        comment.username = FirebaseAuth.getInstance().currentUser!!.displayName
+        comment.uid = FirebaseAuth.getInstance().currentUser!!.uid
+        comment.timestamp = System.currentTimeMillis()
+
+        FirebaseFirestore.getInstance()
+            .collection("images")
+            .document(contentUid!!)
+            .collection("comments")
+            .document()
+            .set(comment)
+
+        commentAlarm(destinationUid!!, binding.etPost.text.toString())
+        binding.etPost.setText("")
     }
 
 
@@ -70,12 +77,30 @@ class CommentActivity : AppCompatActivity() {
         commentSnapshot?.remove()
     }
 
+    private fun getComments(){
+        commentSnapshot = FirebaseFirestore
+            .getInstance()
+            .collection("images")
+            .document(contentUid!!)
+            .collection("comments").orderBy("timestamp", Query.Direction.DESCENDING)
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                commentsList.clear()
+                if (querySnapshot == null) return@addSnapshotListener
+                for (snapshot in querySnapshot.documents) {
+                    commentsList.add(snapshot.toObject(ContentDTO.Comment::class.java)!!)
+                }
+                adapter.notifyDataSetChanged()
+                binding.tvCommCount.text = getString(R.string.comments_count, commentsList.size.toString())
 
-    fun commentAlarm(destinationUid: String, message: String) {
+            }
+    }
+
+
+    private fun commentAlarm(destinationUid: String, message: String) {
         val alarmDTO = AlarmDTO()
         alarmDTO.destinationUid = destinationUid
         alarmDTO.userId = user?.phoneNumber
-        alarmDTO.username=user?.displayName
+        alarmDTO.username = user?.displayName
         alarmDTO.uid = user?.uid
         alarmDTO.kind = 1
         alarmDTO.message = message
@@ -84,71 +109,7 @@ class CommentActivity : AppCompatActivity() {
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
         var message =
-            user?.displayName + getString(R.string.alarm_comment)+" "+message
+            user?.displayName + getString(R.string.alarm_comment) + " " + message
         fcmPush?.sendMessage(destinationUid, "This is a notification message.", message)
     }
-
-
-    inner class CommentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        val comments: ArrayList<ContentDTO.Comment>
-
-        init {
-            comments = ArrayList()
-            commentSnapshot = FirebaseFirestore
-                .getInstance()
-                .collection("images")
-                .document(contentUid!!)
-                .collection("comments").orderBy("timestamp", Query.Direction.DESCENDING)
-                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                    comments.clear()
-                    if (querySnapshot == null) return@addSnapshotListener
-                    for (snapshot in querySnapshot?.documents!!) {
-                        comments.add(snapshot.toObject(ContentDTO.Comment::class.java)!!)
-                    }
-                    notifyDataSetChanged()
-
-                }
-
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_comment, parent, false)
-            return CustomViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-            var view = holder.itemView
-
-            // Profile Image
-            FirebaseFirestore.getInstance()
-                .collection("profileImages")
-                .document(comments[position].uid!!)
-                .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
-                    if (documentSnapshot?.data != null) {
-
-                        val url = documentSnapshot?.data!!["image"]
-                        Glide.with(holder.itemView.context)
-                            .load(url)
-                            .error(R.drawable.ic_account)
-                            .placeholder(R.drawable.ic_account)
-                            .apply(RequestOptions().circleCrop())
-                            .into(view.imgProf)
-                    }
-                }
-
-            view.tvProfName.text = comments[position].username+""
-            view.tvComment.text = comments[position].comment
-            view.tvAgo.text = TimeAgo.getTimeAgo(comments[position].timestamp!!)
-        }
-
-        override fun getItemCount(): Int {
-
-            return comments.size
-        }
-
-        private inner class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-    }
-
 }
