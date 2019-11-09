@@ -71,8 +71,14 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             .placeholder(R.drawable.default_header)
             .into(mPostImage!!)
 
-        mPostImage?.setOnClickListener { listener.doSomething() }
+        mProfImage?.setOnClickListener { listener.goToprofile() }
+        mMore?.setOnClickListener {  listener.getMore()}
+        mPostImage?.setOnClickListener { listener.goToDetailPost() }
+        mFavImage?.setOnClickListener {  listener.setfav()}
+        mComImage?.setOnClickListener { listener.goToComment() }
+        mLikeCount?.setOnClickListener {  listener.goToLikes()}
+        mCommentCount?.setOnClickListener { listener.goToComments() }
 
-        mLikeCount?.setOnClickListener {  listener.sayHi()}
+
     }
 }

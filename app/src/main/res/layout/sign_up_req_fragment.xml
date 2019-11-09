@@ -6,7 +6,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ima_back">
+        android:background="@drawable/splash_gradient">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"

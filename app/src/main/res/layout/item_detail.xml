@@ -42,8 +42,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="sans-serif-condensed-light"
                 android:textSize="12sp"
+                android:textColor="@color/grey_500"
                 tools:text="A day ago" />
         </LinearLayout>
 

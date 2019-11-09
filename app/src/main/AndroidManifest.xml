@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".newd.main.ViewDownloadsActivity"></activity>
+        <activity android:name=".newd.main.ViewDownloadsActivity"/>
         <activity
             android:name=".newd.main.TabActivity1"
             android:label="@string/title_activity_tab1"
@@ -25,15 +25,18 @@
         <activity
             android:name=".newd.main.MainActivity1"
             android:label="@string/title_activity_main1">
+
+        </activity>
+        <activity
+            android:name=".shared.SplashActivity"
+            android:theme="@style/AppTheme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity
-            android:name=".shared.SplashActivity"
-            android:theme="@style/SplashTheme"></activity>
         <activity android:name=".modules.MainActivity" />
         <activity
             android:name=".modules.MainActivityDelete"

@@ -7,9 +7,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.nehal.insane.R
+import dev.nehal.insane.navigation.DetailBottomSheetDialogFragment
 
 class MainActivity1 : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main1)
@@ -23,7 +23,12 @@ class MainActivity1 : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
             )
         )
-      //  setupActionBarWithNavController(navController, appBarConfiguration)
+        //  setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+     fun showBottomSheet(){
+        val bottomSheetFragment = DetailBottomSheetDialogFragment()
+        bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
 }

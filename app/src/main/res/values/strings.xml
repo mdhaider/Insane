@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Insane</string>
-    <string name="enter_mobile_number">Enter 10-digit mobile number</string>
-    <string name="enter_name">Enter your name</string>
+    <string name="enter_mobile_number">Phone Number</string>
+    <string name="enter_name">Name</string>
     <string name="request">Continue</string>
     <string name="create_pin_text">Looks Like you are new user, please enter 4-digit PIN</string>
     <string name="pin">Create PIN</string>
@@ -46,6 +46,9 @@
 
     <string name="action_camera">Camera</string>
     <string name="action_gallery">Gallery</string>
+    <string name="share_photo">Share photo</string>
+    <string name="close">Close</string>
+    <string name="download">Download</string>
 
     <!-- Comment -->
 
@@ -71,6 +74,7 @@
     <string name="title_activity_tab1">TabActivity1</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="sharing_memories">Sharing Memories</string>
 
 
 </resources>
