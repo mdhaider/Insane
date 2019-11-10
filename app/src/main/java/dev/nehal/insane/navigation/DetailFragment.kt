@@ -176,5 +176,4 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
             transaction.set(tsDoc, contentDTO)
         }
     }
-
 }

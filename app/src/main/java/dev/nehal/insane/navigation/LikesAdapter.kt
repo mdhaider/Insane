@@ -21,3 +21,5 @@ class LikesAdapter(private val list: ArrayList<String>)
     override fun getItemCount(): Int = list.size
 
 }
+
+

@@ -45,7 +45,22 @@ class AlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             }
 
         mUserNam?.text=alarmDTO.username
-        mComment?.text=alarmDTO.message
+
+        when(alarmDTO.kind){
+            0 -> {
+                mComment?.text =itemView.context.getString(R.string.message_liked)
+
+            }
+            1 -> {
+                mComment?.text =itemView.context.getString(R.string.message_alarm,alarmDTO.message)
+
+            }
+
+            2 -> {
+                mComment?.text =itemView.context.getString(R.string.message_liked)
+            }
+        }
+
         mTimeAgo?.text= TimeAgo.getTimeAgo(alarmDTO.timestamp!!)
 
         Glide.with(itemView.context)

@@ -165,6 +165,7 @@ class SingleDetailFragment : DialogFragment() {
         alarmDTO.kind = 0
         alarmDTO.username = user?.displayName
         alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.imageUri = newContentDTO.imageUrl
 
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
         val message = user?.displayName + " " + getString(dev.nehal.insane.R.string.alarm_favorite)
