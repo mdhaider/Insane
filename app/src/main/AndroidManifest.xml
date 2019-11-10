@@ -25,16 +25,14 @@
         <activity
             android:name=".newd.main.MainActivity1"
             android:label="@string/title_activity_main1">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
         <activity
-            android:name=".shared.SplashActivity"
+            android:name=".prelogin.SplashActivity"
             android:theme="@style/AppTheme.SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".modules.MainActivity" />
         <activity

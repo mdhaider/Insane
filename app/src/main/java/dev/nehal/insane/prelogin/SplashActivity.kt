@@ -1,4 +1,4 @@
-package dev.nehal.insane.shared
+package dev.nehal.insane.prelogin
 
 import android.content.Intent
 import android.os.Bundle

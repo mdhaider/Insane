@@ -21,7 +21,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dev.nehal.insane.R
-import dev.nehal.insane.modules.login.EnterMobileFragment
+import dev.nehal.insane.prelogin.EnterMobileFragment
 import dev.nehal.insane.modules.login.VerifyPhoneFragment
 import dev.nehal.insane.navigation.*
 import dev.nehal.insane.shared.AppPreferences

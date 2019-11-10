@@ -1,4 +1,4 @@
-package dev.nehal.insane.modules.login
+package dev.nehal.insane.prelogin
 
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.databinding.EnterMobileFragmentBinding
+import dev.nehal.insane.modules.login.ReqStatusFragment
 import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.hideKeyboard

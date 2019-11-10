@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/enterMobileFragment"
-        android:name="dev.nehal.insane.modules.login.EnterMobileFragment"
+        android:name="dev.nehal.insane.prelogin.EnterMobileFragment"
         android:label="enter_mobile_fragment"
         tools:layout="@layout/enter_mobile_fragment">
 

@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".modules.login.EnterMobileFragment">
+    tools:context=".prelogin.EnterMobileFragment">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/splash_gradient">
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="16dp">
+            android:background="@color/white">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_height="match_parent"
+                android:layout_margin="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/mNumber"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/enter_mobile_number"
-                    android:inputType="phone"
-                    android:maxLength="10"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_gravity="center">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/mNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/enter_mobile_number"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <ProgressBar
@@ -35,10 +42,9 @@
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:indeterminate="true"
-            android:visibility="visible"
-            android:layout_centerInParent="true"/>
+            android:visibility="visible" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </FrameLayout>
 </layout>

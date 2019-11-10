@@ -3,8 +3,9 @@
     <color name="grey_300">#E0E0E0</color>
     <color name="grey_500">#9E9E9E</color>
     <color name="colorPrimary">#EB857C</color>
+    <color name="colorPrimaryLight">#ECACA7</color>
     <color name="colorPrimaryDark">#E9695F</color>
-    <color name="colorAccent">#F01D1A</color>
+    <color name="colorAccent">#EB857C</color>
     <color name="colorTextPrimary">@android:color/primary_text_light</color>
     <color name="colorTextSecondary">@android:color/tertiary_text_light</color>
     <color name="white">#FFF</color>
