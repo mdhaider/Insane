@@ -94,10 +94,9 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mMore?.setOnClickListener { listener.getMore() }
         mPostImage?.setOnClickListener { listener.goToDetailPost() }
         mFavImage?.setOnClickListener { listener.setfav() }
-        mComImage?.setOnClickListener { listener.goToComment(contentUid, contentDTO.uid!!) }
+        mComImage?.setOnClickListener { listener.goToComments(contentDTO.imageUrl!!,contentUid, contentDTO.uid!!) }
         mLikeCount?.setOnClickListener { listener.goToLikes(contentDTO.favorites.keys.toList()) }
-        mCommentCount?.setOnClickListener { listener.goToComments(contentUid, contentDTO.uid!!) }
-
+        mCommentCount?.setOnClickListener { listener.goToComments(contentDTO.imageUrl!!,contentUid, contentDTO.uid!!) }
 
     }
 }

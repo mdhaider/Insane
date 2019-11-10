@@ -4,97 +4,59 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import dev.nehal.insane.R
+import dev.nehal.insane.databinding.FragmentAlarmBinding
 import dev.nehal.insane.model.AlarmDTO
-import kotlinx.android.synthetic.main.fragment_alarm.view.*
-import kotlinx.android.synthetic.main.item_comment.view.*
-import java.util.*
 
 
 class AlarmFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_alarm, container, false)
-        view.alarmframgent_recyclerview.adapter = AlarmRecyclerViewAdapter()
-        view.alarmframgent_recyclerview.layoutManager = LinearLayoutManager(activity)
+    private lateinit var binding: FragmentAlarmBinding
+    private lateinit var adapter: AlarmAdapter
+    private lateinit var alarmList: ArrayList<AlarmDTO>
+    var alarmSnapshot: ListenerRegistration? = null
 
-        return view
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_alarm, container, false)
+        return binding.root
     }
 
-    inner class AlarmRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        val alarmDTOList = ArrayList<AlarmDTO>()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        init {
+        alarmList = ArrayList()
+        adapter = AlarmAdapter(alarmList)
+        binding.rvAlarm.adapter = adapter
+        binding.rvAlarm.layoutManager = LinearLayoutManager(activity)
 
-            val uid = FirebaseAuth.getInstance().currentUser!!.uid
-            println(uid)
-            FirebaseFirestore.getInstance()
-                    .collection("alarms")
-                    .whereEqualTo("destinationUid", uid)
-                    .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                        alarmDTOList.clear()
-                        if(querySnapshot == null)return@addSnapshotListener
-                        for (snapshot in querySnapshot?.documents!!) {
-                            alarmDTOList.add(snapshot.toObject(AlarmDTO::class.java)!!)
-                        }
-                        alarmDTOList.sortByDescending { it.timestamp }
-                        notifyDataSetChanged()
-                    }
+        getData()
+    }
 
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_comment, parent, false)
-            return CustomViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-            val profileImage = holder.itemView.imgProf
-            val commentTextView = holder.itemView.tvProfName
-
-            FirebaseFirestore.getInstance().collection("profileImages")
-                    .document(alarmDTOList[position].uid!!).get().addOnCompleteListener {
-                        task ->
-                        if(task.isSuccessful){
-                            val url = task.result!!["image"]
-                            Glide.with(activity!!)
-                                    .load(url)
-                                    .apply(RequestOptions().circleCrop())
-                                    .into(profileImage)
-                        }
-                    }
-
-            when (alarmDTOList[position].kind) {
-                0 -> {
-                    val str_0 = alarmDTOList[position].username +" "+getString(R.string.alarm_favorite)
-                    commentTextView.text = str_0
+    private fun getData() {
+        alarmSnapshot=FirebaseFirestore.getInstance()
+            .collection("alarms")
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                alarmList.clear()
+                if (querySnapshot == null) return@addSnapshotListener
+                for (snapshot in querySnapshot.documents) {
+                    alarmList.add(snapshot.toObject(AlarmDTO::class.java)!!)
                 }
-
-                1 -> {
-                    val str_1 = alarmDTOList[position].username+" "+ getString(R.string.alarm_comment)+" "+alarmDTOList[position].message
-                    commentTextView.text = str_1
-                }
-
-                2 -> {
-                    val str_2 = alarmDTOList[position].username +" "+getString(R.string.alarm_follow)
-                    commentTextView.text = str_2
-                }
+                alarmList.sortByDescending { it.timestamp }
+                adapter.notifyDataSetChanged()
             }
-        }
+    }
 
-        override fun getItemCount(): Int {
-
-            return alarmDTOList.size
-        }
-        inner class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
+    override fun onStop() {
+        super.onStop()
+        alarmSnapshot?.remove()
     }
 }

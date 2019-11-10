@@ -161,6 +161,7 @@ class SingleDetailFragment : DialogFragment() {
         val alarmDTO = AlarmDTO()
         alarmDTO.destinationUid = destinationUid
         alarmDTO.userId = user!!.phoneNumber
+        alarmDTO.contentId = contentUid
         alarmDTO.uid = user?.uid
         alarmDTO.kind = 0
         alarmDTO.username = user?.displayName

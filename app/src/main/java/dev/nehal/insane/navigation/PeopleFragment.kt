@@ -18,7 +18,6 @@ import dev.nehal.insane.modules.login.User
 class PeopleFragment : Fragment() {
     private lateinit var binding: PeopleFragmentBinding
     private lateinit var adapter: PeopleAdapter
-    private lateinit var viewModel: PeopleViewModel
     private lateinit var list: ArrayList<User>
 
     override fun onCreateView(

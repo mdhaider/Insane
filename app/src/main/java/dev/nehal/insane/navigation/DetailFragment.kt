@@ -87,13 +87,6 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun goToComment(contentUid: String, userUid: String) {
-                val intent = Intent(activity, CommentActivity::class.java)
-                intent.putExtra("contentUid", contentUid)
-                intent.putExtra("destinationUid", userUid)
-                startActivity(intent)
-            }
-
             override fun goToLikes(uidList: List<String>) {
 
                val arr: Array<String> =uidList.toTypedArray()
@@ -106,13 +99,13 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
                 startActivity(intent)
             }
 
-            override fun goToComments(contentUid: String, userUid: String) {
+            override fun goToComments(imageUri:String,contentUid: String, userUid: String) {
                 val intent = Intent(activity, CommentActivity::class.java)
                 intent.putExtra("contentUid", contentUid)
+                intent.putExtra("imageUri", imageUri)
                 intent.putExtra("destinationUid", userUid)
                 startActivity(intent)
             }
-
         }
 
         url = ""

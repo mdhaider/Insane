@@ -32,9 +32,7 @@ class DetailAdapter(
         fun getMore()
         fun goToDetailPost()
         fun setfav()
-        fun goToComment(contentUid: String, userUid: String)
         fun goToLikes(uidList:List<String>)
-        fun goToComments(contentUid: String, userUid: String)
+        fun goToComments(imageUri:String, contentUid: String, userUid: String)
     }
-
 }

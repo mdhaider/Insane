@@ -20,6 +20,7 @@ class CommentActivity : AppCompatActivity() {
     var contentUid: String? = null
     var user: FirebaseUser? = null
     var destinationUid: String? = null
+    var imageUri:String?=null
     var fcmPush: FcmPush? = null
     private lateinit var commentsList: ArrayList<ContentDTO.Comment>
     var commentSnapshot: ListenerRegistration? = null
@@ -32,6 +33,7 @@ class CommentActivity : AppCompatActivity() {
         user = FirebaseAuth.getInstance().currentUser
         destinationUid = intent.getStringExtra("destinationUid")
         contentUid = intent.getStringExtra("contentUid")
+        imageUri=intent.getStringExtra("imageUri")
         fcmPush = FcmPush()
 
         binding.postComment.setOnClickListener {
@@ -104,6 +106,8 @@ class CommentActivity : AppCompatActivity() {
         alarmDTO.uid = user?.uid
         alarmDTO.kind = 1
         alarmDTO.message = message
+        alarmDTO.contentId = contentUid
+        alarmDTO.imageUri= imageUri
         alarmDTO.timestamp = System.currentTimeMillis()
 
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
