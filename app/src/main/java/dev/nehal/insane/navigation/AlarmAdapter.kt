@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.nehal.insane.model.AlarmDTO
 
 
-class AlarmAdapter(private val list: ArrayList<AlarmDTO>)
+class AlarmAdapter(private val list: ArrayList<AlarmDTO>, private val itemClickListener: (Int) -> Unit)
     : RecyclerView.Adapter<AlarmViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmViewHolder {
@@ -16,7 +16,7 @@ class AlarmAdapter(private val list: ArrayList<AlarmDTO>)
 
     override fun onBindViewHolder(holder: AlarmViewHolder, position: Int) {
         val alarmDTO: AlarmDTO = list[position]
-        holder.bind(alarmDTO)
+        holder.bind(alarmDTO, itemClickListener)
     }
 
     override fun getItemCount(): Int = list.size

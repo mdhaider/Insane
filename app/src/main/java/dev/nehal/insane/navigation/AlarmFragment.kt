@@ -1,6 +1,7 @@
 package dev.nehal.insane.navigation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +13,15 @@ import com.google.firebase.firestore.ListenerRegistration
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.FragmentAlarmBinding
 import dev.nehal.insane.model.AlarmDTO
+import dev.nehal.insane.model.ContentDTO
 
 
 class AlarmFragment : Fragment() {
-
     private lateinit var binding: FragmentAlarmBinding
     private lateinit var adapter: AlarmAdapter
     private lateinit var alarmList: ArrayList<AlarmDTO>
-    var alarmSnapshot: ListenerRegistration? = null
+    private var alarmSnapshot: ListenerRegistration? = null
+    private var contentDTO: ContentDTO? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,8 +35,12 @@ class AlarmFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val itemOnClick: (Int) -> Unit = { position ->
+            getPostData(alarmList[position].contentId!!)
+        }
+
         alarmList = ArrayList()
-        adapter = AlarmAdapter(alarmList)
+        adapter = AlarmAdapter(alarmList, itemClickListener = itemOnClick)
         binding.rvAlarm.adapter = adapter
         binding.rvAlarm.layoutManager = LinearLayoutManager(activity)
 
@@ -42,7 +48,7 @@ class AlarmFragment : Fragment() {
     }
 
     private fun getData() {
-        alarmSnapshot=FirebaseFirestore.getInstance()
+        alarmSnapshot = FirebaseFirestore.getInstance()
             .collection("alarms")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 alarmList.clear()
@@ -58,5 +64,30 @@ class AlarmFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         alarmSnapshot?.remove()
+    }
+
+    private fun goToDetail(contentId: String,contentDTO: ContentDTO) {
+        val dialogFragment = SingleDetailFragment() //here MyDialog is my custom dialog
+        val fragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
+        val bundle = Bundle()
+
+        bundle.putSerializable("CONTENT_DTO", contentDTO)
+        bundle.putString("CONTENT_UID", contentId)
+
+        dialogFragment.arguments = bundle
+        dialogFragment.show(fragmentTransaction, "dialog")
+    }
+
+    private fun getPostData(contentId: String) {
+
+        FirebaseFirestore
+            .getInstance().collection("images").document(contentId).get()
+            .addOnSuccessListener { document ->
+                contentDTO = document.toObject((ContentDTO::class.java))
+                goToDetail(contentId, contentDTO!!)
+
+            }.addOnFailureListener {
+                Log.d("alarmfrag", "eror in getting data")
+            }
     }
 }

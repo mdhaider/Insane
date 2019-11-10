@@ -34,7 +34,6 @@ class SingleDetailFragment : DialogFragment() {
     var user: FirebaseUser? = null
     private lateinit var newContentDTO: ContentDTO
     private var contentUid: String? = null
-    private  val requestCode = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

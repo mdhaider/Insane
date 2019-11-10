@@ -29,7 +29,7 @@ class AlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mPostImage = itemView.findViewById(R.id.imgPostSmall)
     }
 
-    fun bind(alarmDTO: AlarmDTO) {
+    fun bind(alarmDTO: AlarmDTO, itemClickListener:(Int)->Unit) {
         FirebaseFirestore.getInstance().collection("profileImages").document(alarmDTO.uid!!)
             .get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -53,6 +53,8 @@ class AlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             .error(R.drawable.default_header)
             .placeholder(R.drawable.default_header)
             .into(mPostImage!!)
+
+        itemView.setOnClickListener { itemClickListener(adapterPosition) }
 
     }
 }
