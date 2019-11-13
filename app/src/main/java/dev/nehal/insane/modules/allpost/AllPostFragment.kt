@@ -173,7 +173,7 @@ class AllPostFragment : Fragment() {
         items["likes"] = true
         items["timestamp"] = System.currentTimeMillis()
         firestoreDB!!.collection("likes").document(postId).collection("users")
-            .document(AppPreferences.userid!!).set(items).addOnSuccessListener {
+            .document(AppPreferences.phone!!).set(items).addOnSuccessListener {
             Log.d("likes", "successfully added to fav")
                 setFavorite(postId)
         }.addOnFailureListener {
@@ -187,7 +187,7 @@ class AllPostFragment : Fragment() {
         items["postId"] = postId
         items["timestamp"] = System.currentTimeMillis()
 
-        firestoreDB!!.collection("favorites").document(AppPreferences.userid!!).collection("posts").document(postId).set(items).addOnSuccessListener {
+        firestoreDB!!.collection("favorites").document(AppPreferences.phone!!).collection("posts").document(postId).set(items).addOnSuccessListener {
                 Log.d("fav", "successfully added to fav")
             }.addOnFailureListener {
                 Log.d("fav", "add to fav failed")
@@ -196,7 +196,7 @@ class AllPostFragment : Fragment() {
 
     private fun unfav(postId: String) {
         firestoreDB!!.collection("favorites").document(postId).collection("users")
-            .document(AppPreferences.userid!!).delete().addOnSuccessListener {
+            .document(AppPreferences.phone!!).delete().addOnSuccessListener {
                 Log.d("AllPost", "successfully added to fav")
             }.addOnFailureListener {
                 Log.d("AllPost", "add to fav failed")

@@ -1,4 +1,4 @@
-package dev.nehal.insane.modules.login
+package dev.nehal.insane.prelogin
 
 import android.os.Bundle
 import android.util.Log
@@ -13,8 +13,11 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.SignUpReqFragmentBinding
+import dev.nehal.insane.modules.login.User
 import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
+import dev.nehal.insane.shared.hideKeyboard
+import dev.nehal.insane.shared.onChange
 
 class SignUpReqFragment : Fragment() {
     private lateinit var phNum: String
@@ -25,10 +28,7 @@ class SignUpReqFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.apply {
-            phNum = getString(Const.PHONE_NUM, "")
-
-        }
+        phNum = AppPreferences.phone!!
     }
 
     override fun onCreateView(
@@ -48,43 +48,63 @@ class SignUpReqFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.tvphoneChange.text = getString(R.string.change, AppPreferences.phone)
+
+        binding.mName.onChange {
+            binding.btnReq.isEnabled = it.length > 3
+        }
+
         binding.btnReq.setOnClickListener {
+            hideKeyboard()
+            binding.prEnterName.visibility = View.VISIBLE
+            binding.btnReq.visibility = View.GONE
             requestSignUp()
         }
+
+        binding.tvphoneChange.setOnClickListener {
+            goToEnterPhone()
+        }
+    }
+
+    private fun goToEnterPhone() {
+        AppPreferences.phone = ""
+        AppPreferences.signUpState=0
+        findNavController().navigate(R.id.action_signup_enterphone)
     }
 
     private fun requestSignUp() {
         db = FirebaseFirestore.getInstance()
 
         try {
-            var name:String= binding.mName.text.toString().toLowerCase()
+            var name: String = binding.mName.text.toString()
             val user = User(phNum)
             user.mName = name
-            user.pin=""
-            user.isAdmin=false
-            user.isApproved=true
-            val id:String="${name[0]}"+phNum.subSequence(0,5)
-            user.userID=id
-            user.timseStamp=System.currentTimeMillis()
+            user.pin = ""
+            user.isAdmin = false
+            user.isApproved = false
+            val id: String = "${name[0]}" + phNum.subSequence(0, 5)
+            user.userID = id
+            user.timseStamp = System.currentTimeMillis()
 
-            db.collection("signup").document(phNum).set(user).addOnSuccessListener { documentReference ->
-                Log.d("TAG", "DocumentSnapshot added with ID: $documentReference")
-               goToVerifyPhone()
-            }.addOnFailureListener { e ->
-                Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
-            }
+            db.collection("signup").document(phNum).set(user)
+                .addOnSuccessListener { documentReference ->
+                    Log.d("TAG", "DocumentSnapshot added with ID: $documentReference")
+                    binding.prEnterName.visibility = View.GONE
+                    goToNext(name)
+                }.addOnFailureListener { e ->
+                    Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
+                }
         } catch (e: Exception) {
             Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
+            binding.prEnterName.visibility = View.GONE
+            binding.btnReq.visibility = View.VISIBLE
         }
     }
 
-    private fun goToNext() {
-        val bundle = Bundle().apply {
-            putString(ReqStatusFragment.KEY_NUMBER, phNum)
-            putString(ReqStatusFragment.KEY_NAME, binding.mName.text.toString())
-        }
-
-        findNavController().navigate(R.id.action_signupreq_reqstatus, bundle)
+    private fun goToNext(name: String) {
+        AppPreferences.userName = name
+        AppPreferences.signUpState = 2
+        findNavController().navigate(R.id.action_signupreq_reqstatus)
     }
 
 
@@ -98,8 +118,7 @@ class SignUpReqFragment : Fragment() {
         findNavController().navigate(R.id.action_reqstatus_verifyphone, bundle)
     }
 
-    private fun saveUserName(){
-       AppPreferences.userName=binding.mName.text.toString()
-
+    private fun saveUserName() {
+        AppPreferences.userName = binding.mName.text.toString()
     }
 }

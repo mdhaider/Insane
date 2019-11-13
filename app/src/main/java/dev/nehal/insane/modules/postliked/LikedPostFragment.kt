@@ -70,7 +70,7 @@ class LikedPostFragment : Fragment() {
         loadNotesList()
 
         firestoreListener =
-            firestoreDB!!.collection("favorites").document(AppPreferences.userid!!).collection("posts")
+            firestoreDB!!.collection("favorites").document(AppPreferences.phone!!).collection("posts")
                 .addSnapshotListener(EventListener { documentSnapshots, e ->
                     if (e != null) {
                         Log.e(TAG, "Listen failed!", e)

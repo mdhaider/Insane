@@ -55,21 +55,24 @@ class EnterMobileFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         binding.mNumber.onChange {
-            if (it.length == 10) checkUserStatus(it)
+            if (it.length == 10) {
+                hideKeyboard()
+                binding.tilNumber.visibility = View.GONE
+                showProgress(true)
+                checkUserStatus(it)
+            }
         }
     }
 
     private fun checkUserStatus(phNum: String) {
         Log.d(TAG, "checking status $phNum")
         phNumb = phNum
-        hideKeyboard()
 
         val dbRef = db.collection("signup").document(phNumb)
 
         dbRef.get()
             .addOnSuccessListener { document ->
-                AppPreferences.userid = binding.mNumber.text.toString()
-
+                showProgress(false)
                 binding.mNumber.text = null
 
                 if (document.data != null) {
@@ -84,10 +87,14 @@ class EnterMobileFragment : Fragment() {
                 } else {
                     Log.d(TAG, "user not reg")
                     goToSignUp()
+                    AppPreferences.signUpState=1
+                    AppPreferences.phone= phNumb
                 }
 
             }.addOnFailureListener { exception ->
-
+                showProgress(false)
+                binding.tilNumber.visibility = View.VISIBLE
+                binding.mNumber.text = null
                 Log.d(TAG, exception.toString())
             }
     }
@@ -133,4 +140,15 @@ class EnterMobileFragment : Fragment() {
 
         findNavController().navigate(dev.nehal.insane.R.id.action_entermobile_verify_phone, bundle)
     }
+
+    private fun showProgress(shouldShow: Boolean) {
+        if (shouldShow) {
+            binding.prEnterPh.visibility = View.VISIBLE
+        } else {
+            binding.prEnterPh.visibility = View.GONE
+        }
+
+    }
+
+
 }

@@ -149,7 +149,7 @@ class NewPostFragment : Fragment() {
     private fun addUploadRecordToDb(uri: String, capt: String) {
         db = FirebaseFirestore.getInstance()
         postId = ""
-        userId = AppPreferences.userid!!
+        userId = AppPreferences.phone!!
         Log.d("phonum", userId!!)
         val timeStamp = System.currentTimeMillis()
         val post = Post(postId, userId, uri, capt, timeStamp)

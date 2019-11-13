@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.ReqStatusFragmentBinding
+import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
 
 class ReqStatusFragment : Fragment() {
@@ -23,19 +24,14 @@ class ReqStatusFragment : Fragment() {
 
     companion object {
         fun newInstance() = ReqStatusFragment()
-        const val KEY_NUMBER = "number"
-        const val KEY_NAME = "name"
         const val TAG = "ReqStatusFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        phNum=AppPreferences.phone!!
+        mName=AppPreferences.userName!!
 
-        arguments?.apply {
-            phNum = getString(KEY_NUMBER, "")
-            mName = getString(KEY_NAME, "")
-
-        }
     }
 
     private lateinit var viewModel: ReqStatusViewModel

@@ -1,4 +1,4 @@
-package dev.nehal.insane.modules.login
+package dev.nehal.insane.prelogin
 
 import androidx.lifecycle.ViewModel
 

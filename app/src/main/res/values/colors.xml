@@ -5,7 +5,7 @@
     <color name="colorPrimary">#EB857C</color>
     <color name="colorPrimaryLight">#ECACA7</color>
     <color name="colorPrimaryDark">#E9695F</color>
-    <color name="colorAccent">#EB857C</color>
+    <color name="colorAccent">#FB8C00</color>
     <color name="colorTextPrimary">@android:color/primary_text_light</color>
     <color name="colorTextSecondary">@android:color/tertiary_text_light</color>
     <color name="white">#FFF</color>
@@ -15,7 +15,6 @@
     <color name="colorLightGray">#f1f1f1</color>
     <color name="common_gray2">#ffdadada</color>
     <color name="common_primary">#fff76c6f</color>
-
     <color name="black">#000000</color>
 
 </resources>

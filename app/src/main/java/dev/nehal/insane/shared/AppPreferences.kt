@@ -10,10 +10,11 @@ object AppPreferences {
     private lateinit var preferences: SharedPreferences
 
     // list of app specific preferences
-    private val USER_ID = Pair("user_id", "")
+    private val PHONE_NUM = Pair("phone_num", "")
     private val IS_ADMIN=Pair("is_admin",false)
     private val IS_WAITING=Pair("is_waiting", false)
     private val NAME_USER=Pair("name", "")
+    private val SIGNUP_STATE=Pair("state", 0)
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -29,13 +30,13 @@ object AppPreferences {
         editor.apply()
     }
 
-    var userid: String?
+    var phone: String?
         // custom getter to get a preference of a desired type, with a predefined default value
-        get() = preferences.getString(USER_ID.first, USER_ID.second)
+        get() = preferences.getString(PHONE_NUM.first, PHONE_NUM.second)
 
         // custom setter to save a preference back to preferences file
         set(value) = preferences.edit {
-            it.putString(USER_ID.first, value)
+            it.putString(PHONE_NUM.first, value)
         }
 
     var isAdmin: Boolean
@@ -63,5 +64,12 @@ object AppPreferences {
         // custom setter to save a preference back to preferences file
         set(value) = preferences.edit {
             it.putString(NAME_USER.first, value)
+        }
+
+    var signUpState: Int
+        get() = preferences.getInt(SIGNUP_STATE.first, SIGNUP_STATE.second)
+
+        set(value) = preferences.edit {
+            it.putInt(SIGNUP_STATE.first, value)
         }
 }
