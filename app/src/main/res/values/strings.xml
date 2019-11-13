@@ -81,6 +81,10 @@
     <string name="add_a_comment">Add a comment...</string>
     <string name="comment">Comment</string>
     <string name="change">Change Phone# (%1$s)</string>
+    <string name="received_please">Thank you.</string>
+    <string name="check_status">Check Status</string>
+    <string name="name">Name:</string>
+    <string name="phone_number">Phone Number:</string>
 
 
 </resources>

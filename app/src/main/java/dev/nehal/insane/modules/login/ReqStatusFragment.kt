@@ -13,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.ReqStatusFragmentBinding
 import dev.nehal.insane.shared.AppPreferences
-import dev.nehal.insane.shared.Const
 
 class ReqStatusFragment : Fragment() {
 
@@ -54,10 +53,21 @@ class ReqStatusFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.tvReqNum.text=AppPreferences.phone!!
+        binding.tvReqName.text=AppPreferences.userName!!
+
         db = FirebaseFirestore.getInstance()
 
         binding.checkStatus.setOnClickListener {
             checkStatus()
+        }
+
+        binding.tvChangeDet.setOnClickListener {
+            AppPreferences.phone=""
+            AppPreferences.userName=""
+            goToEnterPhone()
+            AppPreferences.signUpState=0
+
         }
     }
 
@@ -84,10 +94,12 @@ class ReqStatusFragment : Fragment() {
     }
 
     private fun goToVerifyPhone() {
-        val bundle = Bundle().apply {
-            putString(Const.PHONE_NUM, phNum)
-        }
 
-        findNavController().navigate(R.id.action_reqstatus_verifyphone, bundle)
+        findNavController().navigate(R.id.action_reqstatus_verifyphone)
+    }
+
+    private fun goToEnterPhone() {
+
+        findNavController().navigate(R.id.action_reqstatus_enteryphone)
     }
 }

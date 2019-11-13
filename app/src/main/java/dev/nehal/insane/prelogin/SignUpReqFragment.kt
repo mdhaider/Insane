@@ -57,7 +57,7 @@ class SignUpReqFragment : Fragment() {
         binding.btnReq.setOnClickListener {
             hideKeyboard()
             binding.prEnterName.visibility = View.VISIBLE
-            binding.btnReq.visibility = View.GONE
+            binding.llParent.visibility = View.GONE
             requestSignUp()
         }
 
@@ -97,7 +97,7 @@ class SignUpReqFragment : Fragment() {
         } catch (e: Exception) {
             Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
             binding.prEnterName.visibility = View.GONE
-            binding.btnReq.visibility = View.VISIBLE
+            binding.llParent.visibility = View.VISIBLE
         }
     }
 
