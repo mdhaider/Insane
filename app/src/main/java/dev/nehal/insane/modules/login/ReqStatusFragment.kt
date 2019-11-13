@@ -72,30 +72,39 @@ class ReqStatusFragment : Fragment() {
     }
 
     private fun checkStatus() {
+        binding.prVerify.visibility=View.VISIBLE
+        binding.checkStatus.visibility=View.GONE
+        binding.txtStatus.text=""
         val ref = db.collection("signup").document(phNum)
 
         ref.get()
             .addOnSuccessListener { document ->
 
                 if (document != null) {
+                    binding.prVerify.visibility=View.GONE
+                    binding.checkStatus.visibility=View.VISIBLE
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                     if (document.getBoolean("approved")!!) {
                         goToVerifyPhone()
                     } else {
-                        binding.txtStatus.text = "Oh Sorry, Not Approved yet."
+                        binding.txtStatus.text = getString(R.string.not_approved)
                     }
 
                 } else {
                     Log.d(TAG, "No such document")
+                    binding.prVerify.visibility=View.GONE
+                    binding.checkStatus.visibility=View.VISIBLE
                 }
             }.addOnFailureListener { exception ->
                 Log.d(TAG, "get failed with ", exception)
+                binding.prVerify.visibility=View.GONE
+                binding.checkStatus.visibility=View.VISIBLE
             }
     }
 
     private fun goToVerifyPhone() {
 
-        findNavController().navigate(R.id.action_reqstatus_verifyphone)
+        findNavController().navigate(R.id.action_reqstatus_verifyphone1)
     }
 
     private fun goToEnterPhone() {

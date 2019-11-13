@@ -85,6 +85,8 @@
     <string name="check_status">Check Status</string>
     <string name="name">Name:</string>
     <string name="phone_number">Phone Number:</string>
+    <string name="change_details">Change Details</string>
+    <string name="not_approved">Oh Sorry, Not Approved yet.</string>
 
 
 </resources>

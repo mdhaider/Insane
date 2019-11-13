@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import dev.nehal.insane.R
 import dev.nehal.insane.modules.login.LoginActivity
-import dev.nehal.insane.navigation.HomeTabActivity
+import dev.nehal.insane.newd.main.MainActivity1
 
 class SplashActivity : AppCompatActivity() {
     private val splashTime = 1500L // 3 seconds
@@ -26,7 +26,6 @@ class SplashActivity : AppCompatActivity() {
 
     private fun decisionToGo() {
         if (auth.currentUser == null) {
-
             intent = Intent(
                 this,
                 LoginActivity::class.java
@@ -37,7 +36,7 @@ class SplashActivity : AppCompatActivity() {
         } else {
             intent = Intent(
                 this,
-                HomeTabActivity::class.java
+                MainActivity1::class.java
             )
             startActivity(intent)
             finish()

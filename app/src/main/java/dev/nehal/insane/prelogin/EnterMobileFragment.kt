@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
+import dev.nehal.insane.R
 import dev.nehal.insane.databinding.EnterMobileFragmentBinding
 import dev.nehal.insane.modules.login.ReqStatusFragment
 import dev.nehal.insane.shared.AppPreferences
@@ -76,6 +77,7 @@ class EnterMobileFragment : Fragment() {
                 binding.mNumber.text = null
 
                 if (document.data != null) {
+                    AppPreferences.phone = phNumb
                     Log.d(ReqStatusFragment.TAG, "DocumentSnapshot data: ${document.data}")
                     if (document.getBoolean("approved")!!) {
                         Log.d(TAG, document.getBoolean("approved")!!.toString())
@@ -87,8 +89,7 @@ class EnterMobileFragment : Fragment() {
                 } else {
                     Log.d(TAG, "user not reg")
                     goToSignUp()
-                    AppPreferences.signUpState=1
-                    AppPreferences.phone= phNumb
+                    AppPreferences.signUpState = 1
                 }
 
             }.addOnFailureListener { exception ->
@@ -130,15 +131,11 @@ class EnterMobileFragment : Fragment() {
             putString(Const.PHONE_NUM, phNumb)
         }
 
-        findNavController().navigate(dev.nehal.insane.R.id.action_entermobile_req_status, bundle)
+        findNavController().navigate(R.id.action_entermobile_req_status, bundle)
     }
 
     private fun goToVerifyPhone() {
-        val bundle = Bundle().apply {
-            putString(Const.PHONE_NUM, phNumb)
-        }
-
-        findNavController().navigate(dev.nehal.insane.R.id.action_entermobile_verify_phone, bundle)
+        findNavController().navigate(R.id.action_entermobile_verify_phone)
     }
 
     private fun showProgress(shouldShow: Boolean) {

@@ -15,9 +15,8 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.VerifyPhoneFragmentBinding
-import dev.nehal.insane.modules.MainActivity
+import dev.nehal.insane.newd.main.MainActivity1
 import dev.nehal.insane.shared.AppPreferences
-import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.onChange
 import java.util.concurrent.TimeUnit
 
@@ -38,11 +37,9 @@ class VerifyPhoneFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.apply {
-            phNum = "+91" + getString(Const.PHONE_NUM, "")
-            mName = getString(Const.USER_NAME, "")
 
-        }
+        phNum = "+91" + AppPreferences.phone!!
+        mName = AppPreferences.userName!!
     }
 
     override fun onCreateView(
@@ -69,7 +66,6 @@ class VerifyPhoneFragment : Fragment() {
 
         binding.mOTP.onChange {
             if (it.length == 6) {
-
                 val credential = PhoneAuthProvider.getCredential(mVerificationId!!, it)
                 signInWithPhoneAuthCredential(credential)
             }
@@ -153,7 +149,6 @@ class VerifyPhoneFragment : Fragment() {
                         Log.e("Sign in with phone auth", "Success ${user.toString()}")
                         updateProf()
                     } else {
-
                         Log.d(TAG, "Your Phone Number Verification is failed.Retry again!")
                     }
                 }
@@ -161,10 +156,9 @@ class VerifyPhoneFragment : Fragment() {
     }
 
     private fun showHomeActivity() {
-        val intent = Intent(activity, MainActivity::class.java)
+        val intent = Intent(activity, MainActivity1::class.java)
         startActivity(intent)
         activity!!.finish()
-
     }
 
     private fun updateProf() {
@@ -195,8 +189,8 @@ class VerifyPhoneFragment : Fragment() {
                 .addOnSuccessListener { documentReference ->
                     Log.d("TAG", "DocumentSnapshot added with UID: $documentReference")
                 }.addOnFailureListener { e ->
-                Log.d(TAG, "UID failed")
-            }
+                    Log.d(TAG, "UID failed")
+                }
         } catch (e: Exception) {
             Log.d(TAG, "UID failed")
         }
