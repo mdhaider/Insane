@@ -156,6 +156,7 @@ class VerifyPhoneFragment : Fragment() {
     }
 
     private fun showHomeActivity() {
+        binding.prVerify.visibility=View.GONE
         val intent = Intent(activity, MainActivity1::class.java)
         startActivity(intent)
         activity!!.finish()

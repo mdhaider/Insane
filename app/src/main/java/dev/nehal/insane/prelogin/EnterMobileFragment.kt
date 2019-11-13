@@ -37,7 +37,7 @@ class EnterMobileFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                dev.nehal.insane.R.layout.enter_mobile_fragment,
+               R.layout.enter_mobile_fragment,
                 container,
                 false
             )
@@ -75,9 +75,9 @@ class EnterMobileFragment : Fragment() {
             .addOnSuccessListener { document ->
                 showProgress(false)
                 binding.mNumber.text = null
+                AppPreferences.phone = phNumb
 
                 if (document.data != null) {
-                    AppPreferences.phone = phNumb
                     Log.d(ReqStatusFragment.TAG, "DocumentSnapshot data: ${document.data}")
                     if (document.getBoolean("approved")!!) {
                         Log.d(TAG, document.getBoolean("approved")!!.toString())

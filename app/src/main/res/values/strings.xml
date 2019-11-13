@@ -8,7 +8,7 @@
     <string name="confirm_pin">Confirm PIN</string>
     <string name="pin_enter">Enter 4-digit PIN</string>
     <string name="enter_4_digit_pin_to_continue">Enter 4-digit pin to continue</string>
-    <string name="auto_read">Waiting to read OTP</string>
+    <string name="auto_read">Waiting to read OTP …</string>
     <string name="enter_code">Enter OTP manually</string>
     <string name="enter_otp">Enter OTP received</string>
     <string name="upload">Upload</string>
