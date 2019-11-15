@@ -1,6 +1,7 @@
 package dev.nehal.insane.newd.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.FragmentProfileTabBinding
+import dev.nehal.insane.model.Users
 import dev.nehal.insane.navigation.AlarmFragment
 import dev.nehal.insane.navigation.DetailFragment
 import dev.nehal.insane.navigation.GridFragment
@@ -20,6 +22,7 @@ import dev.nehal.insane.navigation.GridFragment
 class ProfileTabFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileTabBinding
+    private lateinit var db: FirebaseFirestore
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,7 +43,11 @@ class ProfileTabFragment : Fragment() {
         binding.profViewPager.adapter = adapter
         binding.profTabs.setupWithViewPager(binding.profViewPager)
 
-        setProfileImage()
+        db= FirebaseFirestore.getInstance()
+
+       // setProfileImage()
+
+        getData()
 
         binding.profEdit.setOnClickListener {
             goToProfile()
@@ -69,6 +76,31 @@ class ProfileTabFragment : Fragment() {
             }
     }
 
+    private fun getData() {
+        val dbRef = db.collection("users").document(FirebaseAuth.getInstance().currentUser!!.uid)
 
+        dbRef.get()
+            .addOnSuccessListener { document ->
+                val users = document.toObject(Users::class.java)
+                if (users != null) {
+                    setData(users)
+                }
+
+            }.addOnFailureListener { exception ->
+                Log.d("ProfileFragment", exception.toString())
+            }
+    }
+
+    private fun setData(user:Users){
+
+        binding.profileName.text=user.userName
+
+        Glide.with(activity!!)
+            .load(user.profImageUri)
+            .error(R.drawable.ic_account)
+            .placeholder(R.drawable.ic_account)
+            .apply(RequestOptions().circleCrop())
+            .into(binding.profileImage)
+    }
 }
 

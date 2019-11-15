@@ -61,5 +61,17 @@
         android:id="@+id/navigation_profile_edit"
         android:name="dev.nehal.insane.navigation.ProfileFragment"
         android:label=""
-        tools:layout="@layout/profile_fragment"/>
+        tools:layout="@layout/profile_fragment">
+
+    <action
+        android:id="@+id/action_profile_home_profile"
+        app:destination="@+id/navigation_profile"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        app:popUpTo="@id/navigation_home"
+        app:popUpToInclusive="true" />
+    </fragment>
+
 </navigation>

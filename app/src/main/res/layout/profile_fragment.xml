@@ -21,7 +21,7 @@
                 android:id="@+id/profCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:layout_alignParentStart="true"
                 android:textColor="@color/colorPrimaryDark"
                 app:fontFamily="sans-serif-condensed"
@@ -31,7 +31,7 @@
                 android:id="@+id/profSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:layout_alignParentEnd="true"
                 android:textColor="@color/colorPrimaryDark"
                 app:fontFamily="sans-serif-condensed-medium"
@@ -43,81 +43,87 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             app:fontFamily="sans-serif-condensed"
             android:text="Edit Profile" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgProf"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="18sp"
-            app:srcCompat="@drawable/ic_account"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/profChange"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-           android:layout_gravity="center"
-            android:textColor="@color/colorPrimaryDark"
-            app:fontFamily="sans-serif"
-            android:layout_marginTop="12dp"
-            android:text="Change profile picture" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <LinearLayout
+            android:id="@+id/llParent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/profName"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgProf"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="18sp"
+                app:srcCompat="@drawable/ic_account"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/profChange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                app:fontFamily="sans-serif"
+                android:padding="12dp"
+                android:text="Change profile picture" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/enter_name"
-                android:inputType="textCapWords"
-                android:singleLine="true" />
+                android:layout_marginTop="12dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enter_name"
+                    android:inputType="textCapWords"
+                    android:singleLine="true" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/profPhone"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Phone"
-                android:inputType="textCapWords"
-                android:editable="false"
-                android:singleLine="true" />
+                android:layout_marginTop="12dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone"
+                    android:inputType="textCapWords"
+                    android:singleLine="true" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/profLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:layout_gravity="center"
-            android:textColor="@color/colorPrimaryDark"
-            app:fontFamily="sans-serif"
-            android:layout_marginTop="12dp"
-            android:text="Sign Out" />
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/profLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                app:fontFamily="sans-serif"
+                android:layout_marginTop="30dp"
+                android:text="Sign Out" />
+
+        </LinearLayout>
 
 
     </LinearLayout>
 
 
     <ProgressBar
-        android:id="@+id/rvProgress"
+        android:id="@+id/profProgress"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

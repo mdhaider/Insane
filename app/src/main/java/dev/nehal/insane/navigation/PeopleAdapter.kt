@@ -15,8 +15,8 @@ class PeopleAdapter(private val list: ArrayList<Users>)
     }
 
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
-        val signUp: Users = list[position]
-        holder.bind(signUp)
+        val users: Users = list[position]
+        holder.bind(users)
     }
 
     override fun getItemCount(): Int = list.size

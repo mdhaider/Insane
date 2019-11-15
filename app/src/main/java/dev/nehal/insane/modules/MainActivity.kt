@@ -108,15 +108,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // 앨범에서 Profile Image 사진 선택시 호출 되는 부분분
         if (requestCode == PICK_PROFILE_FROM_ALBUM && resultCode == Activity.RESULT_OK) {
 
             var imageUri = data?.data
 
-
-            val uid = FirebaseAuth.getInstance().currentUser!!.uid //파일 업로드
-            //사진을 업로드 하는 부분  userProfileImages 폴더에 uid에 파일을 업로드함
-
+            val uid = FirebaseAuth.getInstance().currentUser!!.uid
             val ref: StorageReference = FirebaseStorage
                 .getInstance()
                 .reference

@@ -80,7 +80,6 @@ class AddPhotoFragment : Fragment() {
             findNavController().navigate(R.id.action_photo_home)
 
         }
-
     }
 
    private fun contentUpload() {

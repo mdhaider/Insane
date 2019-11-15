@@ -48,7 +48,7 @@ class PeopleFragment : Fragment() {
 
     private fun getData() {
         FirebaseFirestore.getInstance()
-            .collection("signUp").get().addOnSuccessListener { result ->
+            .collection("users").get().addOnSuccessListener { result ->
                 binding.rvProgress.visibility=View.GONE
                 for (document in result) {
                     Log.d("PeopleFrag", "${document.id} => ${document.data}")
@@ -64,6 +64,7 @@ class PeopleFragment : Fragment() {
                 binding.rvProgress.visibility=View.GONE
                 Log.d("PeopleFrag", "Error getting documents: ", exception)
             }
-
     }
+
+
 }
