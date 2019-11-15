@@ -23,8 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.UserListFragmentBinding
+import dev.nehal.insane.model.SignUp
 import dev.nehal.insane.modules.login.CreatePinFragment
-import dev.nehal.insane.modules.login.User
 import dev.nehal.insane.shared.AppPreferences
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,10 +32,10 @@ import java.util.*
 
 class UserListFragment : Fragment() {
     private val TAG = "UserListFragment"
-    private var adapter: FirestoreRecyclerAdapter<User, UserListViewHolder>? = null
+    private var adapter: FirestoreRecyclerAdapter<SignUp, UserListViewHolder>? = null
     private lateinit var binding: UserListFragmentBinding
     private var firestoreListener: ListenerRegistration? = null
-    private var notesList = mutableListOf<User>()
+    private var notesList = mutableListOf<SignUp>()
     private var firestoreDB: FirebaseFirestore? = null
     private var isActive:Boolean=false
 
@@ -87,7 +87,7 @@ class UserListFragment : Fragment() {
                     notesList = mutableListOf()
 
                     for (doc in documentSnapshots!!) {
-                        val note = doc.toObject(User::class.java)
+                        val note = doc.toObject(SignUp::class.java)
                         // note.user = doc.i
                         notesList.add(note)
                     }
@@ -102,19 +102,19 @@ class UserListFragment : Fragment() {
         val query =
             firestoreDB!!.collection("users")
 
-        val response = FirestoreRecyclerOptions.Builder<User>()
-            .setQuery(query, User::class.java)
+        val response = FirestoreRecyclerOptions.Builder<SignUp>()
+            .setQuery(query, SignUp::class.java)
             .build()
 
-        adapter = object : FirestoreRecyclerAdapter<User, UserListViewHolder>(response) {
-            override fun onBindViewHolder(holder: UserListViewHolder, position: Int, model: User) {
+        adapter = object : FirestoreRecyclerAdapter<SignUp, UserListViewHolder>(response) {
+            override fun onBindViewHolder(holder: UserListViewHolder, position: Int, model: SignUp) {
                 val user = notesList[position]
 
-                holder.name.text = user.mName
-                holder.time.text = getTimeStamp(user.timseStamp)
-                holder.phone.text = user.phonNum
+                holder.name.text = user.userName
+                holder.time.text = getTimeStamp(user.accCreationReqDate)
+                holder.phone.text = user.phoneNumber
 
-                Glide.with(activity!!).load(user.imageuri).error(R.drawable.ic_person_black_24dp)
+                Glide.with(activity!!).load(user.phoneNumber).error(R.drawable.ic_person_black_24dp)
                     .apply(RequestOptions.circleCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imgProf)
 
@@ -131,7 +131,7 @@ class UserListFragment : Fragment() {
                 }
 
                 holder.tvStatus.setOnClickListener{
-                    updateStatus(user.phonNum)
+                    updateStatus(user.phoneNumber)
                 }
             }
 

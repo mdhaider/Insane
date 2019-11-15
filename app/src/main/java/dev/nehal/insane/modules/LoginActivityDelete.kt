@@ -175,7 +175,7 @@ class LoginActivityDelete : AppCompatActivity() , View.OnClickListener {
     }
     private fun startVerfiy(){
 
-        Log.e("User Phone Number ===  ", phoneNumber)
+        Log.e("SignUp Phone Number ===  ", phoneNumber)
 
         if (phoneNumber != null && !phoneNumber!!.isEmpty()) {
             startPhoneNumberVerification(phoneNumber!!)

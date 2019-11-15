@@ -28,8 +28,8 @@ class ReqStatusFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        phNum=AppPreferences.phone!!
-        mName=AppPreferences.userName!!
+        phNum = AppPreferences.phone!!
+        mName = AppPreferences.userName!!
 
     }
 
@@ -53,8 +53,8 @@ class ReqStatusFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvReqNum.text=AppPreferences.phone!!
-        binding.tvReqName.text=AppPreferences.userName!!
+        binding.tvReqNum.text = phNum
+        binding.tvReqName.text = mName
 
         db = FirebaseFirestore.getInstance()
 
@@ -63,26 +63,26 @@ class ReqStatusFragment : Fragment() {
         }
 
         binding.tvChangeDet.setOnClickListener {
-            AppPreferences.phone=""
-            AppPreferences.userName=""
+            AppPreferences.phone = ""
+            AppPreferences.userName = ""
             goToEnterPhone()
-            AppPreferences.signUpState=0
+            AppPreferences.signUpState = 0
 
         }
     }
 
     private fun checkStatus() {
-        binding.prVerify.visibility=View.VISIBLE
-        binding.checkStatus.visibility=View.GONE
-        binding.txtStatus.text=""
-        val ref = db.collection("signup").document(phNum)
+        binding.prVerify.visibility = View.VISIBLE
+        binding.checkStatus.visibility = View.GONE
+        binding.txtStatus.text = ""
+        val ref = db.collection("signUp").document(phNum)
 
         ref.get()
             .addOnSuccessListener { document ->
 
                 if (document != null) {
-                    binding.prVerify.visibility=View.GONE
-                    binding.checkStatus.visibility=View.VISIBLE
+                    binding.prVerify.visibility = View.GONE
+                    binding.checkStatus.visibility = View.VISIBLE
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                     if (document.getBoolean("approved")!!) {
                         goToVerifyPhone()
@@ -92,23 +92,21 @@ class ReqStatusFragment : Fragment() {
 
                 } else {
                     Log.d(TAG, "No such document")
-                    binding.prVerify.visibility=View.GONE
-                    binding.checkStatus.visibility=View.VISIBLE
+                    binding.prVerify.visibility = View.GONE
+                    binding.checkStatus.visibility = View.VISIBLE
                 }
             }.addOnFailureListener { exception ->
                 Log.d(TAG, "get failed with ", exception)
-                binding.prVerify.visibility=View.GONE
-                binding.checkStatus.visibility=View.VISIBLE
+                binding.prVerify.visibility = View.GONE
+                binding.checkStatus.visibility = View.VISIBLE
             }
     }
 
     private fun goToVerifyPhone() {
-
         findNavController().navigate(R.id.action_reqstatus_verifyphone1)
     }
 
     private fun goToEnterPhone() {
-
         findNavController().navigate(R.id.action_reqstatus_enteryphone)
     }
 }

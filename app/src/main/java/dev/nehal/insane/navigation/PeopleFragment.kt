@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.PeopleFragmentBinding
-import dev.nehal.insane.modules.login.User
+import dev.nehal.insane.model.Users
 
 
 class PeopleFragment : Fragment() {
     private lateinit var binding: PeopleFragmentBinding
     private lateinit var adapter: PeopleAdapter
-    private lateinit var list: ArrayList<User>
+    private lateinit var list: ArrayList<Users>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,13 +48,13 @@ class PeopleFragment : Fragment() {
 
     private fun getData() {
         FirebaseFirestore.getInstance()
-            .collection("signup").get().addOnSuccessListener { result ->
+            .collection("signUp").get().addOnSuccessListener { result ->
                 binding.rvProgress.visibility=View.GONE
                 for (document in result) {
                     Log.d("PeopleFrag", "${document.id} => ${document.data}")
-                    list.add(document.toObject(User::class.java))
+                    list.add(document.toObject(Users::class.java))
                 }
-                list.sortByDescending { it.timseStamp }
+                list.sortByDescending { it.accCreationDate }
 
                 binding.guestCount.text = getString(R.string.guest_count, list.size.toString())
                 adapter.notifyDataSetChanged()

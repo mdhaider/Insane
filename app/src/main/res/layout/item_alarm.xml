@@ -64,7 +64,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"
             android:scaleType="fitXY"
-            tools:src="@drawable/default_header" />
+            tools:src="@drawable/placeholder_image_new" />
 
     </RelativeLayout>
 </layout>

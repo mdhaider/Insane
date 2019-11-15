@@ -73,7 +73,7 @@
             android:layout_below="@+id/topView"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/default_header" />
+            android:src="@drawable/placeholder_image_new" />
 
         <!-- favorite & comment -->
 

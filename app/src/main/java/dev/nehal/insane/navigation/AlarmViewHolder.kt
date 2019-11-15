@@ -65,8 +65,8 @@ class AlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
 
         Glide.with(itemView.context)
             .load(alarmDTO.imageUri)
-            .error(R.drawable.default_header)
-            .placeholder(R.drawable.default_header)
+            .error(R.drawable.placeholder_image_new)
+            .placeholder(R.drawable.placeholder_image_new)
             .into(mPostImage!!)
 
         itemView.setOnClickListener { itemClickListener(adapterPosition) }

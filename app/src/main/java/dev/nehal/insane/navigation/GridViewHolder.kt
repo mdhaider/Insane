@@ -28,8 +28,8 @@ class GridViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         Glide.with(mItemImage!!.context)
             .load(contentDTO.imageUrl)
             .apply(requestOptions)
-            .error(R.drawable.ic_broken_image_black_24dp)
-            .placeholder(R.drawable.ic_broken_image_black_24dp)
+            .error(R.drawable.placeholder_image_new)
+            .placeholder(R.drawable.placeholder_image_new)
             .into(mItemImage!!)
 
         itemView.setOnClickListener { itemClickListener(adapterPosition) }

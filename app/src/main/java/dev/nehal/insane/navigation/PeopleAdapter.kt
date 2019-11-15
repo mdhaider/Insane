@@ -3,10 +3,10 @@ package dev.nehal.insane.navigation
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import dev.nehal.insane.modules.login.User
+import dev.nehal.insane.model.Users
 
 
-class PeopleAdapter(private val list: ArrayList<User>)
+class PeopleAdapter(private val list: ArrayList<Users>)
     : RecyclerView.Adapter<PeopleViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleViewHolder {
@@ -15,8 +15,8 @@ class PeopleAdapter(private val list: ArrayList<User>)
     }
 
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
-        val user: User = list[position]
-        holder.bind(user)
+        val signUp: Users = list[position]
+        holder.bind(signUp)
     }
 
     override fun getItemCount(): Int = list.size

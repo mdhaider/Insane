@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import dev.nehal.insane.R
-import dev.nehal.insane.modules.login.User
+import dev.nehal.insane.model.Users
 
 
 class PeopleViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
@@ -21,11 +21,11 @@ class PeopleViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mUserImage = itemView.findViewById(R.id.userImage)
     }
 
-    fun bind(user: User) {
-        mTitleView?.text = user.mName
+    fun bind(users: Users) {
+        mTitleView?.text = users.userName
 
         Glide.with(mTitleView!!.context)
-            .load(user.imageuri)
+            .load(users.profImageUri)
             .error(R.drawable.ic_account)
             .placeholder(R.drawable.ic_account)
             .apply(RequestOptions().circleCrop())

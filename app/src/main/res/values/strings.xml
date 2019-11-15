@@ -3,7 +3,7 @@
     <string name="enter_mobile_number">Phone Number</string>
     <string name="enter_name">Name</string>
     <string name="request">Continue</string>
-    <string name="create_pin_text">Looks Like you are new user, please enter 4-digit PIN</string>
+    <string name="create_pin_text">Looks Like you are new signUp, please enter 4-digit PIN</string>
     <string name="pin">Create PIN</string>
     <string name="confirm_pin">Confirm PIN</string>
     <string name="pin_enter">Enter 4-digit PIN</string>

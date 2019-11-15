@@ -86,8 +86,8 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
 
         Glide.with(itemView.context)
             .load(contentDTO.imageUrl)
-            .error(R.drawable.default_header)
-            .placeholder(R.drawable.default_header)
+            .error(R.drawable.placeholder_image_new)
+            .placeholder(R.drawable.placeholder_image_new)
             .into(mPostImage!!)
 
         mProfImage?.setOnClickListener { listener.goToprofile() }

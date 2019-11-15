@@ -44,6 +44,7 @@
                 android:fontFamily="sans-serif-condensed-light"
                 android:text="@string/enter_code"
                 android:textColor="@color/grey_500"
+                android:visibility="gone"
                 android:textSize="18sp" />
 
             <com.google.android.material.textfield.TextInputLayout

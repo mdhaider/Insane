@@ -37,7 +37,7 @@ class EnterMobileFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-               R.layout.enter_mobile_fragment,
+                R.layout.enter_mobile_fragment,
                 container,
                 false
             )
@@ -69,7 +69,7 @@ class EnterMobileFragment : Fragment() {
         Log.d(TAG, "checking status $phNum")
         phNumb = phNum
 
-        val dbRef = db.collection("signup").document(phNumb)
+        val dbRef = db.collection("signUp").document(phNumb)
 
         dbRef.get()
             .addOnSuccessListener { document ->
@@ -81,15 +81,17 @@ class EnterMobileFragment : Fragment() {
                     Log.d(ReqStatusFragment.TAG, "DocumentSnapshot data: ${document.data}")
                     if (document.getBoolean("approved")!!) {
                         Log.d(TAG, document.getBoolean("approved")!!.toString())
+                        AppPreferences.userName = document.getString("userName")
                         goToVerifyPhone()
                     } else {
                         Log.d(TAG, "not approved yet")
+                        AppPreferences.userName = document.getString("userName")
                         goToReqStatus()
                     }
                 } else {
                     Log.d(TAG, "user not reg")
                     goToSignUp()
-                    AppPreferences.signUpState = 1
+
                 }
 
             }.addOnFailureListener { exception ->
@@ -119,23 +121,21 @@ class EnterMobileFragment : Fragment() {
 
 
     private fun goToSignUp() {
-        val bundle = Bundle().apply {
-            putString(Const.PHONE_NUM, phNumb)
-        }
-
-        findNavController().navigate(dev.nehal.insane.R.id.action_entermobile_signupreq, bundle)
+        AppPreferences.signUpState = 1
+        findNavController().navigate(R.id.action_entermobile_signupreq)
     }
 
     private fun goToReqStatus() {
-        val bundle = Bundle().apply {
-            putString(Const.PHONE_NUM, phNumb)
-        }
-
-        findNavController().navigate(R.id.action_entermobile_req_status, bundle)
+        AppPreferences.signUpState = 2
+        findNavController().navigate(R.id.action_entermobile_req_status)
     }
 
     private fun goToVerifyPhone() {
-        findNavController().navigate(R.id.action_entermobile_verify_phone)
+        val bundle = Bundle().apply {
+            putBoolean(Const.IS_SIGNED_UP_ALREADY, true)
+        }
+
+        findNavController().navigate(R.id.action_entermobile_verify_phone, bundle)
     }
 
     private fun showProgress(shouldShow: Boolean) {

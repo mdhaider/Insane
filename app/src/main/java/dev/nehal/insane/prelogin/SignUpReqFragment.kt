@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.SignUpReqFragmentBinding
-import dev.nehal.insane.modules.login.User
+import dev.nehal.insane.model.SignUp
 import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.hideKeyboard
@@ -27,7 +27,6 @@ class SignUpReqFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         phNum = AppPreferences.phone!!
     }
 
@@ -76,17 +75,15 @@ class SignUpReqFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         try {
-            var name: String = binding.mName.text.toString()
-            val user = User(phNum)
-            user.mName = name
-            user.pin = ""
-            user.isAdmin = false
+            val name: String = binding.mName.text.toString().capitalize()
+            val user = SignUp(phNum)
+            user.phoneNumber=phNum
+            user.userName = name
             user.isApproved = false
-            val id: String = "${name[0]}" + phNum.subSequence(0, 5)
-            user.userID = id
-            user.timseStamp = System.currentTimeMillis()
+            user.isAdmin = false
+            user.accCreationReqDate = System.currentTimeMillis()
 
-            db.collection("signup").document(phNum).set(user)
+            db.collection("signUp").document(phNum).set(user)
                 .addOnSuccessListener { documentReference ->
                     Log.d("TAG", "DocumentSnapshot added with ID: $documentReference")
                     binding.prEnterName.visibility = View.GONE

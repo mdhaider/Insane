@@ -36,7 +36,7 @@ class MainActivityDelete : AppCompatActivity(), View.OnClickListener {
                 phoneNumber = phoneNumberEt.text.toString()
                 phoneNumber = "" + countryCode + phoneNumber
 
-                Log.e("User Phone Number ===  ", phoneNumber)
+                Log.e("SignUp Phone Number ===  ", phoneNumber)
 
                 if (validatePhoneNumber(phoneNumberEt.text.toString())) {
                     notifyUserBeforeVerify("We will be verfiying the phone number:\n\n$phoneNumber\n" +

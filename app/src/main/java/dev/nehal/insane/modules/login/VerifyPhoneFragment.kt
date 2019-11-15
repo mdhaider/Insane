@@ -6,17 +6,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.VerifyPhoneFragmentBinding
+import dev.nehal.insane.model.Users
 import dev.nehal.insane.newd.main.MainActivity1
 import dev.nehal.insane.shared.AppPreferences
+import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.onChange
 import java.util.concurrent.TimeUnit
 
@@ -28,6 +34,7 @@ class VerifyPhoneFragment : Fragment() {
     private var mResendToken: PhoneAuthProvider.ForceResendingToken? = null
     private lateinit var smsOTP: String
     private lateinit var mName: String
+    private var isSignedUpAlready: Boolean = false
 
     companion object {
         const val TAG = "VerifyPhoneFragment"
@@ -40,6 +47,10 @@ class VerifyPhoneFragment : Fragment() {
 
         phNum = "+91" + AppPreferences.phone!!
         mName = AppPreferences.userName!!
+
+        arguments?.apply {
+            isSignedUpAlready = getBoolean(Const.IS_SIGNED_UP_ALREADY, false)
+        }
     }
 
     override fun onCreateView(
@@ -83,7 +94,6 @@ class VerifyPhoneFragment : Fragment() {
                 val smsMessageSent: String = credential.smsCode.toString()
                 Log.e("the message is ----- ", smsMessageSent)
                 smsOTP = smsMessageSent
-
                 binding.mOTP.setText(smsMessageSent)
                 signInWithPhoneAuthCredential(credential)
             }
@@ -147,7 +157,7 @@ class VerifyPhoneFragment : Fragment() {
                     if (task.isSuccessful) {
                         val user = task.result?.user
                         Log.e("Sign in with phone auth", "Success ${user.toString()}")
-                        updateProf()
+                        goToNext(user?.uid!!)
                     } else {
                         Log.d(TAG, "Your Phone Number Verification is failed.Retry again!")
                     }
@@ -155,45 +165,41 @@ class VerifyPhoneFragment : Fragment() {
         }
     }
 
+    private fun goToNext(uid: String) {
+        if (isSignedUpAlready) {
+            showHomeActivity()
+        } else {
+            requestSignUp(uid)
+        }
+    }
+
     private fun showHomeActivity() {
-        binding.prVerify.visibility=View.GONE
+        binding.prVerify.visibility = View.GONE
         val intent = Intent(activity, MainActivity1::class.java)
         startActivity(intent)
         activity!!.finish()
     }
 
-    private fun updateProf() {
-        val userName = AppPreferences.userName
-        val user = FirebaseAuth.getInstance().currentUser
+    private fun requestSignUp(uid: String) {
+        val db = FirebaseFirestore.getInstance()
 
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(userName)
-            .build()
-
-        user?.updateProfile(profileUpdates)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("SignUpFragment", "User profile updated.")
-                    updateUsers(user.uid)
-                    showHomeActivity()
-                }
-            }
-    }
-
-    private fun updateUsers(uid: String) {
-        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
         try {
-            val user = User(phNum.takeLast(10))
-            user.UID = uid
+            val user = Users(AppPreferences.phone!!)
+            user.phoneNumber = AppPreferences.phone!!
+            user.userName = AppPreferences.userName!!
+            user.userUID = uid
+            user.profImageUri = ""
+            user.accCreationDate = System.currentTimeMillis()
 
-            db.collection("signup").document(phNum).update("uid", uid)
+            db.collection("users").document(uid).set(user)
                 .addOnSuccessListener { documentReference ->
-                    Log.d("TAG", "DocumentSnapshot added with UID: $documentReference")
+                    Log.d("TAG", "DocumentSnapshot added with ID: $documentReference")
+                    showHomeActivity()
                 }.addOnFailureListener { e ->
-                    Log.d(TAG, "UID failed")
+                    Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
                 }
         } catch (e: Exception) {
-            Log.d(TAG, "UID failed")
+            Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
         }
     }
 }
