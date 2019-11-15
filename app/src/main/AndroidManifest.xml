@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".newd.main.ViewDownloadsActivity"/>
         <activity
-            android:name=".newd.main.TabActivity1"
+            android:name=".newd.main.HomeTabFragment"
             android:label="@string/title_activity_tab1"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -39,15 +39,7 @@
             android:name=".modules.MainActivityDelete"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".modules.login.LoginActivity" />
-        <activity android:name=".navigation.AddPhotoActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="image/*" />
-            </intent-filter>
-        </activity>
         <activity android:name=".navigation.CommentActivity" />
         <activity android:name=".navigation.LikesActivity" />
         <activity android:name=".navigation.TabActivity" />

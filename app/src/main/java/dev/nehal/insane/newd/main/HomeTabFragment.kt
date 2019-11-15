@@ -12,7 +12,7 @@ import dev.nehal.insane.navigation.AlarmFragment
 import dev.nehal.insane.navigation.DetailFragment
 import dev.nehal.insane.navigation.GridFragment
 
-class TabActivity1 : Fragment() {
+class HomeTabFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager
     private lateinit var tabs: TabLayout
@@ -21,7 +21,7 @@ class TabActivity1 : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.activity_tab1, container, false)
+        val root = inflater.inflate(R.layout.fragment_home_tab, container, false)
         viewPager = root.findViewById(R.id.view_pager)
         tabs = root.findViewById(R.id.tabs)
 

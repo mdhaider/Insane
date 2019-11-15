@@ -6,9 +6,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,24 +20,37 @@ import com.google.firebase.storage.FirebaseStorage
 import com.nguyenhoanglam.imagepicker.model.Config
 import com.nguyenhoanglam.imagepicker.model.Image
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
+import dev.nehal.insane.R
+import dev.nehal.insane.databinding.FragmentAddPhotoBinding
 import dev.nehal.insane.model.ContentDTO
 import dev.nehal.insane.shared.hideKeyboard
-import kotlinx.android.synthetic.main.activity_add_photo.*
+import kotlinx.android.synthetic.main.fragment_add_photo.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AddPhotoActivity : AppCompatActivity() {
+class AddPhotoFragment : Fragment() {
     var photoUri: Uri? = null
     var storage: FirebaseStorage? = null
     var firestore: FirebaseFirestore? = null
     private var auth: FirebaseAuth? = null
     private var filePath: Uri? = null
+    private lateinit var binding:FragmentAddPhotoBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(dev.nehal.insane.R.layout.activity_add_photo)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding=DataBindingUtil.inflate(inflater, R.layout.fragment_add_photo,container,false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         onSharedIntent()
 
         storage = FirebaseStorage.getInstance()
@@ -59,11 +76,14 @@ class AddPhotoActivity : AppCompatActivity() {
 
             photoUri = Uri.fromFile(File(list[0].path))
 
+        } else{
+            findNavController().navigate(R.id.action_photo_home)
+
         }
-        super.onActivityResult(requestCode, resultCode, data)
+
     }
 
-    fun contentUpload() {
+   private fun contentUpload() {
         progress_bar.visibility = View.VISIBLE
 
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
@@ -73,7 +93,7 @@ class AddPhotoActivity : AppCompatActivity() {
             progress_bar.visibility = View.GONE
 
             Toast.makeText(
-                this, getString(dev.nehal.insane.R.string.upload_success),
+                activity, getString(dev.nehal.insane.R.string.upload_success),
                 Toast.LENGTH_SHORT
             ).show()
 
@@ -99,16 +119,15 @@ class AddPhotoActivity : AppCompatActivity() {
                     //게시물을 데이터를 생성 및 엑티비티 종료
                     firestore?.collection("images")?.document()?.set(contentDTO)
 
-                    setResult(Activity.RESULT_OK)
-                    finish()
-
+                    activity!!.setResult(Activity.RESULT_OK)
+                    findNavController().navigate(R.id.action_photo_home)
 
                 }
                 .addOnFailureListener {
                     progress_bar.visibility = View.GONE
 
                     Toast.makeText(
-                        this, getString(dev.nehal.insane.R.string.upload_fail),
+                        activity, getString(dev.nehal.insane.R.string.upload_fail),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -117,7 +136,7 @@ class AddPhotoActivity : AppCompatActivity() {
     }
 
     private fun onSharedIntent() {
-        val receiverdIntent = intent
+        val receiverdIntent = activity!!.intent
         val receivedAction = receiverdIntent.action
         val receivedType = receiverdIntent.type
 

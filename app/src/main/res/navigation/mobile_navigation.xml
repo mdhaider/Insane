@@ -7,19 +7,59 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="dev.nehal.insane.newd.main.TabActivity1"
+        android:name="dev.nehal.insane.newd.main.HomeTabFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home_tab" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_people"
         android:name="dev.nehal.insane.navigation.PeopleFragment"
         android:label=""
         tools:layout="@layout/people_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_add_photo"
+        android:name="dev.nehal.insane.navigation.AddPhotoFragment"
+        android:label=""
+        tools:layout="@layout/fragment_add_photo">
+
+        <action
+            android:id="@+id/action_photo_home"
+            app:destination="@+id/navigation_home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="dev.nehal.insane.newd.main.NotificationsFragment"
         android:label=""
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="dev.nehal.insane.newd.main.ProfileTabFragment"
+        android:label=""
+        tools:layout="@layout/fragment_profile_tab">
+
+        <action
+            android:id="@+id/action_profile_edit"
+            app:destination="@+id/navigation_profile_edit"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile_edit"
+        android:name="dev.nehal.insane.navigation.ProfileFragment"
+        android:label=""
+        tools:layout="@layout/profile_fragment"/>
 </navigation>

@@ -3,14 +3,11 @@ package dev.nehal.insane.modules
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
@@ -21,9 +18,12 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dev.nehal.insane.R
-import dev.nehal.insane.prelogin.EnterMobileFragment
 import dev.nehal.insane.modules.login.VerifyPhoneFragment
-import dev.nehal.insane.navigation.*
+import dev.nehal.insane.navigation.HomeTabActivity
+import dev.nehal.insane.navigation.PeopleFragment
+import dev.nehal.insane.navigation.TabActivity
+import dev.nehal.insane.navigation.UserFragment
+import dev.nehal.insane.prelogin.EnterMobileFragment
 import dev.nehal.insane.shared.AppPreferences
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -85,22 +85,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                     .commit()
                 return true
             }
-            R.id.action_add_photo -> {
-                if (ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    startActivity(Intent(this, AddPhotoActivity::class.java))
-                } else {
-                    Toast.makeText(
-                        this,
-                        "You do not have permission to read storage.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                return true
-            }
+
             R.id.action_favorite_alarm -> {
                 startActivity(Intent(this, TabActivity::class.java))
                 return true

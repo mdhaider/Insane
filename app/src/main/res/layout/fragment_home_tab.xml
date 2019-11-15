@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".newd.main.TabActivity1">
+    tools:context=".newd.main.HomeTabFragment">
 
     <FrameLayout
         android:id="@+id/frame"
@@ -45,8 +45,6 @@
         </LinearLayout>
 
     </FrameLayout>
-
-
 
 
     <com.google.android.material.tabs.TabLayout
