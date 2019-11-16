@@ -298,7 +298,7 @@ class UserFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             var imageview = (holder as CustomViewHolder).imageView
             Glide.with(holder.itemView.context)
-                .load(contentDTOs[position].imageUrl)
+                .load(contentDTOs[position].imgUrl)
                 .apply(RequestOptions().centerCrop())
                 .into(imageview)
         }

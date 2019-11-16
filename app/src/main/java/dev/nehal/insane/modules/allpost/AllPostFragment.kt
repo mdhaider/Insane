@@ -76,7 +76,7 @@ class AllPostFragment : Fragment() {
         loadNotesList()
 
         firestoreListener =
-            firestoreDB!!.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
+            firestoreDB!!.collection("posts").orderBy("imgUploadDate", Query.Direction.DESCENDING)
                 .addSnapshotListener(EventListener { documentSnapshots, e ->
                     if (e != null) {
                         Log.e(TAG, "Listen failed!", e)
@@ -117,7 +117,7 @@ class AllPostFragment : Fragment() {
     private fun loadNotesList() {
 
         val query =
-            firestoreDB!!.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
+            firestoreDB!!.collection("posts").orderBy("imgUploadDate", Query.Direction.DESCENDING)
 
         val response = FirestoreRecyclerOptions.Builder<Post>()
             .setQuery(query, Post::class.java)
@@ -171,7 +171,7 @@ class AllPostFragment : Fragment() {
     ) {
         val items = mutableMapOf<String, Any>()
         items["likes"] = true
-        items["timestamp"] = System.currentTimeMillis()
+        items["imgUploadDate"] = System.currentTimeMillis()
         firestoreDB!!.collection("likes").document(postId).collection("users")
             .document(AppPreferences.phone!!).set(items).addOnSuccessListener {
             Log.d("likes", "successfully added to fav")
@@ -185,7 +185,7 @@ class AllPostFragment : Fragment() {
     private fun setFavorite(postId: String){
         val items = mutableMapOf<String, Any>()
         items["postId"] = postId
-        items["timestamp"] = System.currentTimeMillis()
+        items["imgUploadDate"] = System.currentTimeMillis()
 
         firestoreDB!!.collection("favorites").document(AppPreferences.phone!!).collection("posts").document(postId).set(items).addOnSuccessListener {
                 Log.d("fav", "successfully added to fav")

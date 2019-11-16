@@ -1,5 +1,6 @@
 package dev.nehal.insane.navigation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
+import dev.nehal.insane.model.Users
 
 
 class LikesViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
@@ -23,21 +25,24 @@ class LikesViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     }
 
     fun bind(uid: String) {
-        FirebaseFirestore.getInstance().collection("profileImages").document(uid)
-            .get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val url = task.result!!["image"]
-                    Glide.with(itemView.context)
-                        .load(url)
-                        .error(R.drawable.ic_account)
-                        .placeholder(R.drawable.ic_account)
-                        .apply(RequestOptions().circleCrop())
-                        .into(mUserImage!!)
 
-                }
+        FirebaseFirestore.getInstance()
+            .collection("users").document(uid).get().addOnSuccessListener { result ->
+                val user = result.toObject(Users::class.java)
+                mUserNam?.text = user?.userName
+
+                Glide.with(itemView.context)
+                    .load(user?.profImageUri)
+                    .error(R.drawable.ic_account)
+                    .placeholder(R.drawable.ic_account)
+                    .apply(RequestOptions().circleCrop())
+                    .into(mUserImage!!)
             }
 
-     //   mUserNam?.text=comment.username
+            .addOnFailureListener { exception ->
 
+                Log.d("PeopleFrag", "Error getting documents: ", exception)
+            }
     }
+
 }

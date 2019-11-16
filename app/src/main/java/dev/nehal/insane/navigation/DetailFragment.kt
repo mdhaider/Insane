@@ -123,7 +123,7 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
 
     private fun getData() {
         imagesSnapshot =
-            firestore?.collection("images")?.orderBy("timestamp", Query.Direction.DESCENDING)
+            firestore?.collection("uploadedImages")?.orderBy("imgUploadDate", Query.Direction.DESCENDING)
                 ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                     contentDTO.clear()
                     contentUidList.clear()

@@ -116,7 +116,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:background="@color/black" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -124,6 +124,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:textSize="12sp"
                     android:fontFamily="sans-serif-medium"
                     tools:text="2 comments" />
 

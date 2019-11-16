@@ -46,22 +46,15 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         listener: DetailAdapter.ItemClickListener
     ) {
 
-        FirebaseFirestore.getInstance().collection("profileImages").document(contentDTO.uid!!)
-            .get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val url = task.result!!["image"]
-                    Glide.with(itemView.context)
-                        .load(url)
-                        .error(R.drawable.ic_account)
-                        .placeholder(R.drawable.ic_account)
-                        .apply(RequestOptions().circleCrop())
-                        .into(mProfImage!!)
-
-                }
-            }
+        Glide.with(itemView.context)
+            .load(contentDTO.userProfImgUrl)
+            .error(R.drawable.ic_account)
+            .placeholder(R.drawable.ic_account)
+            .apply(RequestOptions().circleCrop())
+            .into(mProfImage!!)
 
         FirebaseFirestore.getInstance()
-            .collection("images").document(contentUid).collection("comments").get()
+            .collection("uploadedImages").document(contentUid).collection("comments").get()
             .addOnSuccessListener { result ->
 
                 Log.d("rtg", result.size().toString())
@@ -80,12 +73,12 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mLikeCount?.text =
             itemView.context.getString(R.string.likes_count, contentDTO.favoriteCount.toString())
 
-        mAgo?.text = TimeAgo.getTimeAgo(contentDTO.timestamp!!)
+        mAgo?.text = TimeAgo.getTimeAgo(contentDTO.imgUploadDate!!)
 
-        mCaption?.text = contentDTO.explain
+        mCaption?.text = contentDTO.imgCaption
 
         Glide.with(itemView.context)
-            .load(contentDTO.imageUrl)
+            .load(contentDTO.imgUrl)
             .error(R.drawable.placeholder_image_new)
             .placeholder(R.drawable.placeholder_image_new)
             .into(mPostImage!!)
@@ -94,9 +87,21 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mMore?.setOnClickListener { listener.getMore() }
         mPostImage?.setOnClickListener { listener.goToDetailPost() }
         mFavImage?.setOnClickListener { listener.setfav() }
-        mComImage?.setOnClickListener { listener.goToComments(contentDTO.imageUrl!!,contentUid, contentDTO.uid!!) }
+        mComImage?.setOnClickListener {
+            listener.goToComments(
+                contentDTO.imgUrl!!,
+                contentUid,
+                contentDTO.uid!!
+            )
+        }
         mLikeCount?.setOnClickListener { listener.goToLikes(contentDTO.favorites.keys.toList()) }
-        mCommentCount?.setOnClickListener { listener.goToComments(contentDTO.imageUrl!!,contentUid, contentDTO.uid!!) }
+        mCommentCount?.setOnClickListener {
+            listener.goToComments(
+                contentDTO.imgUrl!!,
+                contentUid,
+                contentDTO.uid!!
+            )
+        }
 
     }
 }

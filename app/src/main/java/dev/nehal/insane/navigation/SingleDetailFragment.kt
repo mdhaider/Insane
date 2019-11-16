@@ -3,6 +3,7 @@ package dev.nehal.insane.navigation
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.downloadservice.filedownloadservice.manager.FileDownloadManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import dev.nehal.insane.R
 import dev.nehal.insane.databinding.SingleDetailFragmentBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
@@ -74,6 +76,7 @@ class SingleDetailFragment : DialogFragment() {
 
         setValue(newContentDTO)
         setProfileImage(newContentDTO)
+        getCommCount()
     }
 
 
@@ -82,7 +85,7 @@ class SingleDetailFragment : DialogFragment() {
         binding.tvProfName.text = item.userName
 
         Glide.with(binding.imgPost.context)
-            .load(item.imageUrl)
+            .load(item.imgUrl)
             .diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()
             .into(binding.imgPost)
 
@@ -92,11 +95,11 @@ class SingleDetailFragment : DialogFragment() {
 
 
         if (item.favorites.containsKey(FirebaseAuth.getInstance().currentUser!!.uid)) {
-            binding.imgfav.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_black_24dp)
+            binding.imgfav.setImageResource(R.drawable.ic_favorite_black_24dp)
 
         } else {
 
-            binding.imgfav.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_border_black_24dp)
+            binding.imgfav.setImageResource(R.drawable.ic_favorite_border_black_24dp)
         }
 
         binding.imgComment.setOnClickListener {
@@ -106,31 +109,45 @@ class SingleDetailFragment : DialogFragment() {
             startActivity(intent)
         }
 
-        binding.tvAgo.text = TimeAgo.getTimeAgo(item.timestamp!!)
+        binding.tvComments.setOnClickListener {
+            val intent = Intent(activity, CommentActivity::class.java)
+            intent.putExtra("contentUid", contentUid)
+            intent.putExtra("destinationUid", item.uid)
+            startActivity(intent)
+        }
 
-        binding.tvCaption.text = item.explain
+        binding.tvLikes?.setOnClickListener { goToLikes(newContentDTO.favorites.keys.toList()) }
+
+
+        binding.tvAgo.text = TimeAgo.getTimeAgo(item.imgUploadDate!!)
+
+        binding.tvCaption.text = item.imgCaption
 
         binding.tvLikes.text =
-            getString(dev.nehal.insane.R.string.likes_count, item.favoriteCount.toString())
+            getString(R.string.likes_count, item.favoriteCount.toString())
 
         binding.share.setOnClickListener {
             ShareImage.shareImageWith(activity!!, binding.imgPost.drawable)
         }
 
         binding.downalod.setOnClickListener {
-           downloadImage(item.imageUrl!!, item.userName!!,item.timestamp.toString())
+            downloadImage(item.imgUrl!!, item.userName!!, item.imgUploadDate.toString())
 
         }
     }
 
-    private fun downloadImage(url:String, username_: String, time: String){
+    private fun downloadImage(url: String, username_: String, time: String) {
         val folder = File(Environment.getExternalStorageDirectory().toString() + "/" + "Insane")
         if (!folder.exists()) {
             folder.mkdirs()
         }
         val fileName = "$username_$time.jpg"
 
-        Toast.makeText(activity!!,"Download started, Check Downloads under Home page", Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            activity!!,
+            "Download started, Check Downloads under Home page",
+            Toast.LENGTH_LONG
+        ).show()
 
         FileDownloadManager.initDownload(
             activity!!,
@@ -165,7 +182,7 @@ class SingleDetailFragment : DialogFragment() {
         alarmDTO.kind = 0
         alarmDTO.username = user?.displayName
         alarmDTO.timestamp = System.currentTimeMillis()
-        alarmDTO.imageUri = newContentDTO.imageUrl
+        alarmDTO.imageUri = newContentDTO.imgUrl
 
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
         val message = user?.displayName + " " + getString(dev.nehal.insane.R.string.alarm_favorite)
@@ -174,7 +191,7 @@ class SingleDetailFragment : DialogFragment() {
 
 
     private fun favoriteEvent(contenUid: String) {
-        val tsDoc = firestore!!.collection("images")?.document(contenUid)
+        val tsDoc = firestore!!.collection("uploadedImages")?.document(contenUid)
         firestore?.runTransaction { transaction ->
 
             val uid = FirebaseAuth.getInstance().currentUser!!.uid
@@ -184,6 +201,12 @@ class SingleDetailFragment : DialogFragment() {
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! - 1
                 contentDTO?.favorites.remove(uid)
                 binding.imgfav.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_border_black_24dp)
+                binding.tvLikes.text =
+                    getString(
+                        dev.nehal.insane.R.string.likes_count,
+                        contentDTO.favoriteCount.toString()
+                    )
+
             } else {
                 // Star the post and add self to stars
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
@@ -191,9 +214,39 @@ class SingleDetailFragment : DialogFragment() {
                 favoriteAlarm(newContentDTO.uid!!)
                 binding.imgfav.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_black_24dp)
 
+                binding.tvLikes.text =
+                    getString(
+                        dev.nehal.insane.R.string.likes_count,
+                        contentDTO.favoriteCount.toString()
+                    )
+
             }
             transaction.set(tsDoc, contentDTO)
         }
     }
 
+    private fun getCommCount() {
+        FirebaseFirestore.getInstance()
+            .collection("uploadedImages").document(contentUid!!).collection("comments").get()
+            .addOnSuccessListener { result ->
+
+                Log.d("rtg", result.size().toString())
+                binding.tvComments.text =
+                    getString(R.string.comments_count, result.size().toString())
+
+            }
+            .addOnFailureListener { exception ->
+                Log.d("DetailFrag", "Error getting documents: ", exception)
+
+            }
+    }
+
+    private fun goToLikes(uidList: List<String>) {
+        val arr: Array<String> = uidList.toTypedArray()
+        val intent = Intent(activity, LikesActivity::class.java)
+        val b = Bundle()
+        b.putStringArray("uidlist", arr)
+        intent.putExtras(b)
+        startActivity(intent)
+    }
 }

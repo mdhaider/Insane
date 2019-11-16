@@ -14,7 +14,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.nguyenhoanglam.imagepicker.model.Config
@@ -23,6 +22,9 @@ import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.FragmentAddPhotoBinding
 import dev.nehal.insane.model.ContentDTO
+import dev.nehal.insane.model.Users
+import dev.nehal.insane.shared.Const
+import dev.nehal.insane.shared.ModelPreferences
 import dev.nehal.insane.shared.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_add_photo.*
 import java.io.File
@@ -34,16 +36,15 @@ class AddPhotoFragment : Fragment() {
     var photoUri: Uri? = null
     var storage: FirebaseStorage? = null
     var firestore: FirebaseFirestore? = null
-    private var auth: FirebaseAuth? = null
     private var filePath: Uri? = null
-    private lateinit var binding:FragmentAddPhotoBinding
+    private lateinit var binding: FragmentAddPhotoBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=DataBindingUtil.inflate(inflater, R.layout.fragment_add_photo,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_photo, container, false)
 
         return binding.root
     }
@@ -55,7 +56,6 @@ class AddPhotoFragment : Fragment() {
 
         storage = FirebaseStorage.getInstance()
         firestore = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance()
 
         addphoto_btn_upload.setOnClickListener {
             hideKeyboard()
@@ -76,18 +76,17 @@ class AddPhotoFragment : Fragment() {
 
             photoUri = Uri.fromFile(File(list[0].path))
 
-        } else{
+        } else {
             findNavController().navigate(R.id.action_photo_home)
 
         }
     }
 
-   private fun contentUpload() {
+    private fun contentUpload() {
         progress_bar.visibility = View.VISIBLE
-
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName = "JPEG_" + timeStamp + "_.png"
-        val storageRef = storage?.reference?.child("images")?.child(imageFileName)
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val imageFileName = timeStamp + ".png"
+        val storageRef = storage?.reference?.child("uploadedImages")?.child(imageFileName)
         storageRef?.putFile(photoUri!!)?.addOnSuccessListener { taskSnapshot ->
             progress_bar.visibility = View.GONE
 
@@ -97,26 +96,19 @@ class AddPhotoFragment : Fragment() {
             ).show()
 
 
+            val user = ModelPreferences(activity!!.application).getObject(Const.PROF_USER, Users::class.java)
+
             storageRef.downloadUrl
                 .addOnSuccessListener { uri ->
                     val url = uri.toString()
-                    //시간 생성
                     val contentDTO = ContentDTO()
-
-                    //이미지 주소
-                    contentDTO.imageUrl = url.toString()
-                    //유저의 UID
-                    contentDTO.uid = auth?.currentUser?.uid
-                    contentDTO.userName = auth?.currentUser?.displayName
-                    //게시물의 설명
-                    contentDTO.explain = addphoto_edit_explain.text.toString()
-                    //유저의 아이디
-                    contentDTO.userId = auth?.currentUser?.phoneNumber
-                    //게시물 업로드 시간
-                    contentDTO.timestamp = System.currentTimeMillis()
-
-                    //게시물을 데이터를 생성 및 엑티비티 종료
-                    firestore?.collection("images")?.document()?.set(contentDTO)
+                    contentDTO.uid = user?.userUID
+                    contentDTO.imgUrl = url
+                    contentDTO.imgCaption = addphoto_edit_explain.text.toString()
+                    contentDTO.imgUploadDate = System.currentTimeMillis()
+                    contentDTO.userName = user?.userName
+                    contentDTO.userProfImgUrl = user?.profImageUri
+                    firestore?.collection("uploadedImages")?.document()?.set(contentDTO)
 
                     activity!!.setResult(Activity.RESULT_OK)
                     findNavController().navigate(R.id.action_photo_home)
@@ -164,8 +156,8 @@ class AddPhotoFragment : Fragment() {
                 }
             }
 
-        } else  {
-           startImagePicker()
+        } else {
+            startImagePicker()
         }
 
     }

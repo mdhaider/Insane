@@ -66,6 +66,7 @@ object AppPreferences {
             it.putString(NAME_USER.first, value)
         }
 
+
     var signUpState: Int
         get() = preferences.getInt(SIGNUP_STATE.first, SIGNUP_STATE.second)
 

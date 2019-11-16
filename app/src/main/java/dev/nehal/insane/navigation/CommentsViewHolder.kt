@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.model.ContentDTO
 import dev.nehal.insane.shared.TimeAgo
@@ -28,22 +27,16 @@ class CommentsViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     }
 
     fun bind(comment: ContentDTO.Comment) {
-        FirebaseFirestore.getInstance().collection("profileImages").document(comment.uid!!)
-            .get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val url = task.result!!["image"]
-                    Glide.with(itemView.context)
-                        .load(url)
-                        .error(R.drawable.ic_account)
-                        .placeholder(R.drawable.ic_account)
-                        .apply(RequestOptions().circleCrop())
-                        .into(mUserImage!!)
 
-                }
-            }
+        Glide.with(itemView.context)
+            .load(comment.userProfImgUrl)
+            .error(R.drawable.ic_account)
+            .placeholder(R.drawable.ic_account)
+            .apply(RequestOptions().circleCrop())
+            .into(mUserImage!!)
 
-        mUserNam?.text=comment.username
-        mComment?.text=comment.comment
-        mTimeAgo?.text=TimeAgo.getTimeAgo(comment.timestamp!!)
+        mUserNam?.text = comment.userName
+        mComment?.text = comment.comment
+        mTimeAgo?.text = TimeAgo.getTimeAgo(comment.commentDate!!)
     }
 }

@@ -13,6 +13,9 @@ import dev.nehal.insane.R
 import dev.nehal.insane.databinding.ActivityCommentBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
+import dev.nehal.insane.model.Users
+import dev.nehal.insane.shared.Const
+import dev.nehal.insane.shared.ModelPreferences
 import dev.nehal.insane.util.FcmPush
 
 
@@ -56,14 +59,15 @@ class CommentActivity : AppCompatActivity() {
 
     private fun sendComments() {
         val comment = ContentDTO.Comment()
-        comment.userId = FirebaseAuth.getInstance().currentUser!!.phoneNumber
+        val user = ModelPreferences(this).getObject(Const.PROF_USER, Users::class.java)
+        comment.uid = user?.userUID
         comment.comment = binding.etPost.text.toString()
-        comment.username = FirebaseAuth.getInstance().currentUser!!.displayName
-        comment.uid = FirebaseAuth.getInstance().currentUser!!.uid
-        comment.timestamp = System.currentTimeMillis()
+        comment.userName = user?.userName
+        comment.userProfImgUrl=user?.profImageUri
+        comment.commentDate = System.currentTimeMillis()
 
         FirebaseFirestore.getInstance()
-            .collection("images")
+            .collection("uploadedImages")
             .document(contentUid!!)
             .collection("comments")
             .document()
@@ -82,9 +86,9 @@ class CommentActivity : AppCompatActivity() {
     private fun getComments(){
         commentSnapshot = FirebaseFirestore
             .getInstance()
-            .collection("images")
+            .collection("uploadedImages")
             .document(contentUid!!)
-            .collection("comments").orderBy("timestamp", Query.Direction.DESCENDING)
+            .collection("comments").orderBy("commentDate", Query.Direction.DESCENDING)
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 commentsList.clear()
                 if (querySnapshot == null) return@addSnapshotListener

@@ -16,7 +16,6 @@ import dev.nehal.insane.model.ContentDTO
 
 
 class GridFragment : Fragment() {
-
     private lateinit var binding: FragmentGridBinding
     private lateinit var conDTOList: ArrayList<ContentDTO>
     private lateinit var contentUIDList: ArrayList<String>
@@ -43,7 +42,6 @@ class GridFragment : Fragment() {
             goToDetail(position)
         }
 
-
         adapter = GridAdapter(conDTOList, itemClickListener = itemOnClick)
         binding.rvGrid.adapter = adapter
         binding.rvGrid.layoutManager = GridLayoutManager(activity, 3)
@@ -53,7 +51,7 @@ class GridFragment : Fragment() {
 
     private fun getData() {
         imagesSnapshot = FirebaseFirestore
-            .getInstance().collection("images").orderBy("timestamp", Query.Direction.DESCENDING)
+            .getInstance().collection("uploadedImages").orderBy("imgUploadDate", Query.Direction.DESCENDING)
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 conDTOList.clear()
                 if (querySnapshot == null) return@addSnapshotListener

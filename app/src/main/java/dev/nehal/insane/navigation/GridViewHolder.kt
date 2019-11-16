@@ -26,10 +26,10 @@ class GridViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16))
 
         Glide.with(mItemImage!!.context)
-            .load(contentDTO.imageUrl)
+            .load(contentDTO.imgUrl)
             .apply(requestOptions)
-            .error(R.drawable.placeholder_image_new)
-            .placeholder(R.drawable.placeholder_image_new)
+            .error(R.drawable.placeholder_img)
+            .placeholder(R.drawable.placeholder_img)
             .into(mItemImage!!)
 
         itemView.setOnClickListener { itemClickListener(adapterPosition) }

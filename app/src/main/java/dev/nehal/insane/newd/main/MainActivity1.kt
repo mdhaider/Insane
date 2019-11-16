@@ -1,7 +1,5 @@
 package dev.nehal.insane.newd.main
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -10,14 +8,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import dev.nehal.insane.R
-import dev.nehal.insane.modules.login.VerifyPhoneFragment
+import dev.nehal.insane.model.Users
 import dev.nehal.insane.navigation.DetailBottomSheetDialogFragment
+import dev.nehal.insane.shared.Const
+import dev.nehal.insane.shared.ModelPreferences
 
 class MainActivity1 : AppCompatActivity() {
-    val PICK_PROFILE_FROM_ALBUM = 10
+    private lateinit var db: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main1)
@@ -29,6 +27,8 @@ class MainActivity1 : AppCompatActivity() {
 
         //  setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        setDataInPref()
     }
 
      fun showBottomSheet(){
@@ -36,51 +36,20 @@ class MainActivity1 : AppCompatActivity() {
         bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun setDataInPref() {
+        db= FirebaseFirestore.getInstance()
+        val dbRef = db.collection("users").document(FirebaseAuth.getInstance().currentUser!!.uid)
 
-        if (requestCode == PICK_PROFILE_FROM_ALBUM && resultCode == Activity.RESULT_OK) {
-
-            var imageUri = data?.data
-
-            val uid = FirebaseAuth.getInstance().currentUser!!.uid
-            val ref: StorageReference = FirebaseStorage
-                .getInstance()
-                .reference
-                .child("userProfileImages")
-                .child(uid)
-
-            ref.putFile(imageUri!!)
-                .addOnCompleteListener { task ->
-
-                    ref.downloadUrl
-                        .addOnSuccessListener { uri ->
-                            val url = uri.toString()
-                            val map = HashMap<String, Any>()
-                            map["image"] = url
-                            FirebaseFirestore.getInstance().collection("profileImages")
-                                .document(uid).set(map)
-                          //  setProfileImage(url)
-                             sendProfileUpdate(url)
-                        }
+        dbRef.get()
+            .addOnSuccessListener { document ->
+                val users = document.toObject(Users::class.java)
+                if (users != null) {
+                    ModelPreferences(application).putObject(Const.PROF_USER, users)
                 }
-        }
 
-    }
+            }.addOnFailureListener { exception ->
 
-    private fun sendProfileUpdate(url: String) {
-        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-        try {
-            db.collection("users")
-                .document(FirebaseAuth.getInstance().currentUser!!.uid)
-                .update("profImageUri", url)
-                .addOnSuccessListener { documentReference ->
-                    Log.d("TAG", "DocumentSnapshot added with UID: $documentReference")
-                }.addOnFailureListener { e ->
-                    Log.d(VerifyPhoneFragment.TAG, "prof failed")
-                }
-        } catch (e: Exception) {
-            Log.d(VerifyPhoneFragment.TAG, "prof failed")
-        }
+                Log.d("MainActivity", exception.toString())
+            }
     }
 }
