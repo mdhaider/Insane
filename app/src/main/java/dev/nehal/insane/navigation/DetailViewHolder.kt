@@ -12,6 +12,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.model.ContentDTO
 import dev.nehal.insane.model.Users
+import dev.nehal.insane.shared.Const
+import dev.nehal.insane.shared.ModelPreferences
 import dev.nehal.insane.shared.TimeAgo
 
 
@@ -27,6 +29,7 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     private var mLikeCount: TextView? = null
     private var mCaption: TextView? = null
     private var mCommentCount: TextView? = null
+    private var user:Users?=null
 
     init {
         mProfImage = itemView.findViewById(R.id.imgDetProf)
@@ -34,11 +37,13 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mAgo = itemView.findViewById(R.id.tvDetAgo)
         mMore = itemView.findViewById(R.id.imgDetMore)
         mPostImage = itemView.findViewById(R.id.imgDetPost)
-        mFavImage = itemView.findViewById(R.id.imgDetProf)
+        mFavImage = itemView.findViewById(R.id.imgDetfav)
         mComImage = itemView.findViewById(R.id.imgDetCom)
         mCaption = itemView.findViewById(R.id.tvDetcaption)
         mLikeCount = itemView.findViewById(R.id.tvDetLikes)
         mCommentCount = itemView.findViewById(R.id.tvDetComments)
+
+        user= ModelPreferences(mFavImage!!.context).getObject(Const.PROF_USER, Users::class.java)!!
     }
 
     fun bind(
@@ -68,6 +73,14 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
 
         mAgo?.text = TimeAgo.getTimeAgo(contentDTO.imgUploadDate!!)
 
+        if (contentDTO.favorites.containsKey(user!!.userUID)) {
+            mFavImage?.setImageResource(R.drawable.ic_favorite_black_24dp)
+
+        } else {
+
+            mFavImage?.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+        }
+
         mCaption?.text = contentDTO.imgCaption
 
         Glide.with(itemView.context)
@@ -79,7 +92,7 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mProfImage?.setOnClickListener { listener.goToprofile() }
         mMore?.setOnClickListener { listener.getMore() }
         mPostImage?.setOnClickListener { listener.goToDetailPost() }
-        mFavImage?.setOnClickListener { listener.setfav() }
+        mFavImage?.setOnClickListener { listener.setfav(contentUid, contentDTO.uid!!) }
         mComImage?.setOnClickListener {
             listener.goToComments(
                 contentDTO.imgUrl!!,

@@ -83,13 +83,13 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun setfav() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun setfav(contentUid: String, destUid: String) {
+                favoriteEvent(contentUid, destUid)
             }
 
             override fun goToLikes(uidList: List<String>) {
 
-               val arr: Array<String> =uidList.toTypedArray()
+                val arr: Array<String> = uidList.toTypedArray()
 
                 val intent = Intent(activity, LikesActivity::class.java)
 
@@ -99,7 +99,7 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
                 startActivity(intent)
             }
 
-            override fun goToComments(imageUri:String,contentUid: String, userUid: String) {
+            override fun goToComments(imageUri: String, contentUid: String, userUid: String) {
                 val intent = Intent(activity, CommentActivity::class.java)
                 intent.putExtra("contentUid", contentUid)
                 intent.putExtra("imageUri", imageUri)
@@ -113,7 +113,7 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
         contentUidList = ArrayList()
         uidSet = mutableSetOf()
         binding.rvDet.setHasFixedSize(true)
-        adapter = DetailAdapter(contentDTO, contentUidList, uidSet, listener = itemOnClick)
+        adapter = DetailAdapter(contentDTO, contentUidList, listener = itemOnClick)
         binding.rvDet.adapter = adapter
         binding.rvDet.layoutManager = LinearLayoutManager(activity)
 
@@ -123,7 +123,8 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
 
     private fun getData() {
         imagesSnapshot =
-            firestore?.collection("uploadedImages")?.orderBy("imgUploadDate", Query.Direction.DESCENDING)
+            firestore?.collection("uploadedImages")
+                ?.orderBy("imgUploadDate", Query.Direction.DESCENDING)
                 ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                     contentDTO.clear()
                     contentUidList.clear()
@@ -140,9 +141,11 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
                 }
     }
 
-    fun favoriteAlarm(destinationUid: String) {
+    fun favoriteAlarm(destinationUid: String, contentUid:String, imgUrl:String) {
 
         val alarmDTO = AlarmDTO()
+        alarmDTO.contentUid = contentUid
+        alarmDTO.imageUri = imgUrl
         alarmDTO.destinationUid = destinationUid
         alarmDTO.uid = user?.uid
         alarmDTO.kind = 0
@@ -153,8 +156,8 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
         fcmPush?.sendMessage(destinationUid, "You have received a message", message)
     }
 
-    private fun favoriteEvent(position: Int) {
-        var tsDoc = firestore?.collection("images")?.document(contentUidList[position])
+    private fun favoriteEvent(contentUid: String, destUid: String) {
+        var tsDoc = firestore?.collection("uploadedImages")?.document(contentUid)
         firestore?.runTransaction { transaction ->
 
             val uid = FirebaseAuth.getInstance().currentUser!!.uid
@@ -162,14 +165,14 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
 
             if (contentDTO!!.favorites.containsKey(uid)) {
                 // Unstar the post and remove self from stars
-                contentDTO?.favoriteCount = contentDTO?.favoriteCount!! - 1
-                contentDTO?.favorites.remove(uid)
+                contentDTO.favoriteCount = contentDTO?.favoriteCount - 1
+                contentDTO.favorites.remove(uid)
 
             } else {
                 // Star the post and add self to stars
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
                 contentDTO?.favorites[uid] = true
-                // favoriteAlarm(contentDTO[position].uid!!)
+                favoriteAlarm(destUid, contentUid, contentDTO.imgUrl!!)
             }
             transaction.set(tsDoc, contentDTO)
         }

@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.downloadservice.filedownloadservice.manager.FileDownloadManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.SingleDetailFragmentBinding
@@ -199,7 +200,7 @@ class SingleDetailFragment : DialogFragment() {
         val tsDoc = db!!.collection("uploadedImages").document(contenUid)
         db?.runTransaction { transaction ->
 
-            val uid:String = user.userUID
+            val uid:String = FirebaseAuth.getInstance().currentUser!!.uid
             val contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
 
             if (contentDTO!!.favorites.containsKey(uid)) {

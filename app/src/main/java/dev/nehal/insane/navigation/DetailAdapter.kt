@@ -9,7 +9,6 @@ import dev.nehal.insane.model.ContentDTO
 class DetailAdapter(
     private val list: ArrayList<ContentDTO>,
     private val contentUidList: ArrayList<String>,
-    private val uidSet: MutableSet<String>,
     private val listener: ItemClickListener
 ) : RecyclerView.Adapter<DetailViewHolder>() {
 
@@ -31,7 +30,7 @@ class DetailAdapter(
         fun goToprofile()
         fun getMore()
         fun goToDetailPost()
-        fun setfav()
+        fun setfav(contentUid: String, destUid:String)
         fun goToLikes(uidList:List<String>)
         fun goToComments(imageUri:String, contentUid: String, userUid: String)
     }

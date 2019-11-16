@@ -2,6 +2,7 @@ package dev.nehal.insane.navigation
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,6 +23,8 @@ class AlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     private var mComment: TextView? = null
     private var mTimeAgo: TextView? = null
     private var mPostImage: ImageView? = null
+    private var mImageType: ImageView?=null
+    private var mImageBack: View?=null
 
     init {
         mUserImage = itemView.findViewById(R.id.imgProf)
@@ -29,6 +32,8 @@ class AlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mComment = itemView.findViewById(R.id.tvComment)
         mTimeAgo = itemView.findViewById(R.id.tvAgo)
         mPostImage = itemView.findViewById(R.id.imgPostSmall)
+        mImageType = itemView.findViewById(R.id.imgType)
+        mImageBack = itemView.findViewById(R.id.imgBack)
     }
 
     fun bind(alarmDTO: AlarmDTO, itemClickListener:(Int)->Unit) {
@@ -36,15 +41,22 @@ class AlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         when(alarmDTO.kind){
             0 -> {
                 mComment?.text =itemView.context.getString(R.string.message_liked)
+                mImageType?.setImageResource(R.drawable.ic_favorite_red)
+                mImageBack?.setBackgroundResource(R.drawable.circle_2)
 
             }
             1 -> {
                 mComment?.text =itemView.context.getString(R.string.message_alarm,alarmDTO.message)
+                mImageType?.setImageResource(R.drawable.ic_mode_comment_black_24dp)
+                mImageBack?.setBackgroundResource(R.drawable.circle_1)
 
             }
 
             2 -> {
                 mComment?.text =itemView.context.getString(R.string.message_liked)
+                mImageType?.setImageResource(R.drawable.ic_favorite_red)
+                mImageBack?.setBackgroundResource(R.drawable.circle_2)
+
             }
         }
 

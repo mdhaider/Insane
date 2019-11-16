@@ -16,5 +16,6 @@
     <color name="common_gray2">#ffdadada</color>
     <color name="common_primary">#fff76c6f</color>
     <color name="black">#000000</color>
+    <color name="back">#00ACC1</color>
 
 </resources>
