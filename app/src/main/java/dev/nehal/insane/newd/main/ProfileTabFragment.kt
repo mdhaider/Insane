@@ -17,12 +17,15 @@ import dev.nehal.insane.databinding.FragmentProfileTabBinding
 import dev.nehal.insane.model.Users
 import dev.nehal.insane.navigation.AlarmFragment
 import dev.nehal.insane.navigation.DetailFragment
-import dev.nehal.insane.navigation.GridFragment
+import dev.nehal.insane.navigation.ProfGridFragment
+import dev.nehal.insane.shared.Const
 
 class ProfileTabFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileTabBinding
     private lateinit var db: FirebaseFirestore
+    private lateinit var uid: String
+    private  var passedUid: String=""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,21 +40,40 @@ class ProfileTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val adapter =
             SectionsPagerAdapter(activity!!, childFragmentManager)
-        adapter.addFragment(GridFragment(), "All")
-        adapter.addFragment(DetailFragment(), "List")
-        adapter.addFragment(AlarmFragment(), "Noti")
+        adapter.addFragment(ProfGridFragment(), "")
+        adapter.addFragment(DetailFragment(), "")
+        adapter.addFragment(AlarmFragment(), "")
         binding.profViewPager.adapter = adapter
         binding.profTabs.setupWithViewPager(binding.profViewPager)
 
-        db= FirebaseFirestore.getInstance()
+        db = FirebaseFirestore.getInstance()
 
-       // setProfileImage()
+        arguments?.apply {
+            passedUid = getString(Const.USER_UID, "")
 
-        getData()
+        }
 
-        binding.profEdit.setOnClickListener {
+        if(passedUid.isEmpty() || passedUid==FirebaseAuth.getInstance().currentUser!!.uid){
+
+            getData(FirebaseAuth.getInstance().currentUser!!.uid)
+            binding.imgCancel.visibility=View.GONE
+            binding.imgEdit.visibility=View.VISIBLE
+
+        }else{
+            getData(passedUid)
+            binding.imgCancel.visibility=View.VISIBLE
+            binding.imgEdit.visibility=View.GONE
+        }
+
+        binding.imgEdit.setOnClickListener {
             goToProfile()
         }
+
+        binding.imgCancel.setOnClickListener {
+            goToHome()
+        }
+
+        setTab()
     }
 
     private fun goToProfile() {
@@ -59,25 +81,14 @@ class ProfileTabFragment : Fragment() {
 
     }
 
-    private fun setProfileImage() {
-        FirebaseFirestore.getInstance().collection("profileImages")
-            .document(FirebaseAuth.getInstance().currentUser!!.uid)
-            .get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val url = task.result!!["image"]
-                    Glide.with(activity!!)
-                        .load(url)
-                        .error(R.drawable.ic_account)
-                        .placeholder(R.drawable.ic_account)
-                        .apply(RequestOptions().circleCrop())
-                        .into(binding.profileImage)
+    private fun goToHome() {
+        findNavController().navigate(R.id.action_profile_cancel)
 
-                }
-            }
     }
 
-    private fun getData() {
-        val dbRef = db.collection("users").document(FirebaseAuth.getInstance().currentUser!!.uid)
+
+    private fun getData(uid: String) {
+        val dbRef = db.collection("users").document(uid)
 
         dbRef.get()
             .addOnSuccessListener { document ->
@@ -91,9 +102,9 @@ class ProfileTabFragment : Fragment() {
             }
     }
 
-    private fun setData(user:Users){
+    private fun setData(user: Users) {
 
-        binding.profileName.text=user.userName
+        binding.profileName.text = user.userName
 
         Glide.with(activity!!)
             .load(user.profImageUri)
@@ -101,6 +112,15 @@ class ProfileTabFragment : Fragment() {
             .placeholder(R.drawable.ic_account)
             .apply(RequestOptions().circleCrop())
             .into(binding.profileImage)
+    }
+
+    private fun setTab() {
+        val tabIcons = intArrayOf(R.drawable.ic_tab_2, R.drawable.ic_1_tab, R.drawable.ic_favorite_border_black_24dp)
+        for (i in 0 until binding.profTabs.tabCount) {
+            if (binding.profTabs.getTabAt(i) != null) {
+                binding.profTabs.getTabAt(i)!!.setIcon(tabIcons[i])
+            }
+        }
     }
 }
 

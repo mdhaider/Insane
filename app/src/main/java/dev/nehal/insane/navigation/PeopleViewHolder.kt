@@ -21,7 +21,7 @@ class PeopleViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mUserImage = itemView.findViewById(R.id.userImage)
     }
 
-    fun bind(users: Users) {
+    fun bind(users: Users,itemClickListener:(Int)->Unit) {
         mTitleView?.text = users.userName
 
         Glide.with(mTitleView!!.context)
@@ -30,6 +30,8 @@ class PeopleViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             .placeholder(R.drawable.ic_account)
             .apply(RequestOptions().circleCrop())
             .into(mUserImage!!)
+
+        itemView.setOnClickListener { itemClickListener(adapterPosition) }
     }
 
 }

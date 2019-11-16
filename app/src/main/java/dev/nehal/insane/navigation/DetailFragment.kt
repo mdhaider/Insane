@@ -79,8 +79,17 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
 
             }
 
-            override fun goToDetailPost() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun goToDetailPost(contentId: String, contentDTO: ContentDTO) {
+                val dialogFragment = SingleDetailFragment() //here MyDialog is my custom dialog
+                val fragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
+                val bundle = Bundle()
+
+                bundle.putSerializable("CONTENT_DTO", contentDTO)
+                bundle.putString("CONTENT_UID", contentId)
+
+                dialogFragment.arguments = bundle
+                dialogFragment.show(fragmentTransaction, "dialog")
+
             }
 
             override fun setfav(contentUid: String, destUid: String) {
@@ -141,7 +150,7 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
                 }
     }
 
-    fun favoriteAlarm(destinationUid: String, contentUid:String, imgUrl:String) {
+    fun favoriteAlarm(destinationUid: String, contentUid: String, imgUrl: String) {
 
         val alarmDTO = AlarmDTO()
         alarmDTO.contentUid = contentUid

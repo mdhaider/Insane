@@ -29,7 +29,7 @@ class DetailAdapter(
     interface ItemClickListener {
         fun goToprofile()
         fun getMore()
-        fun goToDetailPost()
+        fun goToDetailPost(contentId: String,contentDTO: ContentDTO)
         fun setfav(contentUid: String, destUid:String)
         fun goToLikes(uidList:List<String>)
         fun goToComments(imageUri:String, contentUid: String, userUid: String)
