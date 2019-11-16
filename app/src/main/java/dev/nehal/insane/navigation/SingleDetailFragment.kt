@@ -14,13 +14,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.downloadservice.filedownloadservice.manager.FileDownloadManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.SingleDetailFragmentBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
+import dev.nehal.insane.model.Users
+import dev.nehal.insane.shared.Const
+import dev.nehal.insane.shared.ModelPreferences
 import dev.nehal.insane.shared.ShareImage
 import dev.nehal.insane.shared.TimeAgo
 import dev.nehal.insane.util.FcmPush
@@ -29,13 +30,13 @@ import java.io.File
 
 
 class SingleDetailFragment : DialogFragment() {
-    var firestore: FirebaseFirestore? = null
+    private var db: FirebaseFirestore? = null
     var okHttpClient: OkHttpClient? = null
     var fcmPush: FcmPush? = null
     private lateinit var binding: SingleDetailFragmentBinding
-    var user: FirebaseUser? = null
     private lateinit var newContentDTO: ContentDTO
     private var contentUid: String? = null
+    private lateinit var user:Users
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,33 +69,30 @@ class SingleDetailFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        user = FirebaseAuth.getInstance().currentUser
-        firestore = FirebaseFirestore.getInstance()
+        db = FirebaseFirestore.getInstance()
         okHttpClient = OkHttpClient()
         fcmPush = FcmPush()
 
+         user = ModelPreferences(activity!!.application).getObject(Const.PROF_USER, Users::class.java)!!
+
         setValue(newContentDTO)
-        setProfileImage(newContentDTO)
+        setProfile(newContentDTO)
         getCommCount()
     }
 
 
     private fun setValue(item: ContentDTO) {
-
-        binding.tvProfName.text = item.userName
-
         Glide.with(binding.imgPost.context)
             .load(item.imgUrl)
             .diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()
             .into(binding.imgPost)
 
-        binding.imgfav.setOnClickListener { favoriteEvent(contentUid.toString()) }
+        binding.imgfav.setOnClickListener { favoriteEvent(contentUid!!) }
 
         binding.crossImg.setOnClickListener { dismiss() }
 
 
-        if (item.favorites.containsKey(FirebaseAuth.getInstance().currentUser!!.uid)) {
+        if (item.favorites.containsKey(user.userUID)) {
             binding.imgfav.setImageResource(R.drawable.ic_favorite_black_24dp)
 
         } else {
@@ -106,6 +104,7 @@ class SingleDetailFragment : DialogFragment() {
             val intent = Intent(activity, CommentActivity::class.java)
             intent.putExtra("contentUid", contentUid)
             intent.putExtra("destinationUid", item.uid)
+            intent.putExtra("imageUri", item.imgUrl)
             startActivity(intent)
         }
 
@@ -113,6 +112,7 @@ class SingleDetailFragment : DialogFragment() {
             val intent = Intent(activity, CommentActivity::class.java)
             intent.putExtra("contentUid", contentUid)
             intent.putExtra("destinationUid", item.uid)
+            intent.putExtra("imageUri", item.imgUrl)
             startActivity(intent)
         }
 
@@ -131,17 +131,17 @@ class SingleDetailFragment : DialogFragment() {
         }
 
         binding.downalod.setOnClickListener {
-            downloadImage(item.imgUrl!!, item.userName!!, item.imgUploadDate.toString())
+            downloadImage(item.imgUrl!!, item.imgUploadDate.toString())
 
         }
     }
 
-    private fun downloadImage(url: String, username_: String, time: String) {
+    private fun downloadImage(url: String,time: String) {
         val folder = File(Environment.getExternalStorageDirectory().toString() + "/" + "Insane")
         if (!folder.exists()) {
             folder.mkdirs()
         }
-        val fileName = "$username_$time.jpg"
+        val fileName = "$time.jpg"
 
         Toast.makeText(
             activity!!,
@@ -157,50 +157,55 @@ class SingleDetailFragment : DialogFragment() {
         )
     }
 
-    private fun setProfileImage(item: ContentDTO) {
-        firestore?.collection("profileImages")?.document(item.uid!!)
-            ?.get()?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
 
-                    val url = task.result!!["image"]
+    private fun setProfile(item: ContentDTO) {
+        val dbRef = db!!.collection("users").document(item.uid!!)
+
+        dbRef.get()
+            .addOnSuccessListener { document ->
+                val users = document.toObject(Users::class.java)
+                if (users != null) {
+                    binding.tvProfName.text = users.userName
                     Glide.with(binding.imgProf.context)
-                        .load(url)
-                        .error(dev.nehal.insane.R.drawable.ic_account)
-                        .placeholder(dev.nehal.insane.R.drawable.ic_account)
+                        .load(users.profImageUri)
+                        .error(R.drawable.ic_account)
+                        .placeholder(R.drawable.ic_account)
                         .apply(RequestOptions().circleCrop())
                         .into(binding.imgProf)
                 }
+
+            }.addOnFailureListener { exception ->
+
+                Log.d("ProfileFragment", exception.toString())
             }
     }
 
     private fun favoriteAlarm(destinationUid: String) {
         val alarmDTO = AlarmDTO()
+        alarmDTO.contentUid = contentUid
         alarmDTO.destinationUid = destinationUid
-        alarmDTO.userId = user!!.phoneNumber
-        alarmDTO.contentId = contentUid
-        alarmDTO.uid = user?.uid
-        alarmDTO.kind = 0
-        alarmDTO.username = user?.displayName
-        alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.uid = user.userUID
         alarmDTO.imageUri = newContentDTO.imgUrl
+        alarmDTO.kind = 0
+        alarmDTO.activityDate = System.currentTimeMillis()
 
-        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
-        val message = user?.displayName + " " + getString(dev.nehal.insane.R.string.alarm_favorite)
+        FirebaseFirestore.getInstance().collection("userActivities").document().set(alarmDTO)
+        val message = user.userName + " " + getString(dev.nehal.insane.R.string.alarm_favorite)
         fcmPush?.sendMessage(destinationUid, "You have received a message", message)
     }
 
 
     private fun favoriteEvent(contenUid: String) {
-        val tsDoc = firestore!!.collection("uploadedImages")?.document(contenUid)
-        firestore?.runTransaction { transaction ->
+        val tsDoc = db!!.collection("uploadedImages").document(contenUid)
+        db?.runTransaction { transaction ->
 
-            val uid = FirebaseAuth.getInstance().currentUser!!.uid
+            val uid:String = user.userUID
             val contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
 
             if (contentDTO!!.favorites.containsKey(uid)) {
-                contentDTO?.favoriteCount = contentDTO?.favoriteCount!! - 1
-                contentDTO?.favorites.remove(uid)
-                binding.imgfav.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_border_black_24dp)
+                contentDTO.favoriteCount = contentDTO.favoriteCount - 1
+                contentDTO.favorites.remove(uid)
+                binding.imgfav.setImageResource(R.drawable.ic_favorite_border_black_24dp)
                 binding.tvLikes.text =
                     getString(
                         dev.nehal.insane.R.string.likes_count,
@@ -209,10 +214,10 @@ class SingleDetailFragment : DialogFragment() {
 
             } else {
                 // Star the post and add self to stars
-                contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
-                contentDTO?.favorites[uid] = true
+                contentDTO.favoriteCount = contentDTO.favoriteCount + 1
+                contentDTO.favorites[uid] = true
                 favoriteAlarm(newContentDTO.uid!!)
-                binding.imgfav.setImageResource(dev.nehal.insane.R.drawable.ic_favorite_black_24dp)
+                binding.imgfav.setImageResource(R.drawable.ic_favorite_black_24dp)
 
                 binding.tvLikes.text =
                     getString(

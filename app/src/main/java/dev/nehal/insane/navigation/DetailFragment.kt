@@ -144,13 +144,11 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
 
         val alarmDTO = AlarmDTO()
         alarmDTO.destinationUid = destinationUid
-        alarmDTO.userId = user?.phoneNumber
         alarmDTO.uid = user?.uid
         alarmDTO.kind = 0
-        alarmDTO.username = user?.displayName
-        alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.activityDate = System.currentTimeMillis()
 
-        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+        FirebaseFirestore.getInstance().collection("userActivities").document().set(alarmDTO)
         var message = user?.displayName + " " + getString(dev.nehal.insane.R.string.alarm_favorite)
         fcmPush?.sendMessage(destinationUid, "You have received a message", message)
     }

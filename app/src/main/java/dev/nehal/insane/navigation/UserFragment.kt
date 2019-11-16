@@ -249,13 +249,11 @@ class UserFragment : Fragment() {
 
         val alarmDTO = AlarmDTO()
         alarmDTO.destinationUid = destinationUid
-        alarmDTO.userId = auth?.currentUser!!.phoneNumber
         alarmDTO.uid = auth?.currentUser!!.uid
-        alarmDTO.username = auth?.currentUser!!.displayName
         alarmDTO.kind = 2
-        alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.activityDate = System.currentTimeMillis()
 
-        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+        FirebaseFirestore.getInstance().collection("userActivities").document().set(alarmDTO)
         var message = auth?.currentUser!!.displayName + " " + getString(R.string.alarm_follow)
         fcmPush?.sendMessage(destinationUid, "You have received a message", message)
     }

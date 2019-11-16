@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -21,7 +19,6 @@ import dev.nehal.insane.util.FcmPush
 
 class CommentActivity : AppCompatActivity() {
     var contentUid: String? = null
-    var user: FirebaseUser? = null
     var destinationUid: String? = null
     var imageUri:String?=null
     var fcmPush: FcmPush? = null
@@ -29,11 +26,11 @@ class CommentActivity : AppCompatActivity() {
     var commentSnapshot: ListenerRegistration? = null
     private lateinit var adapter:CommentsAdapter
     private lateinit var binding: ActivityCommentBinding
+    private lateinit var  user:Users
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_comment)
 
-        user = FirebaseAuth.getInstance().currentUser
         destinationUid = intent.getStringExtra("destinationUid")
         contentUid = intent.getStringExtra("contentUid")
         imageUri=intent.getStringExtra("imageUri")
@@ -59,11 +56,9 @@ class CommentActivity : AppCompatActivity() {
 
     private fun sendComments() {
         val comment = ContentDTO.Comment()
-        val user = ModelPreferences(this).getObject(Const.PROF_USER, Users::class.java)
-        comment.uid = user?.userUID
+        user = ModelPreferences(this).getObject(Const.PROF_USER, Users::class.java)!!
+        comment.uid = user.userUID
         comment.comment = binding.etPost.text.toString()
-        comment.userName = user?.userName
-        comment.userProfImgUrl=user?.profImageUri
         comment.commentDate = System.currentTimeMillis()
 
         FirebaseFirestore.getInstance()
@@ -104,20 +99,18 @@ class CommentActivity : AppCompatActivity() {
 
     private fun commentAlarm(destinationUid: String, message: String) {
         val alarmDTO = AlarmDTO()
+        alarmDTO.contentUid = contentUid
         alarmDTO.destinationUid = destinationUid
-        alarmDTO.userId = user?.phoneNumber
-        alarmDTO.username = user?.displayName
-        alarmDTO.uid = user?.uid
+        alarmDTO.uid = user.userUID
+        alarmDTO.imageUri= imageUri
         alarmDTO.kind = 1
         alarmDTO.message = message
-        alarmDTO.contentId = contentUid
-        alarmDTO.imageUri= imageUri
-        alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.activityDate = System.currentTimeMillis()
 
-        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+        FirebaseFirestore.getInstance().collection("userActivities").document().set(alarmDTO)
 
-        var message =
-            user?.displayName + getString(R.string.alarm_comment) + " " + message
-        fcmPush?.sendMessage(destinationUid, "This is a notification message.", message)
+        val msg =
+            user.userName + getString(R.string.alarm_comment) + " " + message
+        fcmPush?.sendMessage(destinationUid, "This is a notification message.", msg)
     }
 }

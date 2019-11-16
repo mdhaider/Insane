@@ -36,7 +36,7 @@ class AlarmFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val itemOnClick: (Int) -> Unit = { position ->
-            getPostData(alarmList[position].contentId!!)
+            getPostData(alarmList[position].contentUid!!)
         }
 
         alarmList = ArrayList()
@@ -49,14 +49,14 @@ class AlarmFragment : Fragment() {
 
     private fun getData() {
         alarmSnapshot = FirebaseFirestore.getInstance()
-            .collection("alarms")
+            .collection("userActivities")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 alarmList.clear()
                 if (querySnapshot == null) return@addSnapshotListener
                 for (snapshot in querySnapshot.documents) {
                     alarmList.add(snapshot.toObject(AlarmDTO::class.java)!!)
                 }
-                alarmList.sortByDescending { it.timestamp }
+                alarmList.sortByDescending { it.activityDate }
                 adapter.notifyDataSetChanged()
             }
     }
@@ -79,9 +79,8 @@ class AlarmFragment : Fragment() {
     }
 
     private fun getPostData(contentId: String) {
-
         FirebaseFirestore
-            .getInstance().collection("images").document(contentId).get()
+            .getInstance().collection("uploadedImages").document(contentId).get()
             .addOnSuccessListener { document ->
                 contentDTO = document.toObject((ContentDTO::class.java))
                 goToDetail(contentId, contentDTO!!)

@@ -106,8 +106,6 @@ class AddPhotoFragment : Fragment() {
                     contentDTO.imgUrl = url
                     contentDTO.imgCaption = addphoto_edit_explain.text.toString()
                     contentDTO.imgUploadDate = System.currentTimeMillis()
-                    contentDTO.userName = user?.userName
-                    contentDTO.userProfImgUrl = user?.profImageUri
                     firestore?.collection("uploadedImages")?.document()?.set(contentDTO)
 
                     activity!!.setResult(Activity.RESULT_OK)

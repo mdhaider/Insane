@@ -1,5 +1,6 @@
 package dev.nehal.insane.navigation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.model.AlarmDTO
+import dev.nehal.insane.model.Users
 import dev.nehal.insane.shared.TimeAgo
 
 
@@ -30,21 +32,6 @@ class AlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     }
 
     fun bind(alarmDTO: AlarmDTO, itemClickListener:(Int)->Unit) {
-        FirebaseFirestore.getInstance().collection("profileImages").document(alarmDTO.uid!!)
-            .get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val url = task.result!!["image"]
-                    Glide.with(itemView.context)
-                        .load(url)
-                        .error(R.drawable.ic_account)
-                        .placeholder(R.drawable.ic_account)
-                        .apply(RequestOptions().circleCrop())
-                        .into(mUserImage!!)
-
-                }
-            }
-
-        mUserNam?.text=alarmDTO.username
 
         when(alarmDTO.kind){
             0 -> {
@@ -61,7 +48,7 @@ class AlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             }
         }
 
-        mTimeAgo?.text= TimeAgo.getTimeAgo(alarmDTO.timestamp!!)
+        mTimeAgo?.text= TimeAgo.getTimeAgo(alarmDTO.activityDate!!)
 
         Glide.with(itemView.context)
             .load(alarmDTO.imageUri)
@@ -71,5 +58,29 @@ class AlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
 
         itemView.setOnClickListener { itemClickListener(adapterPosition) }
 
+        setProfile(alarmDTO.uid!!)
+
+    }
+
+    private fun setProfile(uid: String) {
+        val dbRef = FirebaseFirestore.getInstance().collection("users").document(uid)
+
+        dbRef.get()
+            .addOnSuccessListener { document ->
+                val users = document.toObject(Users::class.java)
+                if (users != null) {
+                    mUserNam?.text = users.userName
+                    Glide.with(mUserImage!!.context)
+                        .load(users.profImageUri)
+                        .error(R.drawable.ic_account)
+                        .placeholder(R.drawable.ic_account)
+                        .apply(RequestOptions().circleCrop())
+                        .into(mUserImage!!)
+                }
+
+            }.addOnFailureListener { exception ->
+
+                Log.d("ProfileFragment", exception.toString())
+            }
     }
 }

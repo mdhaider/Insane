@@ -11,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.model.ContentDTO
+import dev.nehal.insane.model.Users
 import dev.nehal.insane.shared.TimeAgo
 
 
@@ -46,12 +47,6 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         listener: DetailAdapter.ItemClickListener
     ) {
 
-        Glide.with(itemView.context)
-            .load(contentDTO.userProfImgUrl)
-            .error(R.drawable.ic_account)
-            .placeholder(R.drawable.ic_account)
-            .apply(RequestOptions().circleCrop())
-            .into(mProfImage!!)
 
         FirebaseFirestore.getInstance()
             .collection("uploadedImages").document(contentUid).collection("comments").get()
@@ -67,8 +62,6 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
 
             }
 
-
-        mProfName?.text = contentDTO.userName
 
         mLikeCount?.text =
             itemView.context.getString(R.string.likes_count, contentDTO.favoriteCount.toString())
@@ -103,5 +96,29 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             )
         }
 
+        setProfile(contentDTO.uid!!)
+
+    }
+
+    private fun setProfile(uid: String) {
+        val dbRef = FirebaseFirestore.getInstance().collection("users").document(uid)
+
+        dbRef.get()
+            .addOnSuccessListener { document ->
+                val users = document.toObject(Users::class.java)
+                if (users != null) {
+                    mProfName?.text = users.userName
+                    Glide.with(mProfImage!!.context)
+                        .load(users.profImageUri)
+                        .error(R.drawable.ic_account)
+                        .placeholder(R.drawable.ic_account)
+                        .apply(RequestOptions().circleCrop())
+                        .into(mProfImage!!)
+                }
+
+            }.addOnFailureListener { exception ->
+
+                Log.d("ProfileFragment", exception.toString())
+            }
     }
 }
