@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -60,7 +61,7 @@ class SingleDetailFragment : DialogFragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                dev.nehal.insane.R.layout.single_detail_fragment,
+               R.layout.single_detail_fragment,
                 container,
                 false
             )
@@ -129,6 +130,15 @@ class SingleDetailFragment : DialogFragment() {
 
         binding.share.setOnClickListener {
             ShareImage.shareImageWith(activity!!, binding.imgPost.drawable)
+        }
+
+        binding.profView.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString(Const.USER_UID, newContentDTO.uid)
+            }
+
+            findNavController().navigate(R.id.action_profileimage_to_profile, bundle)
+
         }
 
         binding.downalod.setOnClickListener {

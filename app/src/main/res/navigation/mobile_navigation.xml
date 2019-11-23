@@ -9,13 +9,25 @@
         android:id="@+id/navigation_home"
         android:name="dev.nehal.insane.newd.main.HomeTabFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home_tab" />
+        tools:layout="@layout/fragment_home_tab">
+
+        <action
+            android:id="@+id/action_profileimage_to_profile"
+            app:destination="@+id/navigation_profile"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_people"
         android:name="dev.nehal.insane.navigation.PeopleFragment"
         android:label=""
-        tools:layout="@layout/people_fragment" >
+        tools:layout="@layout/people_fragment">
 
         <action
             android:id="@+id/action_people_profile"
@@ -85,15 +97,15 @@
         android:label=""
         tools:layout="@layout/profile_fragment">
 
-    <action
-        android:id="@+id/action_profile_home_profile"
-        app:destination="@+id/navigation_profile"
-        app:enterAnim="@anim/nav_default_enter_anim"
-        app:exitAnim="@anim/nav_default_exit_anim"
-        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim"
-        app:popUpTo="@id/navigation_home"
-        app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profile_home_profile"
+            app:destination="@+id/navigation_profile"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

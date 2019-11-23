@@ -13,39 +13,46 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgDetProf"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_margin="7.5dp"
-            tools:src="@drawable/ic_account" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/imgDetProf"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:id="@+id/profView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDetName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="12sp"
-                tools:text="User Name" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgDetProf"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="7.5dp"
+                android:layout_marginTop="7.5dp"
+                android:layout_marginEnd="7.5dp"
+                android:layout_marginBottom="7.5dp"
+                tools:src="@drawable/ic_account" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDetAgo"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="sans-serif-condensed-light"
-                android:textSize="12sp"
-                android:textColor="@color/grey_500"
-                tools:text="A day ago" />
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDetName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="12sp"
+                    tools:text="User Name" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDetAgo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:textColor="@color/grey_500"
+                    android:textSize="12sp"
+                    tools:text="A day ago" />
+            </LinearLayout>
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView

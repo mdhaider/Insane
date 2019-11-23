@@ -2,6 +2,7 @@ package dev.nehal.insane.navigation
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -29,9 +30,11 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     private var mLikeCount: TextView? = null
     private var mCaption: TextView? = null
     private var mCommentCount: TextView? = null
+    private var mProfView: View?=null
     private var user:Users?=null
 
     init {
+        mProfView = itemView.findViewById(R.id.profView)
         mProfImage = itemView.findViewById(R.id.imgDetProf)
         mProfName = itemView.findViewById(R.id.tvDetName)
         mAgo = itemView.findViewById(R.id.tvDetAgo)
@@ -89,7 +92,7 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             .placeholder(R.drawable.placeholder_image_new)
             .into(mPostImage!!)
 
-        mProfImage?.setOnClickListener { listener.goToprofile() }
+        mProfView?.setOnClickListener { listener.goToProfile(contentDTO.uid!!) }
         mMore?.setOnClickListener { listener.getMore() }
         mPostImage?.setOnClickListener { listener.goToDetailPost(contentUid, contentDTO) }
         mFavImage?.setOnClickListener { listener.setfav(contentUid, contentDTO.uid!!) }

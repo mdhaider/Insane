@@ -27,7 +27,7 @@ class DetailAdapter(
     override fun getItemCount(): Int = list.size
 
     interface ItemClickListener {
-        fun goToprofile()
+        fun goToProfile(userUid: String)
         fun getMore()
         fun goToDetailPost(contentId: String,contentDTO: ContentDTO)
         fun setfav(contentUid: String, destUid:String)

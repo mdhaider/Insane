@@ -9,17 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
+import dev.nehal.insane.R
 import dev.nehal.insane.databinding.FragmentDetailBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
 import dev.nehal.insane.navigation.DetailAdapter.ItemClickListener
 import dev.nehal.insane.newd.main.MainActivity1
+import dev.nehal.insane.shared.Const
 import dev.nehal.insane.util.FcmPush
 import okhttp3.OkHttpClient
 import java.util.*
@@ -69,8 +72,12 @@ class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickList
         fcmPush = FcmPush()
 
         val itemOnClick = object : ItemClickListener {
-            override fun goToprofile() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun goToProfile(userUid: String) {
+                val bundle = Bundle().apply {
+                    putString(Const.USER_UID, userUid)
+                }
+
+                findNavController().navigate(R.id.action_profileimage_to_profile, bundle)
             }
 
             override fun getMore() {
