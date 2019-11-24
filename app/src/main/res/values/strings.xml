@@ -24,7 +24,6 @@
     <!-- Bottom Navigation View -->
     <string name="home">home</string>
     <string name="people">People</string>
-    <string name="search">Search</string>
     <string name="gallery">Gallery</string>
     <string name="favorite">Favorite</string>
     <string name="account">Account</string>
@@ -53,8 +52,6 @@
     <!-- Comment -->
 
     <!-- Add Photo -->
-    <string name="upload_image">Post a picture</string>
-    <string name="hint_image_content">Caption</string>
     <string name="upload_success">Upload successful</string>
     <string name="upload_fail">Upload failed</string>
     <string name="guest_count">%1$s Guests</string>
@@ -72,11 +69,7 @@
     <item name="masked" type="id" />
     <string name="title_activity_main1">MainActivity1</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="title_activity_tab1">TabActivity1</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
     <string name="sharing_memories">Sharing Memories</string>
     <string name="add_a_comment">Add a comment...</string>
     <string name="comment">Comment</string>

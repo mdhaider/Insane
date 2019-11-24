@@ -1,24 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_gradient"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/pic_10"
     android:gravity="center_vertical|center"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:srcCompat="@drawable/ic_splash" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSalut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Good"
+        android:gravity="center"
+        android:text="@string/sharing_memories"
+        android:textColor="@color/white"
+        android:fontFamily="cursive"
+        android:textSize="32sp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSalut1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Good"
+        android:gravity="center"
+        android:text="@string/sharing_memories"
+        android:textColor="@color/white"
+        android:layout_marginTop="4dp"
+        android:fontFamily="cursive"
+        android:textSize="32sp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:fontFamily="cursive"
+        android:fontFamily="casual"
         android:text="@string/sharing_memories"
         android:textColor="@color/white"
-        android:textSize="32sp" />
+        android:textSize="16sp" />
 
 </LinearLayout>
+</layout>

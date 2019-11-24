@@ -5,54 +5,65 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.Nullable
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dev.nehal.insane.R
-import kotlinx.android.synthetic.main.bottom_sheet_detail.*
+import dev.nehal.insane.databinding.BottomSheetDetailBinding
 
-class DetailBottomSheetDialogFragment : BottomSheetDialogFragment(), View.OnClickListener {
+class DetailBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
-    private var mListener: ItemClickListener? = null
+    private var mBottomSheetListener: BottomSheetListener? = null
+    private lateinit var binding: BottomSheetDetailBinding
 
     @Nullable
     override fun onCreateView(
         inflater: LayoutInflater, @Nullable container: ViewGroup?,
         @Nullable savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottom_sheet_detail, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_detail, container, false)
+        binding.tvDetBotClose.setOnClickListener {
+            mBottomSheetListener!!.onOptionClick("close")
+            dismiss() //dismiss bottom sheet when item click
+        }
+        binding.tvDetBotShare.setOnClickListener {
+            mBottomSheetListener!!.onOptionClick("share")
+            dismiss() //dismiss bottom sheet when item click
+
+        }
+
+        binding.tvDetBotDownload.setOnClickListener {
+            mBottomSheetListener!!.onOptionClick("download")
+            dismiss() //dismiss bottom sheet when item click
+
+        }
+
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tvDetBotClose.setOnClickListener(this)
-        tvDetBotShare.setOnClickListener(this)
-        tvDetBotDownload.setOnClickListener(this)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is ItemClickListener) {
-            mListener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement ItemClickListener")
+
+        try {
+            mBottomSheetListener = context as BottomSheetListener?
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context.toString())
         }
+
     }
 
     override fun onDetach() {
         super.onDetach()
-        mListener = null
     }
 
 
-    override fun onClick(view: View) {
-        val tvSelected = view as TextView
-        mListener!!.onItemClick(tvSelected.getText().toString())
-        dismiss()
-    }
-
-    interface ItemClickListener {
-        fun onItemClick(item: String)
+    interface BottomSheetListener {
+        fun onOptionClick(text: String)
     }
 
     companion object {

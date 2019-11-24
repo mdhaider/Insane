@@ -75,6 +75,8 @@ class ReqStatusFragment : Fragment() {
         binding.prVerify.visibility = View.VISIBLE
         binding.checkStatus.visibility = View.GONE
         binding.txtStatus.text = ""
+        binding.txtStatus.setBackgroundColor(resources.getColor(R.color.tra))
+
         val ref = db.collection("signUp").document(phNum)
 
         ref.get()
@@ -88,6 +90,7 @@ class ReqStatusFragment : Fragment() {
                         goToVerifyPhone()
                     } else {
                         binding.txtStatus.text = getString(R.string.not_approved)
+                        binding.txtStatus.setBackgroundColor(resources.getColor(R.color.white))
                     }
 
                 } else {

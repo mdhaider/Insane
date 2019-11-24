@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".prelogin.EnterMobileFragment">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite">
 
+        <ak.sh.ay.oblique.ObliqueView
+            android:id="@+id/obliqueView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/pic_2"
+            app:ending_slant_angle="0"
+            app:starting_slant_angle="10"
+            app:type="image" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilNumber"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_margin="16dp">
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:background="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/mNumber"
@@ -31,9 +43,9 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:indeterminate="true"
             android:visibility="gone" />
 
-    </RelativeLayout>
+    </FrameLayout>
 </layout>

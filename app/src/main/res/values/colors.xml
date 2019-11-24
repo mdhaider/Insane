@@ -3,19 +3,16 @@
     <color name="grey_300">#E0E0E0</color>
     <color name="grey_500">#9E9E9E</color>
     <color name="colorPrimary">#EB857C</color>
-    <color name="colorPrimaryLight">#ECACA7</color>
     <color name="colorPrimaryDark">#E9695F</color>
     <color name="colorAccent">#FB8C00</color>
     <color name="colorTextPrimary">@android:color/primary_text_light</color>
     <color name="colorTextSecondary">@android:color/tertiary_text_light</color>
     <color name="white">#FFF</color>
+    <color name="red">#FF0000</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorDivision">#e0e0e0</color>
-    <color name="colorNavIcon">#1d1d1d</color>
     <color name="colorLightGray">#f1f1f1</color>
-    <color name="common_gray2">#ffdadada</color>
-    <color name="common_primary">#fff76c6f</color>
     <color name="black">#000000</color>
     <color name="back">#00ACC1</color>
+    <color name="tra">#00FFFFFF</color>
 
 </resources>

@@ -48,6 +48,8 @@ class VerifyPhoneFragment : Fragment() {
         phNum = "+91" + AppPreferences.phone!!
         mName = AppPreferences.userName!!
 
+
+
         arguments?.apply {
             isSignedUpAlready = getBoolean(Const.IS_SIGNED_UP_ALREADY, false)
         }

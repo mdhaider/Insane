@@ -28,10 +28,7 @@ import okhttp3.OkHttpClient
 import java.util.*
 
 
-class DetailFragment : Fragment(), DetailBottomSheetDialogFragment.ItemClickListener {
-    override fun onItemClick(item: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class DetailFragment : Fragment() {
 
     var user: FirebaseUser? = null
     var firestore: FirebaseFirestore? = null

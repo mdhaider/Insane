@@ -15,6 +15,7 @@ class HomeTabFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager
     private lateinit var tabs: TabLayout
+    val curveRadius = 20F
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,6 +24,7 @@ class HomeTabFragment : Fragment() {
         val root = inflater.inflate(dev.nehal.insane.R.layout.fragment_home_tab, container, false)
         viewPager = root.findViewById(dev.nehal.insane.R.id.view_pager)
         tabs = root.findViewById(dev.nehal.insane.R.id.tabs)
+
 
         return root
     }

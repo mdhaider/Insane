@@ -3,6 +3,7 @@ package dev.nehal.insane.newd.main
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -19,7 +20,7 @@ import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.ModelPreferences
 
 
-class MainActivity1 : AppCompatActivity() {
+class MainActivity1 : AppCompatActivity(), DetailBottomSheetDialogFragment.BottomSheetListener {
     private lateinit var db: FirebaseFirestore
 
     companion object {
@@ -30,6 +31,7 @@ class MainActivity1 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(dev.nehal.insane.R.layout.activity_main1)
         val navView: BottomNavigationView = findViewById(dev.nehal.insane.R.id.nav_view)
+
 
         val navController = findNavController(dev.nehal.insane.R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
@@ -103,6 +105,19 @@ class MainActivity1 : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onOptionClick(text: String) {
+      Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        got()
+    }
+
+    private fun got(){
+        val currentFragment = supportFragmentManager.getCurrentNavigationFragment()
+
+        this.supportFragmentManager.findFragmentByTag("tag")
+
+        Log.d("gtr",currentFragment.toString())
     }
 
     private fun regToken() {
