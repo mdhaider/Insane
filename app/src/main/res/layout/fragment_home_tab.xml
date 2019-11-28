@@ -17,7 +17,7 @@
                 android:layout_height="100dp"
                 android:scaleType="fitXY"
                 android:background="@drawable/round_outline"
-                android:src="@drawable/pic_7" />
+                android:src="@drawable/pic_12" />
 
 
             <LinearLayout

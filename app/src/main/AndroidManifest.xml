@@ -25,26 +25,20 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".newd.main.MainActivity1"
+            android:name=".prelogin.MainActivity"
             android:label="@string/title_activity_main1"
             android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".prelogin.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.SplashScreen">
+            android:theme="@style/SplashScreenTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".modules.MainActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".modules.MainActivityDelete"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:screenOrientation="portrait"/>
         <activity android:name=".modules.login.LoginActivity"
             android:screenOrientation="portrait"/>
 
@@ -54,11 +48,10 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".navigation.TabActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".navigation.HomeTabActivity"
-            android:screenOrientation="portrait"/> <!-- 안드로이드 8.0이상 푸시 처리 추가 코드 -->
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/push_icon" />
+            android:resource="@drawable/push_ic_3" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />

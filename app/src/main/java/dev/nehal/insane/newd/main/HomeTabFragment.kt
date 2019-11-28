@@ -15,7 +15,6 @@ class HomeTabFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager
     private lateinit var tabs: TabLayout
-    val curveRadius = 20F
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

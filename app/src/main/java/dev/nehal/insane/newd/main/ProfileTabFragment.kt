@@ -17,7 +17,7 @@ import dev.nehal.insane.databinding.FragmentProfileTabBinding
 import dev.nehal.insane.model.Users
 import dev.nehal.insane.navigation.AlarmFragment
 import dev.nehal.insane.navigation.DetailFragment
-import dev.nehal.insane.navigation.ProfGridFragment
+import dev.nehal.insane.postlogin.ProfGridFragment
 import dev.nehal.insane.shared.Const
 
 class ProfileTabFragment : Fragment() {

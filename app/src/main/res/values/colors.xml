@@ -14,5 +14,6 @@
     <color name="black">#000000</color>
     <color name="back">#00ACC1</color>
     <color name="tra">#00FFFFFF</color>
+    <color name="colorBackground">#E3DFEA</color>
 
 </resources>

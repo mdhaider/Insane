@@ -4,54 +4,39 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
-import dev.nehal.insane.R
 import dev.nehal.insane.databinding.ActivitySplashBinding
 import dev.nehal.insane.modules.login.LoginActivity
-import dev.nehal.insane.newd.main.MainActivity1
-import dev.nehal.insane.shared.AppPreferences
 import java.util.*
 
 class SplashActivity : AppCompatActivity() {
-    private val splashTime = 1500L // 3 seconds
-    private lateinit var myHandler : Handler
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var binding: ActivitySplashBinding
+    private val splashTime = 1000L // 3 seconds
+    private lateinit var myHandler : Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=DataBindingUtil.setContentView(this,R.layout.activity_splash)
+       // binding= DataBindingUtil.setContentView(this, R.layout.activity_splash)
 
-        myHandler = Handler()
-        binding.tvSalut.text=getGreetingMessage()
-        binding.tvSalut1.text=AppPreferences.userName
+        //binding.tvSalut.text=getGreetingMessage()
+        //binding.tvSalut1.text= AppPreferences.userName
 
-        myHandler.postDelayed({
-           decisionToGo()
-        },splashTime)
+        decisionToGo()
+
     }
 
     private fun decisionToGo() {
-        if (auth.currentUser == null) {
-            intent = Intent(
-                this,
-                LoginActivity::class.java
-            )
-            startActivity(intent)
-            finish()
-
+        intent = if (auth.currentUser == null) {
+            Intent(this, LoginActivity::class.java)
         } else {
-            intent = Intent(
-                this,
-                MainActivity1::class.java
-            )
-            startActivity(intent)
-            finish()
+            Intent(this, MainActivity::class.java)
         }
+        startActivity(intent)
+        finish()
     }
 
-    fun getGreetingMessage():String{
+    private fun getGreetingMessage():String{
         val c = Calendar.getInstance()
         val timeOfDay = c.get(Calendar.HOUR_OF_DAY)
 

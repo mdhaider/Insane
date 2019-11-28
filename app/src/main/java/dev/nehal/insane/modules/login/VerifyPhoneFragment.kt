@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.VerifyPhoneFragmentBinding
 import dev.nehal.insane.model.Users
-import dev.nehal.insane.newd.main.MainActivity1
+import dev.nehal.insane.prelogin.MainActivity
 import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.onChange
@@ -177,7 +177,7 @@ class VerifyPhoneFragment : Fragment() {
 
     private fun showHomeActivity() {
         binding.prVerify.visibility = View.GONE
-        val intent = Intent(activity, MainActivity1::class.java)
+        val intent = Intent(activity, MainActivity::class.java)
         startActivity(intent)
         activity!!.finish()
     }

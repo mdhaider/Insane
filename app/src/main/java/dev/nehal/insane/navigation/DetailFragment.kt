@@ -21,7 +21,7 @@ import dev.nehal.insane.databinding.FragmentDetailBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
 import dev.nehal.insane.navigation.DetailAdapter.ItemClickListener
-import dev.nehal.insane.newd.main.MainActivity1
+import dev.nehal.insane.prelogin.MainActivity
 import dev.nehal.insane.shared.Const
 import dev.nehal.insane.util.FcmPush
 import okhttp3.OkHttpClient
@@ -78,7 +78,7 @@ class DetailFragment : Fragment() {
             }
 
             override fun getMore() {
-                val mainActivity = activity as MainActivity1?
+                val mainActivity = activity as MainActivity?
                 mainActivity!!.showBottomSheet()
 
             }

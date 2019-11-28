@@ -3,6 +3,7 @@ package dev.nehal.insane.navigation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dev.nehal.insane.R
+import dev.nehal.insane.postlogin.PeopleFragment
 import kotlinx.android.synthetic.main.activity_tab.*
 
 class TabActivity : AppCompatActivity() {
