@@ -54,6 +54,8 @@ class AddPhotoFragment : Fragment() {
 
         onSharedIntent()
 
+        binding.rootView.visibility=View.GONE
+
         storage = FirebaseStorage.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
@@ -69,6 +71,8 @@ class AddPhotoFragment : Fragment() {
             var list: ArrayList<Image> = ArrayList<Image>()
             list = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES)
             Log.d("TAG", list.toString())
+
+            binding.rootView.visibility=View.VISIBLE
 
             Glide.with(this).load(list[0].path).into(addphoto_image)
             Log.d("path", list[0].path.toString())

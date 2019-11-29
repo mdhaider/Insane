@@ -24,7 +24,6 @@ import dev.nehal.insane.model.SignUp
 import dev.nehal.insane.model.Users
 import dev.nehal.insane.modules.login.ReqStatusFragment
 import dev.nehal.insane.modules.login.VerifyPhoneFragment
-import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.hideKeyboard
 import dev.nehal.insane.shared.onChange
 import java.util.concurrent.TimeUnit
@@ -86,6 +85,7 @@ class EnterMobileFragment : Fragment() {
             if (it.length > 3) {
                 userName = it
                 binding.btnReq.isEnabled = true
+                binding.btnReq.setTextColor(resources.getColor(R.color.white))
                 binding.check2.visibility = View.VISIBLE
             } else {
                 binding.btnReq.isEnabled = false
@@ -260,7 +260,6 @@ class EnterMobileFragment : Fragment() {
     }
 
     private fun goToNext(uid: String) {
-        AppPreferences.userName=userName
         if (isUserSignedUp) {
             showHomeActivity()
         } else {
@@ -276,16 +275,17 @@ class EnterMobileFragment : Fragment() {
             user.phoneNumber = userPhone
             user.userName = userName
             user.userUID = uid
+            user.isAdmin=false
+            user.isApproved=false
+            user.isBlocked=false
             user.profImageUri = ""
             user.accCreationDate = System.currentTimeMillis()
 
             db.collection("users").document(uid).set(user)
                 .addOnSuccessListener { documentReference ->
-                    dialog.dismiss()
                     Log.d("TAG", "DocumentSnapshot added with ID: $documentReference")
                     showHomeActivity()
                 }.addOnFailureListener { e ->
-                    dialog.dismiss()
                     Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
                 }
         } catch (e: Exception) {
@@ -295,6 +295,7 @@ class EnterMobileFragment : Fragment() {
     }
 
     private fun showHomeActivity() {
+        dialog.dismiss()
         val intent = Intent(activity, MainActivity::class.java)
         startActivity(intent)
         activity!!.finish()

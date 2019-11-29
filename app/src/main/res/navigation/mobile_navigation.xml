@@ -60,7 +60,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="dev.nehal.insane.newd.main.NotificationsFragment"
+        android:name="dev.nehal.insane.postlogin.RewardsFragment"
         android:label=""
         tools:layout="@layout/fragment_notifications" />
 

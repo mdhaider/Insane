@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     android:padding="8dp">
 
     <View
@@ -15,33 +15,159 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp">
 
-        <ImageView
-            android:id="@+id/userImage"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_account" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/userName"
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/userImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_account" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:textSize="16sp"
+                    android:layout_gravity="top"
+                    tools:text="Nehal" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/imgBack"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:background="@drawable/circle_3"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imgType"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:scaleType="fitXY"
+                            android:gravity="center"
+                            android:src="@drawable/ic_arrow_upward_black_24dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/uploadCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="sans-serif-condensed-light"
+                        android:textSize="14sp"
+                        android:layout_marginStart="4dp"
+                        android:layout_gravity="center"
+                        tools:text="10" />
+
+                    <LinearLayout
+                        android:id="@+id/imgBack1"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/circle_2"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imgType1"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_favorite_red" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/favCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:fontFamily="sans-serif-condensed-light"
+                        android:textSize="14sp"
+                        tools:text="10" />
+
+                    <LinearLayout
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/circle_1"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_mode_comment_black_24dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/commCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:fontFamily="sans-serif-condensed-light"
+                        android:textSize="14sp"
+                        tools:text="10" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/adminlayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:layout_marginStart="12dp"
-            android:textSize="16sp"
-            tools:text="Nehal" />
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:visibility="gone">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/user_textview_flllow"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:text="@string/follow_bold"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnBlock"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button_background"
+                android:gravity="center"
+                android:padding="6dp"
+                android:textColor="@color/white"
+                android:visibility="visible"
+                tools:text="Block" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnApprove"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_background"
+                android:gravity="center"
+                android:padding="6dp"
+                android:textColor="@color/white"
+                android:visibility="visible"
+                tools:text="Approve" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
     </LinearLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>
