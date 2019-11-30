@@ -1,4 +1,4 @@
-package dev.nehal.insane.newd.main
+package dev.nehal.insane.navigation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

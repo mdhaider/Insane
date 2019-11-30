@@ -11,8 +11,8 @@ android {
         applicationId "dev.nehal.insane"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 16
-        versionName "2.6"
+        versionCode 18
+        versionName "2.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -21,6 +21,10 @@ android {
         release {
           //  shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            //applicationIdSuffix ".debug"
         }
     }
 
@@ -64,11 +68,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.github.harunkor:AndroidGifViewPlayerKotlin:1.0.0'
     implementation 'com.google.android.play:core:1.6.4'
     implementation 'com.github.naumanmir:filedownloadservice:1.2'
-    implementation 'com.github.florent37:arclayout:1.0.3'
-    implementation  'com.fxn769:oblique:2.0'
+    implementation 'com.github.rezaiyan:arclayout:1.0.1'
     implementation 'eu.dkaratzas:android-inapp-update:1.0.3'
     implementation 'com.github.myinnos:AndroidScratchCard:v1.0'
 

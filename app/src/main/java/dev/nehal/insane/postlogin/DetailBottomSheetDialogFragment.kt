@@ -1,4 +1,4 @@
-package dev.nehal.insane.navigation
+package dev.nehal.insane.postlogin
 
 import android.content.Context
 import android.os.Bundle

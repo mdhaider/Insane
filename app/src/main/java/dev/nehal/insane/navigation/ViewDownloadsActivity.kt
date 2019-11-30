@@ -1,4 +1,4 @@
-package dev.nehal.insane.newd.main
+package dev.nehal.insane.navigation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

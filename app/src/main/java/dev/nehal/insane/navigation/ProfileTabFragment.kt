@@ -1,5 +1,6 @@
-package dev.nehal.insane.newd.main
+package dev.nehal.insane.navigation
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,8 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.FragmentProfileTabBinding
 import dev.nehal.insane.model.Users
-import dev.nehal.insane.navigation.AlarmFragment
-import dev.nehal.insane.navigation.DetailFragment
+import dev.nehal.insane.postlogin.ProfAlarmFragment
+import dev.nehal.insane.postlogin.ProfDetailFragment
 import dev.nehal.insane.postlogin.ProfGridFragment
 import dev.nehal.insane.shared.Const
 
@@ -24,8 +25,8 @@ class ProfileTabFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileTabBinding
     private lateinit var db: FirebaseFirestore
-    private lateinit var uid: String
-    private  var passedUid: String=""
+    private lateinit var userUid: String
+    private var passedUid: String = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,12 +40,10 @@ class ProfileTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter =
-            SectionsPagerAdapter(activity!!, childFragmentManager)
-        adapter.addFragment(ProfGridFragment(), "")
-        adapter.addFragment(DetailFragment(), "")
-        adapter.addFragment(AlarmFragment(), "")
-        binding.profViewPager.adapter = adapter
-        binding.profTabs.setupWithViewPager(binding.profViewPager)
+            SectionsPagerAdapter(
+                activity!!,
+                childFragmentManager
+            )
 
         db = FirebaseFirestore.getInstance()
 
@@ -53,27 +52,46 @@ class ProfileTabFragment : Fragment() {
 
         }
 
-        if(passedUid.isEmpty() || passedUid==FirebaseAuth.getInstance().currentUser!!.uid){
-
+        if (passedUid.isEmpty() || passedUid == FirebaseAuth.getInstance().currentUser!!.uid) {
             getData(FirebaseAuth.getInstance().currentUser!!.uid)
-            binding.imgCancel.visibility=View.GONE
-            binding.imgEdit.visibility=View.VISIBLE
+            binding.imgCancel.visibility = View.GONE
+            binding.imgSettings.visibility = View.VISIBLE
+            binding.imgEdit.visibility = View.VISIBLE
+            userUid= FirebaseAuth.getInstance().currentUser!!.uid
 
-        }else{
+        } else {
             getData(passedUid)
-            binding.imgCancel.visibility=View.VISIBLE
-            binding.imgEdit.visibility=View.GONE
+            binding.imgCancel.visibility = View.VISIBLE
+            binding.imgEdit.visibility = View.GONE
+            binding.imgSettings.visibility = View.GONE
+            userUid=passedUid
         }
+
+        adapter.addFragment(ProfGridFragment.newInstance(userUid), "")
+        adapter.addFragment(ProfDetailFragment.newInstance(userUid), "")
+        adapter.addFragment(ProfAlarmFragment.newInstance(userUid), "")
+        binding.profViewPager.adapter = adapter
+        binding.profTabs.setupWithViewPager(binding.profViewPager)
 
         binding.imgEdit.setOnClickListener {
             goToProfile()
         }
+
+        binding.imgSettings.setOnClickListener {
+           goToSettings()
+        }
+
 
         binding.imgCancel.setOnClickListener {
             goToHome()
         }
 
         setTab()
+    }
+
+    private fun goToSettings() {
+        val intent = Intent(activity, SettingsActivity::class.java)
+        startActivity(intent)
     }
 
     private fun goToProfile() {
@@ -108,14 +126,18 @@ class ProfileTabFragment : Fragment() {
 
         Glide.with(activity!!)
             .load(user.profImageUri)
-            .error(R.drawable.ic_account)
-            .placeholder(R.drawable.ic_account)
+            .error(R.drawable.ic_account_circle_black_24dp)
+            .placeholder(R.drawable.ic_account_circle_black_24dp)
             .apply(RequestOptions().circleCrop())
             .into(binding.profileImage)
     }
 
     private fun setTab() {
-        val tabIcons = intArrayOf(R.drawable.ic_tab_2, R.drawable.ic_1_tab, R.drawable.ic_favorite_border_black_24dp)
+        val tabIcons = intArrayOf(
+            R.drawable.ic_tab_2,
+            R.drawable.ic_1_tab,
+            R.drawable.ic_favorite_border_black_24dp
+        )
         for (i in 0 until binding.profTabs.tabCount) {
             if (binding.profTabs.getTabAt(i) != null) {
                 binding.profTabs.getTabAt(i)!!.setIcon(tabIcons[i])

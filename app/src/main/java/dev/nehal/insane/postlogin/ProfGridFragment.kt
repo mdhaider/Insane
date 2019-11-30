@@ -1,5 +1,6 @@
 package dev.nehal.insane.postlogin
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,14 +15,34 @@ import dev.nehal.insane.R
 import dev.nehal.insane.databinding.FragmentGridProfBinding
 import dev.nehal.insane.model.ContentDTO
 import dev.nehal.insane.navigation.SingleDetailFragment
+import dev.nehal.insane.shared.Const
 
 
-class ProfGridFragment : Fragment() {
+class ProfGridFragment: Fragment() {
     private lateinit var binding: FragmentGridProfBinding
     private lateinit var conDTOList: ArrayList<ContentDTO>
     private lateinit var contentUIDList: ArrayList<String>
     private lateinit var imagesSnapshot: ListenerRegistration
     private lateinit var adapter: ProfGridAdapter
+    private var userUid:String?=null
+
+    companion object {
+
+        @JvmStatic
+        fun newInstance(userid: String) = ProfGridFragment().apply {
+            arguments = Bundle().apply {
+                putString(Const.USER_UID, userid)
+            }
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        arguments?.getString(Const.USER_UID)?.let {
+            userUid = it
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,17 +64,18 @@ class ProfGridFragment : Fragment() {
             goToDetail(position)
         }
 
+
         adapter =
             ProfGridAdapter(conDTOList, itemClickListener = itemOnClick)
         binding.rvGrid.adapter = adapter
         binding.rvGrid.layoutManager = GridLayoutManager(activity, 3)
 
-        getData()
+        getData(userUid!!)
     }
 
-    private fun getData() {
+    private fun getData(userid: String) {
         imagesSnapshot = FirebaseFirestore
-            .getInstance().collection("uploadedImages").orderBy("imgUploadDate", Query.Direction.DESCENDING)
+            .getInstance().collection("uploadedImages").whereEqualTo("uid", userid).orderBy("imgUploadDate", Query.Direction.DESCENDING)
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 conDTOList.clear()
                 if (querySnapshot == null) return@addSnapshotListener

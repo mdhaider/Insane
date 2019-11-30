@@ -18,10 +18,13 @@
             tools:src="@drawable/ic_account" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/llroot"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/imgProf"
+            android:layout_toStartOf="@+id/imgPostSmall"
+            android:layout_marginEnd="8dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -44,7 +47,10 @@
                     android:fontFamily="sans-serif-light"
                     android:textSize="14sp"
                     android:layout_marginStart="4dp"
-                    tools:text="A day ago" />
+                    android:layout_marginEnd="4dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="commented" />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView

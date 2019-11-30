@@ -106,15 +106,15 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/profLogout"
+                android:id="@+id/profDeactivate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:layout_gravity="center"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/grey_500"
                 app:fontFamily="sans-serif"
                 android:layout_marginTop="30dp"
-                android:text="Sign Out" />
+                android:text="Deactivate" />
 
         </LinearLayout>
 

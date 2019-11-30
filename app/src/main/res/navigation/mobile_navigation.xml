@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="dev.nehal.insane.newd.main.HomeTabFragment"
+        android:name="dev.nehal.insane.navigation.HomeTabFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home_tab">
 
@@ -66,7 +66,7 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="dev.nehal.insane.newd.main.ProfileTabFragment"
+        android:name="dev.nehal.insane.navigation.ProfileTabFragment"
         android:label=""
         tools:layout="@layout/fragment_profile_tab">
 

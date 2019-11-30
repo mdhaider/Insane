@@ -1,4 +1,4 @@
-package dev.nehal.insane.navigation
+package dev.nehal.insane.postlogin
 
 import android.util.Log
 import android.view.LayoutInflater

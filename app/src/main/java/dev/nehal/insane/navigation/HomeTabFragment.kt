@@ -1,4 +1,4 @@
-package dev.nehal.insane.newd.main
+package dev.nehal.insane.navigation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import dev.nehal.insane.navigation.AlarmFragment
-import dev.nehal.insane.navigation.DetailFragment
-import dev.nehal.insane.navigation.GridFragment
+import dev.nehal.insane.postlogin.DetailFragment
 
 class HomeTabFragment : Fragment() {
 
@@ -31,7 +29,10 @@ class HomeTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter =
-            SectionsPagerAdapter(activity!!, childFragmentManager)
+            SectionsPagerAdapter(
+                activity!!,
+                childFragmentManager
+            )
         adapter.addFragment(GridFragment(), "")
         adapter.addFragment(DetailFragment(), "")
         adapter.addFragment(AlarmFragment(), "")

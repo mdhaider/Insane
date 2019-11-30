@@ -1,4 +1,4 @@
-package dev.nehal.insane.newd.main
+package dev.nehal.insane.util
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

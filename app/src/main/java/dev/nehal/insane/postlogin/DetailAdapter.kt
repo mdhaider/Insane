@@ -1,4 +1,4 @@
-package dev.nehal.insane.navigation
+package dev.nehal.insane.postlogin
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

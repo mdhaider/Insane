@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -24,7 +23,6 @@ import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.ProfileFragmentBinding
 import dev.nehal.insane.model.Users
-import dev.nehal.insane.modules.login.LoginActivity
 import dev.nehal.insane.modules.login.VerifyPhoneFragment
 import dev.nehal.insane.shared.hideKeyboard
 import java.io.File
@@ -57,10 +55,6 @@ class ProfileFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         uid = FirebaseAuth.getInstance().currentUser!!.uid
-
-        binding.profLogout.setOnClickListener {
-            signOut()
-        }
 
         binding.profCancel.setOnClickListener {
             findNavController().navigate(R.id.action_profile_home_profile)
@@ -113,20 +107,6 @@ class ProfileFragment : Fragment() {
         binding.profPhone.isEnabled = false
 
         setProfileImage(users.profImageUri)
-    }
-
-    private fun signOut() {
-        val mAuth = FirebaseAuth.getInstance()
-        try {
-            mAuth.signOut()
-            Toast.makeText(activity!!, "You are Signed out!", Toast.LENGTH_SHORT).show()
-            val intent = Intent(activity, LoginActivity::class.java)
-            startActivity(intent)
-            activity!!.finish()
-
-        } catch (e: Exception) {
-            Log.e("ProfileFrag", "onClick: Exception " + e.message, e)
-        }
     }
 
     private fun saveDataChange(userName: String) {

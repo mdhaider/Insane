@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -132,7 +131,7 @@ class SingleDetailFragment : DialogFragment() {
             ShareImage.shareImageWith(activity!!, binding.imgPost.drawable)
         }
 
-        binding.profView.setOnClickListener {
+       /* binding.profView.setOnClickListener {
             val bundle = Bundle().apply {
                 putString(Const.USER_UID, newContentDTO.uid)
             }
@@ -140,7 +139,7 @@ class SingleDetailFragment : DialogFragment() {
             findNavController().navigate(R.id.action_profileimage_to_profile, bundle)
 
         }
-
+*/
         binding.downalod.setOnClickListener {
             downloadImage(item.imgUrl!!, item.imgUploadDate.toString())
 

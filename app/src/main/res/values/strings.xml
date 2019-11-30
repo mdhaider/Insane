@@ -61,6 +61,7 @@
     <string name="guest">Guest</string>
     <string name="message_alarm">says: %1$s</string>
     <string name="message_liked">liked this photo</string>
+    <string name="message_ala">commented on this photo</string>
 
     <!-- Toolbar -->
 

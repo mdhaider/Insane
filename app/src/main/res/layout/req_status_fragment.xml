@@ -8,15 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ak.sh.ay.oblique.ObliqueView
-            android:id="@+id/obliqueView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/push_ic_3"
-            app:ending_slant_angle="0"
-            app:starting_slant_angle="10"
-            app:type="image" />
+
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

@@ -46,6 +46,8 @@ class GridFragment : Fragment() {
         binding.rvGrid.adapter = adapter
         binding.rvGrid.layoutManager = GridLayoutManager(activity, 3)
 
+        binding.rvProgress.visibility=View.VISIBLE
+
         getData()
     }
 
@@ -54,6 +56,7 @@ class GridFragment : Fragment() {
             .getInstance().collection("uploadedImages").orderBy("imgUploadDate", Query.Direction.DESCENDING)
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 conDTOList.clear()
+                binding.rvProgress.visibility=View.GONE
                 if (querySnapshot == null) return@addSnapshotListener
                 for (snapshot in querySnapshot.documents) {
                     conDTOList.add(snapshot.toObject(ContentDTO::class.java)!!)

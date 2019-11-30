@@ -14,13 +14,15 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
+        android:largeHeap="true"
+        android:hardwareAccelerated="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".newd.main.ViewDownloadsActivity"
+        <activity android:name=".navigation.ViewDownloadsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".newd.main.HomeTabFragment"
+            android:name=".navigation.HomeTabFragment"
             android:label="@string/title_activity_tab1"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -43,6 +45,11 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".navigation.CommentActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".navigation.FeedbackActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".navigation.SettingsActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".navigation.LikesActivity"
             android:screenOrientation="portrait"/>

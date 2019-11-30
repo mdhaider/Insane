@@ -13,10 +13,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
 import dev.nehal.insane.model.Users
-import dev.nehal.insane.navigation.DetailBottomSheetDialogFragment
-import dev.nehal.insane.newd.main.getCurrentNavigationFragment
+import dev.nehal.insane.postlogin.DetailBottomSheetDialogFragment
 import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.ModelPreferences
+import dev.nehal.insane.util.getCurrentNavigationFragment
 import eu.dkaratzas.android.inapp.update.Constants
 import eu.dkaratzas.android.inapp.update.InAppUpdateManager
 
@@ -37,6 +37,11 @@ class MainActivity : AppCompatActivity(), DetailBottomSheetDialogFragment.Bottom
 
         inAppUpdateManager!!.checkForAppUpdate()
 
+        setDataInPref()
+    }
+
+    private fun getNext(){
+
         val navView: BottomNavigationView = findViewById(dev.nehal.insane.R.id.nav_view)
 
         val navController = findNavController(dev.nehal.insane.R.id.nav_host_fragment)
@@ -46,14 +51,12 @@ class MainActivity : AppCompatActivity(), DetailBottomSheetDialogFragment.Bottom
         //  setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        setDataInPref()
-
         regToken()
-
     }
 
     fun showBottomSheet() {
-        val bottomSheetFragment = DetailBottomSheetDialogFragment()
+        val bottomSheetFragment =
+            DetailBottomSheetDialogFragment()
         bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
 
@@ -67,6 +70,8 @@ class MainActivity : AppCompatActivity(), DetailBottomSheetDialogFragment.Bottom
                 if (users != null) {
                     ModelPreferences(application).putObject(Const.PROF_USER, users)
                 }
+
+                getNext()
 
             }.addOnFailureListener { exception ->
 

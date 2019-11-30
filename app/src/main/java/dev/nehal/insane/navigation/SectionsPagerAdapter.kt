@@ -1,10 +1,9 @@
-package dev.nehal.insane.newd.main
+package dev.nehal.insane.navigation
 
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import dev.nehal.insane.R
 
 
 /**

@@ -9,16 +9,6 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <ak.sh.ay.oblique.ObliqueView
-            android:id="@+id/obliqueView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_chat_black"
-            app:ending_slant_angle="0"
-            app:starting_slant_angle="10"
-            app:type="image" />
-
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/llParent"
             android:layout_width="match_parent"
