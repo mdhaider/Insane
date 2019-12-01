@@ -72,7 +72,7 @@
     <string name="title_home">Home</string>
     <string name="title_activity_tab1">TabActivity1</string>
     <string name="sharing_memories">Sharing Memories</string>
-    <string name="add_a_comment">Add a comment...</string>
+    <string name="add_a_comment">Add a comment…</string>
     <string name="comment">Comment</string>
     <string name="change">Change Phone# (%1$s)</string>
     <string name="received_please">Thank you.</string>
@@ -81,6 +81,20 @@
     <string name="phone_number">Phone Number:</string>
     <string name="change_details">Change Details</string>
     <string name="not_approved">Oh Sorry, Not Approved yet.</string>
+
+    <string name="otp_title">Waiting to read OTP…</string>
+    <string name="otp_msg">Please do not close or press back button</string>
+    <string name="ppl_title">Please wait…</string>
+    <string name="ppl_msg">This may take a few moments</string>
+    <string name="rate_title">Rate this app</string>
+    <string name="rate_msg">If you like our app, please take moment rate in play store</string>
+    <string name="rate_pos">Rate</string>
+    <string name="rate_neg">No, thanks</string>
+    <string name="logout_pos">Log Out</string>
+    <string name="logout_neg">Cancel</string>
+
+    <string name="logout_msg">Are you sure you want to log out?</string>
+    <string name="type_your_feedback_here">Type your feedback here…</string>
 
 
 </resources>

@@ -15,21 +15,22 @@
         android:layout_margin="7dp" />
 
     <TextView
-        android:id="@+id/txt"
+        android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
         android:layout_below="@+id/progressBar"
         android:textSize="20sp"
         android:layout_centerHorizontal="true"
-        android:text="Waiting to read OTP..." />
+        android:text="@string/otp_title" />
     <TextView
+        android:id="@+id/txtmsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
-        android:layout_below="@+id/txt"
-        android:textSize="12sp"
+        android:layout_below="@+id/txtTitle"
+        android:textSize="14sp"
         android:textColor="@color/grey_500"
         android:layout_centerHorizontal="true"
-        android:text="Please do not close or press back button" />
+        android:text="@string/otp_msg" />
 </RelativeLayout>

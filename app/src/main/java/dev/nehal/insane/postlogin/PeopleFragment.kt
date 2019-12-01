@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.PeopleFragmentBinding
@@ -19,6 +22,7 @@ import dev.nehal.insane.model.Users
 import dev.nehal.insane.modules.login.VerifyPhoneFragment
 import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.ModelPreferences
+import kotlinx.android.synthetic.main.dlg_progress.view.*
 
 
 class PeopleFragment : Fragment() {
@@ -27,6 +31,7 @@ class PeopleFragment : Fragment() {
     private lateinit var list: ArrayList<Users>
     private lateinit var commentList: ArrayList<AlarmDTO>
     private lateinit var contentList: ArrayList<ContentDTO>
+    private lateinit var dialog: MaterialDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +49,12 @@ class PeopleFragment : Fragment() {
         binding.rvUsers.itemAnimator = DefaultItemAnimator()
         binding.rvUsers.setHasFixedSize(true)
 
-        binding.rvProgress.visibility = View.VISIBLE
+        dialog = MaterialDialog(activity!!).customView(R.layout.dlg_progress, scrollable = false)
+            .cancelable(false)
+        val customView = dialog.getCustomView()
+        customView.txtTitle.visibility=View.GONE
+        customView.txtmsg.text=getString(R.string.ppl_msg)
+        dialog.show()
 
         val itemOnClick: (Int) -> Unit = { position ->
             goToProfile(position)
@@ -63,10 +73,11 @@ class PeopleFragment : Fragment() {
 
         list = ArrayList()
         contentList = ArrayList()
-        commentList= ArrayList()
+        commentList = ArrayList()
         val user: Users =
             ModelPreferences(activity!!).getObject(Const.PROF_USER, Users::class.java)!!
-        adapter = PeopleAdapter(list, contentList, commentList,user.isAdmin, itemOnClick, itemOnClick1)
+        adapter =
+            PeopleAdapter(list, contentList, commentList, user.isAdmin, itemOnClick, itemOnClick1)
 
         binding.rvUsers.adapter = adapter
 
@@ -84,6 +95,7 @@ class PeopleFragment : Fragment() {
     }
 
     private fun getData() {
+
         FirebaseFirestore.getInstance()
             .collection("users").get().addOnSuccessListener { result ->
 
@@ -97,7 +109,7 @@ class PeopleFragment : Fragment() {
 
             }
             .addOnFailureListener { exception ->
-                binding.rvProgress.visibility = View.GONE
+                dialog.dismiss()
                 Log.d("PeopleFrag", "Error getting documents: ", exception)
             }
     }
@@ -115,7 +127,7 @@ class PeopleFragment : Fragment() {
 
             }
             .addOnFailureListener { exception ->
-                binding.rvProgress.visibility = View.GONE
+               dialog.dismiss()
                 Log.d("PeopleFrag", "Error getting documents: ", exception)
             }
     }
@@ -123,7 +135,7 @@ class PeopleFragment : Fragment() {
     private fun getCommentCount() {
         FirebaseFirestore.getInstance()
             .collection("userActivities").get().addOnSuccessListener { result ->
-                binding.rvProgress.visibility = View.GONE
+                dialog.dismiss()
 
                 for (document in result) {
                     Log.d("PeopleFrag", "${document.id} => ${document.data}")
@@ -136,7 +148,7 @@ class PeopleFragment : Fragment() {
 
             }
             .addOnFailureListener { exception ->
-                binding.rvProgress.visibility = View.GONE
+                dialog.dismiss()
                 Log.d("PeopleFrag", "Error getting documents: ", exception)
             }
     }

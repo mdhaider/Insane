@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.firebase.auth.FirebaseAuth
 import dev.nehal.insane.BuildConfig
 import dev.nehal.insane.R
@@ -24,15 +25,44 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.llFeed.setOnClickListener { sendFeedback() }
 
-        binding.llRate.setOnClickListener { rateOnPlayStore() }
+        binding.llRate.setOnClickListener { showRateDialog() }
 
-        binding.btnLogOut.setOnClickListener { logOut() }
+        binding.btnLogOut.setOnClickListener { showlogoutDialog() }
 
         binding.imgBack.setOnClickListener {
             finish()
         }
 
         binding.versionTxt.text = "v" + BuildConfig.VERSION_NAME
+
+    }
+
+    private fun showRateDialog(){
+
+        MaterialDialog(this).show {
+            title(R.string.rate_title)
+            message(R.string.rate_msg)
+            positiveButton(R.string.rate_pos) { dialog ->
+               rateOnPlayStore()
+            }
+            negativeButton(R.string.rate_neg) { dialog ->
+               dialog.dismiss()
+            }
+        }
+
+    }
+
+    private fun showlogoutDialog(){
+
+        MaterialDialog(this).show {
+            message(R.string.logout_msg)
+            positiveButton(R.string.logout_pos) { dialog ->
+               logOut()
+            }
+            negativeButton(R.string.logout_neg) { dialog ->
+                dialog.dismiss()
+            }
+        }
 
     }
 

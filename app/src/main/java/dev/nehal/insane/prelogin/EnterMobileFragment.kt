@@ -1,6 +1,5 @@
 package dev.nehal.insane.prelogin
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +10,9 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +28,7 @@ import dev.nehal.insane.modules.login.ReqStatusFragment
 import dev.nehal.insane.modules.login.VerifyPhoneFragment
 import dev.nehal.insane.shared.hideKeyboard
 import dev.nehal.insane.shared.onChange
+import kotlinx.android.synthetic.main.dlg_progress.view.*
 import java.util.concurrent.TimeUnit
 
 class EnterMobileFragment : Fragment() {
@@ -37,7 +40,7 @@ class EnterMobileFragment : Fragment() {
     private var mVerificationId: String? = null
     private var mResendToken: PhoneAuthProvider.ForceResendingToken? = null
     private lateinit var smsOTP: String
-    private lateinit var dialog: Dialog
+    private lateinit var dialog: MaterialDialog
     private var isUserSignedUp: Boolean = false
 
     companion object {
@@ -70,7 +73,11 @@ class EnterMobileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = FirebaseFirestore.getInstance()
-        dialog = ProgressDialog.progressDialog(activity!!)
+         dialog = MaterialDialog(activity!!).customView(R.layout.dlg_progress, scrollable = false)
+             .cancelable(false)
+        val customView = dialog.getCustomView()
+        customView.txtTitle.text=getString(R.string.otp_title)
+        customView.txtmsg.text=getString(R.string.otp_msg)
 
         binding.mNumber.onChange {
             if (it.length == 10) {

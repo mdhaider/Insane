@@ -51,10 +51,14 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/feedBack"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:gravity="top"
-                android:hint="Type your feedback here.."
-                android:inputType="textCapSentences" />
+                android:layout_height="wrap_content"
+                android:hint="@string/type_your_feedback_here"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLength="2000"
+                android:lines="4"
+                android:minLines="5"
+                android:gravity="top|left"
+                android:maxLines="5" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

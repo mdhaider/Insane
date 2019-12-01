@@ -61,6 +61,7 @@
             android:layout_height="35dp"
             android:layout_alignParentEnd="true"
             android:layout_margin="7.5dp"
+            android:visibility="invisible"
             app:srcCompat="@drawable/ic_more_horiz_black_24dp" />
     </RelativeLayout>
 

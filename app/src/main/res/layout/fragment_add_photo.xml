@@ -45,10 +45,14 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/addphoto_edit_explain"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:gravity="top"
-                    android:hint="Write your caption here..."
-                    android:inputType="textCapSentences" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="200"
+                    android:lines="2"
+                    android:minLines="2"
+                    android:gravity="top|left"
+                    android:maxLines="2"
+                    android:hint="Write your caption here..." />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
