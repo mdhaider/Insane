@@ -19,13 +19,14 @@ import dev.nehal.insane.shared.TimeAgo
 
 
 class ProfDetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
-    RecyclerView.ViewHolder(inflater.inflate(R.layout.item_detail, parent, false)) {
+    RecyclerView.ViewHolder(inflater.inflate(R.layout.item_detail_prof, parent, false)) {
     private var mProfImage: ImageView? = null
     private var mProfName: TextView? = null
     private var mAgo: TextView? = null
     private var mMore: ImageView? = null
     private var mPostImage: ImageView? = null
     private var mFavImage: ImageView? = null
+    private var mDelImage: ImageView? = null
     private var mComImage: ImageView? = null
     private var mLikeCount: TextView? = null
     private var mCaption: TextView? = null
@@ -42,6 +43,7 @@ class ProfDetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mPostImage = itemView.findViewById(R.id.imgDetPost)
         mFavImage = itemView.findViewById(R.id.imgDetfav)
         mComImage = itemView.findViewById(R.id.imgDetCom)
+        mDelImage = itemView.findViewById(R.id.imgDelCom)
         mCaption = itemView.findViewById(R.id.tvDetcaption)
         mLikeCount = itemView.findViewById(R.id.tvDetLikes)
         mCommentCount = itemView.findViewById(R.id.tvDetComments)
@@ -92,10 +94,17 @@ class ProfDetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             .placeholder(R.drawable.placeholder_image_new)
             .into(mPostImage!!)
 
+        if (user!!.userUID == contentDTO.uid) {
+            mDelImage?.visibility = View.VISIBLE
+        }
+
         mProfView?.setOnClickListener { listener.goToProfile(contentDTO.uid!!) }
         mMore?.setOnClickListener { listener.getMore() }
+        mDelImage?.setOnClickListener { listener.delete(contentUid, contentDTO) }
         mPostImage?.setOnClickListener { listener.goToDetailPost(contentUid, contentDTO) }
-        mFavImage?.setOnClickListener { listener.setfav(contentUid, contentDTO.uid!!) }
+        mFavImage?.setOnClickListener {
+            mFavImage?.setImageResource(R.drawable.ic_favorite_black_24dp)
+            listener.setfav(contentUid, contentDTO.uid!!) }
         mComImage?.setOnClickListener {
             listener.goToComments(
                 contentDTO.imgUrl!!,

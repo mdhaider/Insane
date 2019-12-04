@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="7dp"
+        android:indeterminate="true" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:text="Uploading..."
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/txtmsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="7dp"
+        android:text="This may take a while, please wait"
+        android:textColor="@color/grey_500"
+        android:textSize="12sp" />
+</RelativeLayout>

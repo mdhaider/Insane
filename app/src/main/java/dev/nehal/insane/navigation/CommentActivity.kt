@@ -16,7 +16,6 @@ import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.ModelPreferences
 import dev.nehal.insane.util.FcmPush
 
-
 class CommentActivity : AppCompatActivity() {
     var contentUid: String? = null
     var destinationUid: String? = null

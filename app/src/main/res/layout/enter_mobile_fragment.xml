@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/pic_12" />
+                app:srcCompat="@drawable/pic_8" />
 
         </ir.alirezaiyan.arclayout.ArcRelativeLayout>
 

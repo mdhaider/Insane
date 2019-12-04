@@ -27,6 +27,8 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.llRate.setOnClickListener { showRateDialog() }
 
+        binding.llShare.setOnClickListener { shareApp() }
+
         binding.btnLogOut.setOnClickListener { showlogoutDialog() }
 
         binding.imgBack.setOnClickListener {
@@ -37,27 +39,27 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
-    private fun showRateDialog(){
+    private fun showRateDialog() {
 
         MaterialDialog(this).show {
             title(R.string.rate_title)
             message(R.string.rate_msg)
             positiveButton(R.string.rate_pos) { dialog ->
-               rateOnPlayStore()
+                rateOnPlayStore()
             }
             negativeButton(R.string.rate_neg) { dialog ->
-               dialog.dismiss()
+                dialog.dismiss()
             }
         }
 
     }
 
-    private fun showlogoutDialog(){
+    private fun showlogoutDialog() {
 
         MaterialDialog(this).show {
             message(R.string.logout_msg)
             positiveButton(R.string.logout_pos) { dialog ->
-               logOut()
+                logOut()
             }
             negativeButton(R.string.logout_neg) { dialog ->
                 dialog.dismiss()
@@ -101,6 +103,20 @@ class SettingsActivity : AppCompatActivity() {
 
         } catch (e: Exception) {
             Log.e("ProfileFrag", "onClick: Exception " + e.message, e)
+        }
+    }
+
+    private fun shareApp() {
+        try {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Insane")
+            var shareMessage = "\nWe can’t wait to celebrate with you! Download the Insane app to share your photos with us and everyone at the wedding. Kindly share with family members only.\n\n"
+            shareMessage =
+                shareMessage+"Click here to download app:\n"+ "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n"
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+            startActivity(Intent.createChooser(shareIntent, "Share Via"))
+        } catch (e: java.lang.Exception) { //e.toString();
         }
     }
 }

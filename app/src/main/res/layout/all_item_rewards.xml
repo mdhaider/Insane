@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="6dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+
+        app:cardElevation="6dp">
+
+        <RelativeLayout
+            android:id="@+id/topView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            android:layout_marginBottom="4dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgRew"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_margin="7.5dp"
+                tools:src="@drawable/ic_account" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/imgRew">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/rewName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:textSize="14sp"
+                    tools:text="User Name" />
+
+                <TextView
+                    android:id="@+id/rewCoin"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:textColor="@color/black"
+                    android:textSize="28sp"
+                    tools:text="20" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
+

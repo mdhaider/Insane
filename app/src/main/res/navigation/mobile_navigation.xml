@@ -62,7 +62,18 @@
         android:id="@+id/navigation_notifications"
         android:name="dev.nehal.insane.postlogin.RewardsFragment"
         android:label=""
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/rewards_fragment">
+
+        <action
+            android:id="@+id/action_rewards_all"
+            app:destination="@+id/navigation_rewards_all"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -100,6 +111,23 @@
         <action
             android:id="@+id/action_profile_home_profile"
             app:destination="@+id/navigation_profile"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_rewards_all"
+        android:name="dev.nehal.insane.postlogin.AllRewardsFragment"
+        android:label=""
+        tools:layout="@layout/all_item_rewards">
+
+        <action
+            android:id="@+id/action_all_rewards"
+            app:destination="@+id/navigation_notifications"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"

@@ -1,48 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:elevation="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp"
+        app:cardMaxElevation="8dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="false">
 
         <RelativeLayout
-            android:id="@+id/topView"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="30dp">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/crossImg"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="7.5dp"
+                android:layout_margin="12dp"
                 app:srcCompat="@drawable/ic_close_white" />
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/rootCoins"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_centerInParent="true"
-            android:layout_below="@+id/topView">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/nonCardView"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_below="@+id/crossImg"
                 android:layout_centerInParent="true"
-                android:text="YOU EARNED \n20 Coins" />
+                android:layout_marginTop="120dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    app:srcCompat="@drawable/ic_card_giftcard_black_24dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:gravity="center"
+                    android:text="You earned coins"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/coinText"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/circle_2"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    tools:text="20" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <in.myinnos.androidscratchcard.ScratchCard
                 android:id="@+id/scratchCard"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_centerInParent="true" />
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_below="@+id/crossImg"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="120dp"
+                android:visibility="visible"/>
+
+            <ProgressBar
+                android:id="@+id/rvProgress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:indeterminate="true"
+                android:layout_below="@+id/crossImg"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="200dp"
+                android:visibility="gone"/>
 
         </RelativeLayout>
-    </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

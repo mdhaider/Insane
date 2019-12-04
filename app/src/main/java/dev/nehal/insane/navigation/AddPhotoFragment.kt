@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -38,6 +40,8 @@ class AddPhotoFragment : Fragment() {
     var firestore: FirebaseFirestore? = null
     private var filePath: Uri? = null
     private lateinit var binding: FragmentAddPhotoBinding
+    private lateinit var matDialog: MaterialDialog
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +57,9 @@ class AddPhotoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         onSharedIntent()
+
+        matDialog = MaterialDialog(activity!!).customView(R.layout.dlg_upload, scrollable = false)
+            .cancelable(false)
 
         binding.rootView.visibility=View.GONE
 
@@ -87,12 +94,13 @@ class AddPhotoFragment : Fragment() {
     }
 
     private fun contentUpload() {
-        progress_bar.visibility = View.VISIBLE
+       // progress_bar.visibility = View.VISIBLE
+        matDialog.show()
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val imageFileName = timeStamp + ".png"
         val storageRef = storage?.reference?.child("uploadedImages")?.child(imageFileName)
         storageRef?.putFile(photoUri!!)?.addOnSuccessListener { taskSnapshot ->
-            progress_bar.visibility = View.GONE
+           matDialog.dismiss()
 
             Toast.makeText(
                 activity, getString(dev.nehal.insane.R.string.upload_success),
@@ -117,7 +125,7 @@ class AddPhotoFragment : Fragment() {
 
                 }
                 .addOnFailureListener {
-                    progress_bar.visibility = View.GONE
+                   matDialog.dismiss()
 
                     Toast.makeText(
                         activity, getString(dev.nehal.insane.R.string.upload_fail),

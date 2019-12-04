@@ -15,6 +15,7 @@ object AppPreferences {
     private val IS_WAITING=Pair("is_waiting", false)
     private val NAME_USER=Pair("name", "")
     private val SIGNUP_STATE=Pair("state", 0)
+    private val TODAYS_DATE = Pair("today_date",0L)
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -64,6 +65,15 @@ object AppPreferences {
         // custom setter to save a preference back to preferences file
         set(value) = preferences.edit {
             it.putString(NAME_USER.first, value)
+        }
+
+    var todaysDate: Long
+        // custom getter to get a preference of a desired type, with a predefined default value
+        get() = preferences.getLong(TODAYS_DATE.first, TODAYS_DATE.second)
+
+        // custom setter to save a preference back to preferences file
+        set(value) = preferences.edit {
+            it.putLong(TODAYS_DATE.first, value)
         }
 
 

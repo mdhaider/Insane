@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/pic_12"/>
+        app:srcCompat="@drawable/pic_8"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvSalut"

@@ -97,6 +97,27 @@
                     app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/llShare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="sans-serif"
+                    android:text="Share this App"
+                    android:textSize="16sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+            </RelativeLayout>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View

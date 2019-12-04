@@ -91,10 +91,13 @@
     <string name="rate_pos">Rate</string>
     <string name="rate_neg">No, thanks</string>
     <string name="logout_pos">Log Out</string>
+    <string name="delete_pos">Delete</string>
     <string name="logout_neg">Cancel</string>
 
     <string name="logout_msg">Are you sure you want to log out?</string>
+    <string name="del_msg">Are you sure you want to delete this post?</string>
     <string name="type_your_feedback_here">Type your feedback here…</string>
+    <string name="total_coins">Total Coins</string>
 
 
 </resources>

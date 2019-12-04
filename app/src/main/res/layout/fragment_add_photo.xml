@@ -33,7 +33,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="12dp"
                 android:scaleType="center"
-                tools:src="@drawable/pic_12" />
+                tools:src="@drawable/pic_8" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edittext"

@@ -1,27 +1,32 @@
 package dev.nehal.insane.navigation
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import dev.nehal.insane.BuildConfig
+import dev.nehal.insane.R
 import dev.nehal.insane.postlogin.DetailFragment
 
 class HomeTabFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager
     private lateinit var tabs: TabLayout
+    private lateinit var btnInvite: Button
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(dev.nehal.insane.R.layout.fragment_home_tab, container, false)
-        viewPager = root.findViewById(dev.nehal.insane.R.id.view_pager)
-        tabs = root.findViewById(dev.nehal.insane.R.id.tabs)
-
+        val root = inflater.inflate(R.layout.fragment_home_tab, container, false)
+        viewPager = root.findViewById(R.id.view_pager)
+        tabs = root.findViewById(R.id.tabs)
+        btnInvite= root.findViewById(R.id.inviteGuest)
 
         return root
     }
@@ -40,6 +45,25 @@ class HomeTabFragment : Fragment() {
         tabs.setupWithViewPager(viewPager)
         setTab()
 
+        btnInvite.setOnClickListener{
+         shareApp()
+        }
+
+    }
+
+
+    private fun shareApp() {
+        try {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Insane")
+            var shareMessage = "\nWe can’t wait to celebrate with you! Download the Insane app to share your photos with us and everyone at the wedding. Kindly share with family members only.\n\n"
+            shareMessage =
+                shareMessage+"Click here to download app:\n"+ "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n"
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+            startActivity(Intent.createChooser(shareIntent, "Share Via"))
+        } catch (e: java.lang.Exception) { //e.toString();
+        }
     }
 
     private fun setTab() {

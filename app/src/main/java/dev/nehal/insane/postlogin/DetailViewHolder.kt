@@ -95,7 +95,9 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mProfView?.setOnClickListener { listener.goToProfile(contentDTO.uid!!) }
         mMore?.setOnClickListener { listener.getMore() }
         mPostImage?.setOnClickListener { listener.goToDetailPost(contentUid, contentDTO) }
-        mFavImage?.setOnClickListener { listener.setfav(contentUid, contentDTO.uid!!) }
+        mFavImage?.setOnClickListener {
+            mFavImage?.setImageResource(R.drawable.ic_favorite_black_24dp)
+            listener.setfav(contentUid, contentDTO.uid!!) }
         mComImage?.setOnClickListener {
             listener.goToComments(
                 contentDTO.imgUrl!!,

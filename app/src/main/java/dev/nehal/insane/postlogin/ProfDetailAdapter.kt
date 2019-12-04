@@ -29,6 +29,7 @@ class ProfDetailAdapter(
     interface ItemClickListener {
         fun goToProfile(userUid: String)
         fun getMore()
+        fun delete(contentId: String, contentDTO: ContentDTO)
         fun goToDetailPost(contentId: String,contentDTO: ContentDTO)
         fun setfav(contentUid: String, destUid:String)
         fun goToLikes(uidList:List<String>)

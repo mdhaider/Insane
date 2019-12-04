@@ -8,14 +8,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
+import com.google.firebase.storage.FirebaseStorage
+import dev.nehal.insane.R
 import dev.nehal.insane.databinding.FragmentDetailProfBinding
 import dev.nehal.insane.model.AlarmDTO
 import dev.nehal.insane.model.ContentDTO
@@ -43,7 +48,9 @@ class ProfDetailFragment : Fragment() {
     private lateinit var contentUidList: ArrayList<String>
     private lateinit var binding: FragmentDetailProfBinding
     private lateinit var url: String
-    private var userUid:String?=null
+    private var userUid: String? = null
+    private lateinit var matDialog: MaterialDialog
+    var storage: FirebaseStorage? = null
 
     companion object {
 
@@ -69,8 +76,7 @@ class ProfDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
-            inflater,
-            dev.nehal.insane.R.layout.fragment_detail_prof,
+            inflater, R.layout.fragment_detail_prof,
             container,
             false
         )
@@ -89,20 +95,28 @@ class ProfDetailFragment : Fragment() {
         firestore = FirebaseFirestore.getInstance()
         okHttpClient = OkHttpClient()
         fcmPush = FcmPush()
+        storage = FirebaseStorage.getInstance()
+
+        matDialog = MaterialDialog(activity!!).customView(R.layout.dlg_delete, scrollable = false)
+            .cancelable(false)
 
         val itemOnClick = object : ItemClickListener {
             override fun goToProfile(userUid: String) {
-             /*   val bundle = Bundle().apply {
-                    putString(Const.USER_UID, userUid)
-                }
+                /*   val bundle = Bundle().apply {
+                       putString(Const.USER_UID, userUid)
+                   }
 
-                findNavController().navigate(R.id.action_profileimage_to_profile, bundle)*/
+                   findNavController().navigate(R.id.action_profileimage_to_profile, bundle)*/
             }
 
             override fun getMore() {
                 val mainActivity = activity as MainActivity?
                 mainActivity!!.showBottomSheet()
 
+            }
+
+            override fun delete(contentId: String, contentDTO: ContentDTO) {
+                showDeletetDialog(contentId, contentDTO)
             }
 
             override fun goToDetailPost(contentId: String, contentDTO: ContentDTO) {
@@ -160,10 +174,66 @@ class ProfDetailFragment : Fragment() {
         getData(userUid!!)
     }
 
+    private fun showDeletetDialog(contentId: String, contentDTO: ContentDTO) {
+        MaterialDialog(activity!!).show {
+            message(R.string.del_msg)
+            positiveButton(R.string.delete_pos) { dialog ->
+                dialog.dismiss()
+                matDialog.show()
+                deletPost(contentId, contentDTO)
+            }
+            negativeButton(R.string.logout_neg) { dialog ->
+                dialog.dismiss()
+            }
+        }
+    }
 
-    private fun getData(userid:String) {
+
+    private fun deletPost(contentUid: String, contentDTO: ContentDTO) {
+        firestore!!.collection("uploadedImages").document(contentUid)
+            .delete()
+            .addOnSuccessListener {
+                deleteActivities(contentUid, contentDTO)
+                Log.d("Prof", "DocumentSnapshot successfully deleted!")
+            }
+            .addOnFailureListener { e -> Log.w("Prof", "Error deleting document", e) }
+
+    }
+
+    private fun deleteActivities(contentUid: String, contentDTO: ContentDTO) {
+        val itemsRef = firestore!!.collection("userActivities")
+        val query = itemsRef.whereEqualTo("contentUid", contentUid)
+        query.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                for (document in task.result!!) {
+                    itemsRef.document(document.id).delete()
+                }
+
+                deleteFromStorage(contentDTO)
+
+            } else {
+                Log.d("Prof", "Error getting documents: ", task.getException())
+
+            }
+        }
+    }
+
+    private fun deleteFromStorage(contentDTO: ContentDTO) {
+        val storageRef = storage?.getReferenceFromUrl(contentDTO.imgUrl!!)
+        storageRef!!.delete().addOnSuccessListener {
+            matDialog.dismiss()
+            Toast.makeText(activity, "Deleted successfully", Toast.LENGTH_SHORT).show()
+
+        }.addOnFailureListener { exception ->
+            Log.d("ProfileFragment", exception.toString())
+        }
+    }
+
+
+    private fun getData(userid: String) {
         imagesSnapshot =
-            firestore?.collection("uploadedImages")?.whereEqualTo("uid", userid)?.orderBy("imgUploadDate", Query.Direction.DESCENDING)
+            firestore?.collection("uploadedImages")?.whereEqualTo("uid", userid)
+                ?.orderBy("imgUploadDate", Query.Direction.DESCENDING)
                 ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                     contentDTO.clear()
                     contentUidList.clear()
@@ -190,8 +260,10 @@ class ProfDetailFragment : Fragment() {
         alarmDTO.kind = 0
         alarmDTO.activityDate = System.currentTimeMillis()
 
-        FirebaseFirestore.getInstance().collection("userActivities").document().set(alarmDTO)
-        var message = user?.displayName + " " + getString(dev.nehal.insane.R.string.alarm_favorite)
+        FirebaseFirestore.getInstance().collection("userActivities").document()
+            .set(alarmDTO)
+        var message =
+            user?.displayName + " " + getString(dev.nehal.insane.R.string.alarm_favorite)
         fcmPush?.sendMessage(destinationUid, "You have received a message", message)
     }
 
@@ -200,7 +272,8 @@ class ProfDetailFragment : Fragment() {
         firestore?.runTransaction { transaction ->
 
             val uid = FirebaseAuth.getInstance().currentUser!!.uid
-            val contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
+            val contentDTO =
+                transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
 
             if (contentDTO!!.favorites.containsKey(uid)) {
                 // Unstar the post and remove self from stars

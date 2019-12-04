@@ -10,12 +10,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.downloadservice.filedownloadservice.manager.FileDownloadManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dev.nehal.insane.R
 import dev.nehal.insane.databinding.SingleDetailFragmentBinding
 import dev.nehal.insane.model.AlarmDTO
@@ -37,7 +40,9 @@ class SingleDetailFragment : DialogFragment() {
     private lateinit var binding: SingleDetailFragmentBinding
     private lateinit var newContentDTO: ContentDTO
     private var contentUid: String? = null
-    private lateinit var user:Users
+    private lateinit var user: Users
+    private lateinit var matDialog: MaterialDialog
+    var storage: FirebaseStorage? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +65,7 @@ class SingleDetailFragment : DialogFragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-               R.layout.single_detail_fragment,
+                R.layout.single_detail_fragment,
                 container,
                 false
             )
@@ -73,8 +78,12 @@ class SingleDetailFragment : DialogFragment() {
         db = FirebaseFirestore.getInstance()
         okHttpClient = OkHttpClient()
         fcmPush = FcmPush()
+        storage = FirebaseStorage.getInstance()
 
-         user = ModelPreferences(activity!!.application).getObject(Const.PROF_USER, Users::class.java)!!
+        user =
+            ModelPreferences(activity!!.application).getObject(Const.PROF_USER, Users::class.java)!!
+        matDialog = MaterialDialog(activity!!).customView(R.layout.dlg_delete, scrollable = false)
+            .cancelable(false)
 
         setValue(newContentDTO)
         setProfile(newContentDTO)
@@ -88,9 +97,19 @@ class SingleDetailFragment : DialogFragment() {
             .diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()
             .into(binding.imgPost)
 
-        binding.imgfav.setOnClickListener { favoriteEvent(contentUid!!) }
+        binding.imgfav.setOnClickListener {
+            binding.imgfav.setImageResource(R.drawable.ic_favorite_black_24dp)
+            favoriteEvent(contentUid!!)
+        }
 
         binding.crossImg.setOnClickListener { dismiss() }
+
+        if (user.userUID == newContentDTO.uid) {
+            binding.delete?.visibility = View.VISIBLE
+        }
+
+
+        binding.delete.setOnClickListener { showDeletetDialog(contentUid!!) }
 
 
         if (item.favorites.containsKey(user.userUID)) {
@@ -131,22 +150,78 @@ class SingleDetailFragment : DialogFragment() {
             ShareImage.shareImageWith(activity!!, binding.imgPost.drawable)
         }
 
-       /* binding.profView.setOnClickListener {
-            val bundle = Bundle().apply {
-                putString(Const.USER_UID, newContentDTO.uid)
-            }
+        /* binding.profView.setOnClickListener {
+             val bundle = Bundle().apply {
+                 putString(Const.USER_UID, newContentDTO.uid)
+             }
 
-            findNavController().navigate(R.id.action_profileimage_to_profile, bundle)
+             findNavController().navigate(R.id.action_profileimage_to_profile, bundle)
 
-        }
-*/
+         }
+ */
         binding.downalod.setOnClickListener {
             downloadImage(item.imgUrl!!, item.imgUploadDate.toString())
 
         }
     }
 
-    private fun downloadImage(url: String,time: String) {
+    private fun showDeletetDialog(contentId: String) {
+        MaterialDialog(activity!!).show {
+            message(R.string.del_msg)
+            positiveButton(R.string.delete_pos) { dialog ->
+                dialog.dismiss()
+                matDialog.show()
+                deletPost(contentId)
+            }
+            negativeButton(R.string.logout_neg) { dialog ->
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun deletPost(contentUid: String) {
+        db!!.collection("uploadedImages").document(contentUid)
+            .delete()
+            .addOnSuccessListener {
+                deleteActivities(contentUid)
+                Log.d("Prof", "DocumentSnapshot successfully deleted!")
+            }
+            .addOnFailureListener { e -> Log.w("Prof", "Error deleting document", e) }
+
+    }
+
+    private fun deleteActivities(contentUid: String) {
+        val itemsRef = db!!.collection("userActivities")
+        val query = itemsRef.whereEqualTo("contentUid", contentUid)
+        query.get().addOnCompleteListener { task ->
+            matDialog.dismiss()
+            Toast.makeText(activity, "Deleted successfully", Toast.LENGTH_SHORT).show()
+            if (task.isSuccessful) {
+                for (document in task.result!!) {
+                    itemsRef.document(document.id).delete()
+                }
+               deleteFromStorage()
+            } else {
+                Log.d("Prof", "Error getting documents: ", task.getException())
+
+            }
+        }
+    }
+
+    private fun deleteFromStorage() {
+        val storageRef = storage?.getReferenceFromUrl(newContentDTO.imgUrl!!)
+        storageRef!!.delete().addOnSuccessListener {
+            matDialog.dismiss()
+            Toast.makeText(activity, "Deleted successfully", Toast.LENGTH_SHORT).show()
+            dismiss()
+
+        }.addOnFailureListener { exception ->
+            Log.d("ProfileFragment", exception.toString())
+        }
+    }
+
+
+    private fun downloadImage(url: String, time: String) {
         val folder = File(Environment.getExternalStorageDirectory().toString() + "/" + "Insane")
         if (!folder.exists()) {
             folder.mkdirs()
@@ -209,7 +284,7 @@ class SingleDetailFragment : DialogFragment() {
         val tsDoc = db!!.collection("uploadedImages").document(contenUid)
         db?.runTransaction { transaction ->
 
-            val uid:String = FirebaseAuth.getInstance().currentUser!!.uid
+            val uid: String = FirebaseAuth.getInstance().currentUser!!.uid
             val contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
 
             if (contentDTO!!.favorites.containsKey(uid)) {

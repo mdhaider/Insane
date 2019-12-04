@@ -25,34 +25,56 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/pic_12" />
+                app:srcCompat="@drawable/pic_8" />
             </ir.alirezaiyan.arclayout.ArcRelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
+                android:layout_height="match_parent">
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="cursive"
-                    android:text="Sana &amp; Nehal"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="cursive"
+                        android:text="Sana &amp; Nehal"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="07/03/2020"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/inviteGuest"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-condensed-medium"
-                    android:text="07/03/2020"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/button_background"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Invite Guests"
+                    android:textAllCaps="false"
+                    android:layout_centerInParent="true"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:layout_marginEnd="12dp"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
+
 
         </FrameLayout>
 
