@@ -12,17 +12,21 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
 import dev.nehal.insane.model.Rewards
 import dev.nehal.insane.model.Users
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AllRewardsViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.all_item_rewards, parent, false)) {
     private var mUserImage: ImageView? = null
     private var mUserNam: TextView? = null
     private var mCoin: TextView? = null
-
+    private var mCoindate: TextView? = null
     init {
         mUserImage = itemView.findViewById(R.id.imgRew)
         mUserNam = itemView.findViewById(R.id.rewName)
         mCoin = itemView.findViewById(R.id.rewCoin)
+        mCoindate = itemView.findViewById(R.id.rewDate)
     }
 
     fun bind(rewards: Rewards) {
@@ -46,13 +50,25 @@ class AllRewardsViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         if(rewards.isRevealed){
             mCoin?.text = rewards.coinValue.toString()
         } else{
-            mCoin?.text = "Not opened yet"
-            mCoin?.textSize=12f
+            mCoin?.text = "--"
         }
 
+        mCoindate?.text= datetoString(rewards.creationDate)
 
+    }
 
-
+    fun datetoString(dates: Long): String? {
+        val date1 = Date(dates)
+        val sdf = SimpleDateFormat("MMM dd, yyyy",
+            Locale.ENGLISH)
+        var date: String?=null
+        try {
+            date = sdf.format(date1)
+            println(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return date
     }
 
 }

@@ -52,8 +52,6 @@ class RewardsFragment : Fragment() {
             goToDetail(position)
         }
 
-        binding.tvViewAll.visibility=View.GONE
-
         binding.tvViewAll.setOnClickListener {
             findNavController().navigate(R.id.action_rewards_all)
         }

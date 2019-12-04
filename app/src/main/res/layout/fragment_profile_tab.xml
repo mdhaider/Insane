@@ -1,111 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".navigation.HomeTabFragment">
+        android:layout_height="match_parent">
 
-        <ir.alirezaiyan.arclayout.ArcRelativeLayout
-            android:id="@+id/arc"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:layout_gravity="bottom"
-            app:arc_bottom_cropCurve="cropConvex"
-            app:arc_bottom_height="10dp"
-            app:arc_bottom_position="true"
-            app:arc_top_position="false">
-
-            <FrameLayout
-                android:id="@+id/frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_prof_gradient">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/profileImage"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        app:srcCompat="@drawable/ic_account_circle_black_24dp" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/profileName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"
-                        android:textColor="@color/white"
-                        android:textSize="22sp"
-                        app:fontFamily="sans-serif-condensed-medium"
-                        tools:text="Name" />
-
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="30dp">
-
-                    <ImageView
-                        android:id="@+id/imgEdit"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="16dp"
-                        android:visibility="gone"
-                        android:background="@drawable/circle_6"
-                        app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
-
-                    <ImageView
-                        android:id="@+id/imgCancel"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="16dp"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/ic_clear_black_24dp" />
-
-                    <ImageView
-                        android:id="@+id/imgSettings"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="16dp"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/ic_settings_black_24dp" />
-
-                </RelativeLayout>
-
-            </FrameLayout>
-        </ir.alirezaiyan.arclayout.ArcRelativeLayout>
-
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/profTabs"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/arc"
-            android:background="@color/white" />
+            android:background="@color/white"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <ir.alirezaiyan.arclayout.ArcRelativeLayout
+                    android:id="@+id/arc"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_gravity="bottom"
+                    android:fitsSystemWindows="true"
+                    app:arc_bottom_cropCurve="cropConvex"
+                    app:arc_bottom_height="10dp"
+                    app:arc_bottom_position="true"
+                    app:arc_top_position="false"
+                    app:layout_collapseMode="parallax">
+
+                    <FrameLayout
+                        android:id="@+id/frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_prof_gradient">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/profileImage"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                app:srcCompat="@drawable/ic_account_circle_black_24dp" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/profileName"
+                                tools:text="Name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:textColor="@color/white"
+                                android:textSize="22sp"
+                                app:fontFamily="sans-serif-condensed-medium" />
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="30dp">
+
+                            <ImageView
+                                android:id="@+id/imgEdit"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="16dp"
+                                android:background="@drawable/circle_6"
+                                android:visibility="gone"
+                                app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
+
+                            <ImageView
+                                android:id="@+id/imgCancel"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="16dp"
+                                android:visibility="gone"
+                                app:srcCompat="@drawable/ic_clear_black_24dp" />
+
+                            <ImageView
+                                android:id="@+id/imgSettings"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="16dp"
+                                android:visibility="gone"
+                                app:srcCompat="@drawable/ic_settings_black_24dp" />
+
+                        </RelativeLayout>
+
+                    </FrameLayout>
+                </ir.alirezaiyan.arclayout.ArcRelativeLayout>
+
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/profTabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/white" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/profViewPager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/profTabs"
+            android:layout_height="match_parent"
             android:layout_marginBottom="70dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    </RelativeLayout>
-
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
