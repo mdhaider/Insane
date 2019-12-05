@@ -83,6 +83,7 @@ class ProfileTabFragment : Fragment() {
 
 
         binding.imgCancel.setOnClickListener {
+
             goToHome()
         }
 
@@ -100,7 +101,10 @@ class ProfileTabFragment : Fragment() {
     }
 
     private fun goToHome() {
-        findNavController().navigate(R.id.action_profile_cancel)
+        val bundle = Bundle().apply {
+            putBoolean(Const.IS_COMING_FROM, true)
+        }
+        findNavController().navigate(R.id.action_profile_cancel, bundle)
 
     }
 

@@ -32,6 +32,7 @@ class PeopleFragment : Fragment() {
     private lateinit var commentList: ArrayList<AlarmDTO>
     private lateinit var contentList: ArrayList<ContentDTO>
     private lateinit var dialog: MaterialDialog
+    private var isComingFrom: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,9 +53,13 @@ class PeopleFragment : Fragment() {
         dialog = MaterialDialog(activity!!).customView(R.layout.dlg_progress, scrollable = false)
             .cancelable(false)
         val customView = dialog.getCustomView()
-        customView.txtTitle.visibility=View.GONE
-        customView.txtmsg.text=getString(R.string.ppl_msg)
-        dialog.show()
+        customView.txtTitle.visibility = View.GONE
+        customView.txtmsg.text = getString(R.string.ppl_msg)
+
+        arguments?.apply {
+            isComingFrom = getBoolean(Const.IS_COMING_FROM, false)
+
+        }
 
         val itemOnClick: (Int) -> Unit = { position ->
             goToProfile(position)
@@ -81,6 +86,7 @@ class PeopleFragment : Fragment() {
 
         binding.rvUsers.adapter = adapter
 
+        dialog.show()
         getData()
     }
 
@@ -91,7 +97,6 @@ class PeopleFragment : Fragment() {
         }
 
         findNavController().navigate(R.id.action_people_profile, bundle)
-
     }
 
     private fun getData() {
@@ -127,7 +132,7 @@ class PeopleFragment : Fragment() {
 
             }
             .addOnFailureListener { exception ->
-               dialog.dismiss()
+                dialog.dismiss()
                 Log.d("PeopleFrag", "Error getting documents: ", exception)
             }
     }
