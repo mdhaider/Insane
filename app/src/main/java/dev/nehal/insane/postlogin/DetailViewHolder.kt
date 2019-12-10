@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
@@ -89,6 +90,7 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         Glide.with(itemView.context)
             .load(contentDTO.imgUrl)
             .error(R.drawable.placeholder_image_new)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .placeholder(R.drawable.placeholder_image_new)
             .into(mPostImage!!)
 
@@ -129,6 +131,7 @@ class DetailViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
                     Glide.with(mProfImage!!.context)
                         .load(users.profImageUri)
                         .error(R.drawable.ic_account)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .placeholder(R.drawable.ic_account)
                         .apply(RequestOptions().circleCrop())
                         .into(mProfImage!!)

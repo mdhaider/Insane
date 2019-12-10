@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import dev.nehal.insane.R
 import dev.nehal.insane.model.AlarmDTO
@@ -44,6 +45,7 @@ class PeopleViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             .load(users.profImageUri)
             .error(R.drawable.ic_account)
             .placeholder(R.drawable.ic_account)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .apply(RequestOptions().circleCrop())
             .into(mUserImage!!)
 

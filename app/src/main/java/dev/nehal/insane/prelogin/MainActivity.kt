@@ -140,4 +140,6 @@ class MainActivity : AppCompatActivity(), DetailBottomSheetDialogFragment.Bottom
             navGraph.setStartDestination(R.id.navigation_notifications);
         }
         navController.setGraph(navGraph); }
+
+    override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 }

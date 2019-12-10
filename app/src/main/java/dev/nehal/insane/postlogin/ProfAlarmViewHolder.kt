@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
@@ -64,6 +65,7 @@ class ProfAlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
 
         Glide.with(itemView.context)
             .load(alarmDTO.imageUri)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .error(R.drawable.placeholder_image_new)
             .placeholder(R.drawable.placeholder_image_new)
             .into(mPostImage!!)
@@ -85,6 +87,7 @@ class ProfAlarmViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
                     Glide.with(mUserImage!!.context)
                         .load(users.profImageUri)
                         .error(R.drawable.ic_account)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .placeholder(R.drawable.ic_account)
                         .apply(RequestOptions().circleCrop())
                         .into(mUserImage!!)

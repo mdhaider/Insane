@@ -109,7 +109,7 @@ class SingleDetailFragment : DialogFragment() {
         }
 
 
-        binding.delete.setOnClickListener { showDeletetDialog(contentUid!!) }
+        binding.delete.setOnClickListener { showDeletetDialog() }
 
 
         if (item.favorites.containsKey(user.userUID)) {
@@ -165,13 +165,13 @@ class SingleDetailFragment : DialogFragment() {
         }
     }
 
-    private fun showDeletetDialog(contentId: String) {
+    private fun showDeletetDialog() {
         MaterialDialog(activity!!).show {
             message(R.string.del_msg)
             positiveButton(R.string.delete_pos) { dialog ->
                 dialog.dismiss()
                 matDialog.show()
-                deletPost(contentId)
+                deletPost()
             }
             negativeButton(R.string.logout_neg) { dialog ->
                 dialog.dismiss()
@@ -179,18 +179,18 @@ class SingleDetailFragment : DialogFragment() {
         }
     }
 
-    private fun deletPost(contentUid: String) {
-        db!!.collection("uploadedImages").document(contentUid)
+    private fun deletPost() {
+        db!!.collection("uploadedImages").document(contentUid!!)
             .delete()
             .addOnSuccessListener {
-                deleteActivities(contentUid)
+                deleteActivities()
                 Log.d("Prof", "DocumentSnapshot successfully deleted!")
             }
             .addOnFailureListener { e -> Log.w("Prof", "Error deleting document", e) }
 
     }
 
-    private fun deleteActivities(contentUid: String) {
+    private fun deleteActivities() {
         val itemsRef = db!!.collection("userActivities")
         val query = itemsRef.whereEqualTo("contentUid", contentUid)
         query.get().addOnCompleteListener { task ->
@@ -255,6 +255,7 @@ class SingleDetailFragment : DialogFragment() {
                         .load(users.profImageUri)
                         .error(R.drawable.ic_account)
                         .placeholder(R.drawable.ic_account)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .apply(RequestOptions().circleCrop())
                         .into(binding.imgProf)
                 }

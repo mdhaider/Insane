@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.nehal.insane.R
@@ -39,6 +40,7 @@ class AllRewardsViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
                     .load(user?.profImageUri)
                     .error(R.drawable.ic_account)
                     .placeholder(R.drawable.ic_account)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .apply(RequestOptions().circleCrop())
                     .into(mUserImage!!)
             }
