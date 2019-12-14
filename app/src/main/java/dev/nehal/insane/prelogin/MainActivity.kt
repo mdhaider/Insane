@@ -18,6 +18,7 @@ import dev.nehal.insane.R
 import dev.nehal.insane.model.Users
 import dev.nehal.insane.navigation.RewardsDetailFragment
 import dev.nehal.insane.postlogin.DetailBottomSheetDialogFragment
+import dev.nehal.insane.shared.AppPreferences
 import dev.nehal.insane.shared.Const
 import dev.nehal.insane.shared.ModelPreferences
 import dev.nehal.insane.util.getCurrentNavigationFragment
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity(), DetailBottomSheetDialogFragment.Bottom
         navView = findViewById(R.id.nav_view)
 
         navController = findNavController(R.id.nav_host_fragment)
-        navGraph= navController.navInflater.inflate(R.navigation.mobile_navigation)
+        navGraph = navController.navInflater.inflate(R.navigation.mobile_navigation)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity(), DetailBottomSheetDialogFragment.Bottom
                 val users = document.toObject(Users::class.java)
                 if (users != null) {
                     ModelPreferences(application).putObject(Const.PROF_USER, users)
+                    AppPreferences.userName = users.userName
                 }
 
                 getNext()
