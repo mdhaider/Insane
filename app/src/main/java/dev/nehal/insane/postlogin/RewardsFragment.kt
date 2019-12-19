@@ -113,7 +113,7 @@ class RewardsFragment : Fragment() {
             rewards.uid = user.userUID
             rewards.creationDate = System.currentTimeMillis()
             rewards.revealDate = 0L
-            rewards.coinValue = (0..50).random()
+            rewards.coinValue = (0..150).random()
             rewards.isRevealed = false
             rewards.coinReason = "Surprise me"
 

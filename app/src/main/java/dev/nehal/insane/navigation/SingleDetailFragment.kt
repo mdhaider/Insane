@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
+import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -101,6 +102,8 @@ class SingleDetailFragment : DialogFragment() {
             binding.imgfav.setImageResource(R.drawable.ic_favorite_black_24dp)
             favoriteEvent(contentUid!!)
         }
+
+        binding.imgPost.setOnTouchListener(ImageMatrixTouchHandler(binding.imgPost.context))
 
         binding.crossImg.setOnClickListener { dismiss() }
 

@@ -1,48 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/pic_8"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_splash_gradient"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvSalut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Good"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:fontFamily="cursive"
-        android:textSize="32sp"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSalut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/faster_one"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            tools:text="Good" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvSalut1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Good"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:layout_marginTop="4dp"
-        android:fontFamily="cursive"
-        android:textSize="32sp"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSalut1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/faster_one"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            tools:text="Good" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="casual"
-        android:visibility="gone"
-        android:text="@string/sharing_memories"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="casual"
+            android:text="@string/sharing_memories"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="gone" />
 
-</LinearLayout>
+    </LinearLayout>
 </layout>

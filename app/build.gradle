@@ -11,8 +11,8 @@ android {
         applicationId "dev.nehal.insane"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 24
-        versionName "3.4"
+        versionCode 25
+        versionName "3.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.firebaseui:firebase-ui-firestore:6.0.2'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    implementation 'com.google.firebase:firebase-messaging:20.0.1'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.google.android.material:material:1.0.0'
@@ -81,6 +81,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:3.1.1'
     implementation 'androidx.work:work-runtime-ktx:2.3.0-beta01'
     implementation 'androidx.core:core-ktx:1.2.0-rc01'
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.3.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.3.1'
     implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'com.bogdwellers:pinchtozoom:0.1'
 }
