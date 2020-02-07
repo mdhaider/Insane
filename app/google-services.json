@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "840680705184-f9afmb95k8gsj88vj21apopk7hug4q7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.nehal.insane",
+            "certificate_hash": "ff22a323f84499e6abede326f3c33abeba8428ee"
+          }
+        },
+        {
           "client_id": "840680705184-dvv552lefmdb00higs3b79oo9834qpfl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -30,35 +38,6 @@
             "certificate_hash": "c6251a3707581918743351d416b52c6ae2161107"
           }
         },
-        {
-          "client_id": "840680705184-44dvkc3vnv6a5nnnjo032acjtigjtmep.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC586MznLJya94nISPxku5oRT0qf_iOz2A"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "840680705184-44dvkc3vnv6a5nnnjo032acjtigjtmep.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:840680705184:android:0763979abb069b46b18dc5",
-        "android_client_info": {
-          "package_name": "dev.nehal.insane.debug"
-        }
-      },
-      "oauth_client": [
         {
           "client_id": "840680705184-44dvkc3vnv6a5nnnjo032acjtigjtmep.apps.googleusercontent.com",
           "client_type": 3
